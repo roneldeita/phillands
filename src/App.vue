@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <navigation></navigation>
+      <navigation v-if="$route.name != 'index'"></navigation>
 
       <router-view></router-view>
 
@@ -10,13 +10,11 @@
 </template>
 
 <script>
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
-import "../node_modules/pe7-icon/dist/dist/pe-icon-7-stroke.min.css";
 
 import Index from './components/Index.vue';
 import Navigation from './components/Navigation.vue';
-import Login from './components/Login.vue'
+import Login from './components/auth/Login.vue'
 import Users from './components/Users.vue';
 import User from './components/User.vue';
 
@@ -27,7 +25,9 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Montserrat|Roboto');
+@import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
+@import url('../node_modules/pe7-icon/dist/dist/pe-icon-7-stroke.min.css');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 .border{
     border: 1px solid #999999
 }
@@ -37,12 +37,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  padding-top: 180px;
+  padding-top: 150px;
 }
 .btn-pl-blue{
   background-color: #336699;
 }
 .btn-pl-green{
-  background-color: #56BA500;
+  background-color: #56BA50;
 }
 </style>

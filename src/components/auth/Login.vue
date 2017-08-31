@@ -29,7 +29,7 @@
               <span class="input-group-addon pe-7s-key" id="basic-addon2"></span>
               <input type="password" class="form-control" id="password" aria-describedby="basic-addon1" placeholder="Your Password">
             </div>
-            <button type="button" class="btn btn-success btn-block" name="button">Login</button>
+            <button type="button" class="btn btn-success btn-block" name="button" @click="login">Login</button>
           </form>
           <div style="padding:13px 0px 0px 0px"><a href="#">Forgot password?</a></div>
         </div>
@@ -53,6 +53,12 @@ export default {
       }
     },
     methods:{
+      login: function (e) {
+        console.log(e);
+        this.$auth.login({ email, password }).then(function () {
+          // Execute application logic after successful login
+        })
+      },
       onSignInSuccess:function(googleUser){
           var profile = googleUser.getBasicProfile();
           console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.

@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar fixed-top navbar-toggleable-md navbar-light">
-      <a class="navbar-brand text-left" href="/">
+      <a class="navbar-brand text-left" href="javascript:void(0)" @click="GoHome">
         <img src="../assets/PL_Logo_250px.png" alt="">
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,12 +15,15 @@
           </div>
         </form>
         <ul class="nav navbar-nav ml-auto">
-          <!-- <li class="nav-item"><a class="nav-link" href="#" onclick="signOut();">Sign out</a></li> -->
-          <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#myModal" href="#">Login/Register</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#myModal" href="#">Login/Register</a></li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
+            <a class="nav-link" href="#" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
+          </li>
         </ul>
       </div>
     </nav>
-    <ul class="nav main-nav fixed-top">
+    <ul v-if="$route.name != 'index'" class="nav main-nav fixed-top">
       <li class="nav-item"><router-link class="nav-link" :to="{ name: 'sale', params: {} }">FOR SALE</router-link></li>
       <li class="nav-item"><router-link class="nav-link" :to="{ name: 'rent', params: {} }">FOR RENT</router-link></li>
       <li class="nav-item"><a class="nav-link disabled" href="#">PRE-SELLING</a></li>
@@ -30,16 +33,28 @@
 </template>
 
 <script>
+import { isLoggedIn, login, logout } from '../assets/utils/auth.js';
+
 export default {
-    name: "navigation"
+    name: "navigation",
+    methods:{
+      handleLogin() {
+        login();
+      },
+      handleLogout() {
+        logout();
+      },
+      isLoggedIn() {
+        return isLoggedIn();
+      },
+      GoHome:function(){
+        this.$router.push('/')
+      }
+    }
 }
 </script>
 
 <style scoped>
-
-  .border{
-    border: 1px solid #000000;
-  }
   .navbar{
     background-color: #ffffff;
   }
@@ -64,7 +79,7 @@ export default {
     width: 100%;
     background-color: #ffffff;
     box-shadow: 0 4px 2px -3px #d9d9d9;
-    margin-top: 60px;
+    margin-top: 50px;
     z-index: 1;
   }
   .main-nav li .nav-link{
