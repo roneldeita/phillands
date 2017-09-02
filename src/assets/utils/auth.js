@@ -6,11 +6,17 @@ import Auth0Lock from 'auth0-lock';
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
 
-const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
+// const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
+// const CLIENT_DOMAIN = 'roneldeita.auth0.com';
+// const REDIRECT = 'http://phillands.com/callback';
+// const SCOPE = 'full_access';
+// const AUDIENCE = 'http://phillands.com';
+
+const CLIENT_ID = 'l2hXuS0JvmqsnmGMMqOF7140jUG8MJmv';
 const CLIENT_DOMAIN = 'roneldeita.auth0.com';
 const REDIRECT = 'http://localhost:8080/callback';
 const SCOPE = 'full_access';
-const AUDIENCE = 'http://phillands.com';
+const AUDIENCE = 'http://phillands.dev';
 
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,

@@ -1,16 +1,15 @@
 <template>
   <div id="home" class="">
-
     <el-row type="flex" class="row-bg text-left">
       <el-col :offset="14" :span="10" class="text-right">
-        <!-- <a class="nav-link" data-toggle="modal" data-target="#myModal" href="#">Login/Register</a> -->
-        <a class="nav-link" href="#" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
-        <a class="nav-link" href="#" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
+        <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
+        <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
       </el-col>
     </el-row>
+    <br><br><br>
     <el-row type="flex" class="row-bg text-left" justify="center">
       <el-col :xs="22" :sm="20" :md="20">
-        <img class="logo " src="../assets/PL_Logo_250px.png" alt="">
+        <a href="/"><img class="logo " src="../assets/PL_Logo_250px.png" alt=""></a>
         <p class="title">Find your way home.</p><br>
       </el-col>
     </el-row>
@@ -31,8 +30,8 @@
         <el-tabs v-model="activeNav" @tab-click="handleClick">
           <el-tab-pane label="For Sale" name="sale"><featured-sale></featured-sale></el-tab-pane>
           <el-tab-pane label="For Rent" name="rent"><featured-rent></featured-rent></el-tab-pane>
-          <el-tab-pane label="Pre-Selling" name="pre-selling" disabled></el-tab-pane>
-          <el-tab-pane label="Foreclosure" name="foreclosure" disabled></el-tab-pane>
+          <el-tab-pane label="Pre-Selling" name="pre-selling"> For Pre-selling</el-tab-pane>
+          <el-tab-pane label="Foreclosure" name="foreclosure">For Forclosure</el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -40,7 +39,7 @@
 </template>
 
 <script>
-import { isLoggedIn, login, logout } from '../assets/utils/auth.js';
+import { isLoggedIn, login, logout } from '../assets/utils/lock.js';
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'

@@ -15,28 +15,38 @@
           </div>
         </form>
         <ul class="nav navbar-nav ml-auto">
-          <!-- <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#myModal" href="#">Login/Register</a></li> -->
           <li class="nav-item">
-            <a class="nav-link" href="#" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
-            <a class="nav-link" href="#" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
+            <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
+            <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
           </li>
         </ul>
       </div>
     </nav>
-    <ul v-if="$route.name != 'index'" class="nav main-nav fixed-top">
+    <el-tabs v-model="activeNav" v-show="$route.name != 'index'" class="main-nav fixed-top" @tab-click="changeTab">
+      <el-tab-pane label="For Sale" name="sale"></el-tab-pane>
+      <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
+      <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
+      <el-tab-pane label="Foreclosure" name="foreclosure"></el-tab-pane>
+    </el-tabs>
+    <!-- <ul v-if="$route.name != 'index'" class="nav main-nav fixed-top">
       <li class="nav-item"><router-link class="nav-link" :to="{ name: 'sale', params: {} }">FOR SALE</router-link></li>
       <li class="nav-item"><router-link class="nav-link" :to="{ name: 'rent', params: {} }">FOR RENT</router-link></li>
       <li class="nav-item"><a class="nav-link disabled" href="#">PRE-SELLING</a></li>
       <li class="nav-item"><a class="nav-link disabled" href="#">FORCLOSURE</a></li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
 <script>
-import { isLoggedIn, login, logout } from '../assets/utils/auth.js';
+import { isLoggedIn, login, logout } from '../assets/utils/lock.js';
 
 export default {
     name: "navigation",
+    data(){
+      return{
+        activeNav:''
+      }
+    },
     methods:{
       handleLogin() {
         login();
@@ -49,7 +59,14 @@ export default {
       },
       GoHome:function(){
         this.$router.push('/')
+      },
+      changeTab:function(tab, event){
+        console.log(tab.name);
+        this.$router.push(tab.name);
       }
+    },
+    mounted(){
+      this.activeNav=this.$route.name;
     }
 }
 </script>
@@ -76,18 +93,16 @@ export default {
   }
   .main-nav{
     position: fixed;
-    width: 100%;
     background-color: #ffffff;
     box-shadow: 0 4px 2px -3px #d9d9d9;
-    margin-top: 50px;
+    margin-top: 65px;
     z-index: 1;
   }
-  .main-nav li .nav-link{
-    font-size: 11px;
-    padding: 0;
-    margin:0 15px;
-    font-weight:bold;
-    padding: 20px 0 15px 0;
 
+</style>
+
+<style>
+  .main-nav .el-tabs__header{
+    margin: 0 !important;
   }
 </style>

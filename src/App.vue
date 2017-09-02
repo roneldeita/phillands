@@ -4,7 +4,6 @@
 
       <router-view></router-view>
 
-      <login></login>
       <!-- <users></users> -->
   </div>
 </template>
@@ -20,7 +19,7 @@ import User from './components/User.vue';
 
 export default {
   name: 'app',
-  components:{ Index, Navigation, Login, Users, User }
+  components:{ Index, Navigation, Users, User }
 }
 </script>
 
