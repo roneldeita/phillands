@@ -8,12 +8,17 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline mr-auto">
-          <div class="input-group input-group-md">
-            <input type="text" class="form-control" placeholder="Search Location">
-            <input type="text" class="form-control" placeholder="Maximum Price">
-          </div>
-        </form>
+        <el-row type="flex" class="row-bg search-continer" justify="start">
+          <el-col :span="24">
+            <el-input placeholder="Type the location? e.g Quezon City" size="midium" icon="search" :on-icon-click="handleIconClick">
+              <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
+                <el-option label="House and Lot" value="1"></el-option>
+                <el-option label="Condominium" value="2"></el-option>
+                <el-option label="Land" value="3"></el-option>
+              </el-select>
+            </el-input>
+          </el-col>
+        </el-row>
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
@@ -28,12 +33,6 @@
       <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
       <el-tab-pane label="Foreclosure" name="foreclosure"></el-tab-pane>
     </el-tabs>
-    <!-- <ul v-if="$route.name != 'index'" class="nav main-nav fixed-top">
-      <li class="nav-item"><router-link class="nav-link" :to="{ name: 'sale', params: {} }">FOR SALE</router-link></li>
-      <li class="nav-item"><router-link class="nav-link" :to="{ name: 'rent', params: {} }">FOR RENT</router-link></li>
-      <li class="nav-item"><a class="nav-link disabled" href="#">PRE-SELLING</a></li>
-      <li class="nav-item"><a class="nav-link disabled" href="#">FORCLOSURE</a></li>
-    </ul> -->
   </div>
 </template>
 
@@ -44,7 +43,8 @@ export default {
     name: "navigation",
     data(){
       return{
-        activeNav:''
+        activeNav:'',
+        selectSearch:'1'
       }
     },
     methods:{
@@ -59,6 +59,9 @@ export default {
       },
       GoHome:function(){
         this.$router.push('/')
+      },
+      handleIconClick(){
+
       },
       changeTab:function(tab, event){
         console.log(tab.name);
@@ -91,12 +94,23 @@ export default {
   .nav-link:focus{
     outline: none;
   }
+  .search-continer{
+    min-width: 600px;
+  }
+  @media (max-width: 575px) {
+    .search-continer{
+      min-width: auto; 
+    }
+  }
   .main-nav{
     position: fixed;
     background-color: #ffffff;
     box-shadow: 0 4px 2px -3px #d9d9d9;
-    margin-top: 65px;
+    margin-top: 60px;
     z-index: 1;
+  }
+  .el-select{
+    min-width: 160px;
   }
 
 </style>

@@ -2,8 +2,9 @@
   <div class="container-fluid">
     <el-row :gutter="20">
       <el-col :xs="24" :sm="18" :md="18">
-        <el-row :gutter="30">
-          <el-col :sm="12" :md="8" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+        <el-row :gutter="20">
+          <el-col :sm="12" :md="12" :lg="8" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+            <!-- <advertisement :img="property.img"></advertisement> -->
             <property-card
               :title="property.title"
               :location="property.location"

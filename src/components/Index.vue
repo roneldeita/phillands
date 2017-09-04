@@ -24,10 +24,11 @@
         </el-input>
       </el-col>
     </el-row>
-    <br><br>
+    <br>
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :xs="22" :sm="20" :md="20">
         <el-tabs v-model="activeNav" @tab-click="handleClick">
+          <p class="sub-title">FEATURED <span class="txt-pl-green">PROPERTIES</span></p>
           <el-tab-pane label="For Sale" name="sale"><featured-sale></featured-sale></el-tab-pane>
           <el-tab-pane label="For Rent" name="rent"><featured-rent></featured-rent></el-tab-pane>
           <el-tab-pane label="Pre-Selling" name="pre-selling"> For Pre-selling</el-tab-pane>
@@ -88,11 +89,16 @@ export default {
   }
   .logo{
     width:230px;
-    padding:0 0 20px 0;
+    padding:0 0 0 0;
     margin: 0 15px 0 0;
   }
   .title{
     font-size: 42px;
+    color: #8c8c8c
+  }
+  .sub-title{
+    font-size: 22px;
+    margin: 15px 0 25px 0;
     color: #8c8c8c
   }
   .el-select{
