@@ -3,7 +3,7 @@
     <el-card :body-style="{ padding: '0px' }" class="card">
       <img :src="img">
     </el-card>
-    <el-button type="success" class="btn btn-pl-green">VIEW LISTING</el-button>
+    <button type="success" class="btn btn-success btn-pl-green">VIEW LISTING</button>
     <div class="card-info-container">
       <p class="card-price">Php 2,000,000.00</p>
       <p class="card-title text-left">{{ title }}</p>
@@ -79,6 +79,7 @@ export default {
     border-radius: 0px;
     font-size: 14px;
     padding: 6px 30px;
+    cursor: pointer;
   }
 
   .card-price,

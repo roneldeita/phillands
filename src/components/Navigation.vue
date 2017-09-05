@@ -8,18 +8,23 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <el-row type="flex" class="row-bg search-continer" justify="start">
-          <el-col :span="24">
-            <el-input placeholder="Type the location? e.g Quezon City" size="midium" icon="search" :on-icon-click="handleIconClick">
-              <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
-                <el-option label="House and Lot" value="1"></el-option>
-                <el-option label="Condominium" value="2"></el-option>
-                <el-option label="Land" value="3"></el-option>
-              </el-select>
-            </el-input>
-          </el-col>
-        </el-row>
+        <form class="form-inline">
+          <el-row type="flex" class="row-bg search-continer" justify="start">
+            <el-col :span="24">
+              <el-input placeholder="Type the location? e.g Quezon City" size="midium" icon="search" :on-icon-click="handleIconClick">
+                <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
+                  <el-option label="House and Lot" value="1"></el-option>
+                  <el-option label="Condominium" value="2"></el-option>
+                  <el-option label="Land" value="3"></el-option>
+                </el-select>
+              </el-input>
+            </el-col>
+          </el-row>
+        </form>
         <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item" v-show="isLoggedIn()">
+            <button type="button" class="btn btn-success" name="button" @click="goToPublishProperty()">Publish Property</button>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
             <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
@@ -58,7 +63,10 @@ export default {
         return isLoggedIn();
       },
       GoHome:function(){
-        this.$router.push('/')
+        this.$router.push('/');
+      },
+      goToPublishProperty:function(){
+        this.$router.push('/publish-property');
       },
       handleIconClick(){
 
@@ -87,9 +95,6 @@ export default {
     border: 0px;
     cursor:pointer;
   }
-  .nav-item{
-    font-size: 14px;
-  }
   .navbar-toggler:focus,
   .nav-link:focus{
     outline: none;
@@ -99,7 +104,7 @@ export default {
   }
   @media (max-width: 575px) {
     .search-continer{
-      min-width: auto; 
+      min-width: auto;
     }
   }
   .main-nav{

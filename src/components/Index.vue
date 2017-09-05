@@ -1,16 +1,21 @@
 <template>
   <div id="home" class="">
-    <el-row type="flex" class="row-bg text-left">
-      <el-col :offset="14" :span="10" class="text-right">
+    <ul class="nav justify-content-end">
+      <li class="nav-item" v-show="isLoggedIn()">
+        <a class="nav-link" href="javascript:void(0)">Publish Property</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
         <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
-      </el-col>
-    </el-row>
+      </li>
+    </ul>
     <br><br><br>
     <el-row type="flex" class="row-bg text-left" justify="center">
       <el-col :xs="22" :sm="20" :md="20">
         <a href="/"><img class="logo " src="../assets/PL_Logo_250px.png" alt=""></a>
-        <p class="title">Find your way home.</p><br>
+        <p class="title">
+          The best way to find home and<br>
+          settle your future.</p><br>
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg" justify="center">
@@ -81,25 +86,23 @@ export default {
   }
 
   .nav-link{
-    color: #999999;
-    font-size: 14px;
-    margin: 14px 10px 0 0;
+    margin: 13px 8px 0 0;
     outline: none;
-
   }
   .logo{
     width:230px;
     padding:0 0 0 0;
-    margin: 0 15px 0 0;
+    margin: 0 0 15px 0;
   }
   .title{
-    font-size: 42px;
-    color: #8c8c8c
+    font-size: 46px;
+    line-height: 52px;
+    color: #636363;
   }
   .sub-title{
-    font-size: 22px;
+    font-size: 24px;
     margin: 15px 0 25px 0;
-    color: #8c8c8c
+    color: #636363;
   }
   .el-select{
     min-width: 200px;

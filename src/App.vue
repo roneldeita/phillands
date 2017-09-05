@@ -13,7 +13,6 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 import Index from './components/Index.vue';
 import Navigation from './components/Navigation.vue';
-import Login from './components/auth/Login.vue'
 import Users from './components/Users.vue';
 import User from './components/User.vue';
 
@@ -24,7 +23,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
 @import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
 @import url('../node_modules/pe7-icon/dist/dist/pe-icon-7-stroke.min.css');
 @import url('../node_modules/font-awesome/css/font-awesome.min.css');
@@ -34,13 +33,20 @@ export default {
 }
 
 #app {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Didact Gothic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #636363 !important;
   padding-top: 150px;
 }
+
+.el-tabs__item,
+.nav-link{
+  color:#636363;
+  font-size: 16px;
+}
+
 .btn-pl-blue{
   background-color: #336699;
 }
