@@ -44,7 +44,7 @@ export default {
 .el-tabs__item,
 .nav-link{
   color:#636363;
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 .btn-pl-blue{

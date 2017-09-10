@@ -23,7 +23,8 @@
         </form>
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item" v-show="isLoggedIn()">
-            <button type="button" class="btn btn-success" name="button" @click="goToPublishProperty()">Publish Property</button>
+            <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property'" @click="goToPublishProperty()">Publish Property</button>
+            <button type="button" class="btn btn-success" v-show="$route.name === 'publish-property'">Cancel</button>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>

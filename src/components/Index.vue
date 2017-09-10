@@ -2,7 +2,7 @@
   <div id="home" class="">
     <ul class="nav justify-content-end">
       <li class="nav-item" v-show="isLoggedIn()">
-        <a class="nav-link" href="javascript:void(0)">Publish Property</a>
+        <router-link  class="nav-link" :to="'publish-property'">Publish Property</router-link>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="javascript:void(0)" v-show="isLoggedIn()" @click="handleLogout()">Log out</a>
