@@ -3,35 +3,51 @@
     <h2>Location</h2><br>
     <h5>Address</h5>
     <gmap-autocomplete class="form-control" @place_changed="setLocation"></gmap-autocomplete><br>
-    <gmap-map style="width: 600px; height: 300px;" :zoom="zoom" :center="center">
+    <gmap-map style="width: 500px; height: 300px;z-index:1" :zoom="zoom" :center="center" :options="{styles:style}"  @center_changed="centerChange">
       <gmap-marker
         :draggable="true"
         :clickable="true"
+        :icon="'/static/Philland_Place_Icon-10x10.png'"
         :position="marker"
         @dragend="setMarker"
         ></gmap-marker>
+      <gmap-circle
+        :center="marker"
+        :radius="20"
+        :draggable="false"
+        :clickable="false"
+        :options="{fillColor:'#56BA50',strokeWeight:'0', fillOpacity: '0.40'}"
+       style="border:1px">
+      </gmap-circle>
     </gmap-map>
+    <br>
   </el-row>
 </template>
 
 <script>
+import MapStyle from '../../../static/json/map.json'
+
 export default {
   name:'step-one',
   data(){
     return{
       zoom:7,
       center: {lat: 14.5677961, lng: 121.0206435},
-      marker: {lat: 0, lng: 0}
+      marker: {lat: 0, lng: 0},
+      style: []
     }
   },
+  components:{ MapStyle },
   methods:{
     setLocation: function(place){
-      console.log(place.address_components);
+      var address_components = [];
+
       this.marker = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
       }
       this.updateCenter();
+      this.$emit('formatedaddress', place);
     },
     setMarker: function(place){
       this.marker = {
@@ -40,13 +56,24 @@ export default {
       }
       this.updateCenter();
     },
+    centerChange: function(center){
+      this.marker = {
+         lat: center.lat(),
+         lng: center.lng()
+       }
+      this.updateCenter();
+    },
     updateCenter() {
       this.center = this.marker;
-      this.zoom = 12;
+      this.zoom = 18;
+      this.$emit('dragmarker', this.marker);
+    },
+    changeFormattedAddress:function(place){
+    //  console.log(place)
     }
   },
   mounted(){
-
+    this.style = MapStyle;
   }
 
 }
@@ -55,8 +82,5 @@ export default {
 <style scoped>
   .input{
     margin-bottom: 10px;
-  }
-  .form-control{
-    max-width: 600px
   }
 </style>

@@ -4,20 +4,21 @@ import Router from 'vue-router';
 
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
+const PROFILE = '';
 
-// const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
-// const CLIENT_DOMAIN = 'roneldeita.auth0.com';
-// const REDIRECT_URL = window.location.href;
-// const SCOPE = 'full_access';
-// const AUDIENCE = 'http://phillands.com';
-// const LOGO = 'http://phillands.com/static/img/PL_Logo_250px.3abadf0.png';
-
-const CLIENT_ID = 'l2hXuS0JvmqsnmGMMqOF7140jUG8MJmv';
+const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
 const CLIENT_DOMAIN = 'roneldeita.auth0.com';
 const REDIRECT_URL = window.location.href;
 const SCOPE = 'full_access';
-const AUDIENCE = 'http://phillands.dev';
-const LOGO = 'http://localhost:8080/static/img/PL_Logo_250px.3abadf0.png';
+const AUDIENCE = 'http://phillands.com';
+const LOGO = 'http://phillands.com/static/img/PL_Logo_250px.3abadf0.png';
+
+// const CLIENT_ID = 'l2hXuS0JvmqsnmGMMqOF7140jUG8MJmv';
+// const CLIENT_DOMAIN = 'roneldeita.auth0.com';
+// const REDIRECT_URL = window.location.href;
+// const SCOPE = 'full_access';
+// const AUDIENCE = 'http://phillands.dev';
+// const LOGO = 'http://localhost:8080/static/img/PL_Logo_250px.3abadf0.png';
 
 
 var router = new Router({
@@ -58,6 +59,7 @@ lock.on("authenticated", function(authResult) {
     // Store the token from authResult for later use
     localStorage.setItem(ACCESS_TOKEN_KEY, authResult.accessToken);
     localStorage.setItem(ID_TOKEN_KEY, authResult.idToken);
+    localStorage.setItem(PROFILE, JSON.stringify(profile));
     //reload page after the token were set
     if(isLoggedIn){
       setTimeout(function(){
@@ -77,9 +79,10 @@ export function login() {
 export function requireAuth(to, from, next) {
   if (!isLoggedIn()) {
     next({
-      path: '/',
+      path: to.path,
       query: { redirect: to.fullPath }
     });
+    lock.show();
   } else {
     next();
   }
@@ -114,6 +117,10 @@ export function getIdToken() {
 export function getAccessToken() {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
+
+export function getProfile(){
+  return localStorage.getItem(PROFILE);
+}
 /* end of check login */
 
 
@@ -121,14 +128,21 @@ export function getAccessToken() {
 export function logout() {
   clearAccessToken();
   clearIdToken();
+  clearProfile();
   location.reload();
 }
 
 function clearAccessToken() {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
 }
+
 function clearIdToken() {
   localStorage.removeItem(ID_TOKEN_KEY);
 }
+
+function clearProfile() {
+  localStorage.removeItem(PROFILE);
+}
+
 
 /* end of logout */

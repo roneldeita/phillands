@@ -3,7 +3,7 @@
     <el-card :body-style="{ padding: '0px' }" class="card">
       <img :src="img">
     </el-card>
-    <button type="success" class="btn btn-success btn-pl-green">VIEW LISTING</button>
+    <button type="success" class="btn btn-success btn-pl-green" @click="dialogVisible = true">VIEW LISTING</button>
     <div class="card-info-container">
       <p class="card-price">Php 2,000,000.00</p>
       <p class="card-title text-left">{{ title }}</p>
@@ -13,22 +13,65 @@
         <span class="fa fa-bath"></span> <span>2</span>
       </p>
     </div>
+    <el-dialog title="" :visible.sync="dialogVisible" size="large">
+      <el-row>
+        <el-col :xs="24 ":md="12">
+          <div class="carousel-container">
+            <el-carousel indicator-position="outside" :autoplay="false">
+              <el-carousel-item v-for="item in 4" :key="item">
+                <img :src="img" style="height:100%">
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </el-col>
+        <el-col :sm="24" :md="12">
+          <div class="info-container text-left">
+          	<br><br>
+            <p class="price">Php 2,000,000.00</p>
+            <p class="title">{{ title }}</p>
+            <p class="location"><span class="fa fa-map-marker"></span> {{ location }} </p>
+            <hr>
+            <span class="fa fa-bed"></span> <span>3</span>
+            <span class="fa fa-bath" style="margin-left:15px"></span> <span>2</span>
+            <span class="fa fa-home" style="margin-left:15px"></span> <span>642 Sqm</span>
+            <p>Posted 7 days ago</p>
+            <hr>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <hr>
+            <el-button type="success" style="width:100%">CONTACT SELLER</el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
-  <!-- <div class="card">
-    <img class="card-img-top" :src="img" alt="Card image caption">
-    <div class="card-block">
-
-      <p class="card-text text-left text-nowrap"><span class="pe-7s-map-marker"></span> {{ location }}</p>
-    </div>
-  </div> -->
 </template>
 
 <script>
 export default {
   name:"property-card",
-  props:['title','location' ,'img']
+  props:['title','location' ,'img'],
+  data(){
+    return{
+      dialogVisible:false
+    }
+  }
 }
 </script>
+
+<style>
+  .el-dialog__header{
+    padding: 0px !important;
+  }
+  .el-dialog__body{
+    padding: 0px !important;
+  }
+  .el-dialog__headerbtn{
+    position: absolute !important;
+    right: 0 !important;
+    padding: 8px 10px !important;
+    z-index: 999999!important;
+  }
+</style>
 
 <style scoped>
   .card{
@@ -109,16 +152,38 @@ export default {
   .card-location{
     font-size: 10px;
   }
-
-  /*@media (min-width: 1199px) {
-    .card img{
-      height: 200px;
-    }
+  .carousel-container{
+    padding: 50px 0px 20px 0px;
+    background-color: #000000;
   }
+  .info-container{
+    color:#636363;
+    padding: 10px 35px 30px 35px;
+  }
+  .info-container .price,
+  .info-container .title,
+  .info-container .location{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .info-container .price{
+    color: #404040;
+    text-shadow: 1px 0 #404040;
+    letter-spacing: 1px;
+    font-size: 40px;
+    line-height: 40px;
+    font-weight:900;
+  }
+  .info-container .title{
+    position: relative;
+    color: #737373;
+    line-height: 28px;
+    font-size: 28px;
 
-  @media (max-width: 575px) {
-    .card img{
-      min-height: 250px;
-    }
-  }*/
+  }
+  .info-container .location{
+    font-size: 18px;
+    line-height: 18px;
+  }
 </style>

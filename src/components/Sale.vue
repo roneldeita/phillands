@@ -49,6 +49,7 @@ import { getPublicStartupBattles } from '../assets/utils/battles-api.js'
 
 export default {
   name: "sale",
+  props:['input_search', 'select_search'],
   data:function(){
     return{
       publicBattles:'',

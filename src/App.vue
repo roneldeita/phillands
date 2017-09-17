@@ -3,8 +3,8 @@
       <navigation v-if="$route.name != 'index'"></navigation>
 
       <router-view></router-view>
-
       <!-- <users></users> -->
+
   </div>
 </template>
 
@@ -18,7 +18,21 @@ import User from './components/User.vue';
 
 export default {
   name: 'app',
-  components:{ Index, Navigation, Users, User }
+  data(){
+    return{
+      dialogVisible: false
+    }
+  },
+  methods:{
+    handleDialog:function(){
+      this.$refs.handledialog.click()
+    },
+    showDialog:function(){
+      this.dialogVisible = true;
+    }
+  },
+  components:{ Index, Navigation, Users, User  },
+
 }
 </script>
 
@@ -46,7 +60,6 @@ export default {
   color:#636363;
   font-size: 16px !important;
 }
-
 .btn-pl-blue{
   background-color: #336699;
 }

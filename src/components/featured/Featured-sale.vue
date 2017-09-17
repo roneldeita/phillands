@@ -39,7 +39,7 @@ export default {
       this.properties = JSON.parse(JSON.stringify(items));
     },
     ViewAll(){
-      	this.$router.push('sale')
+      	this.$router.push({name:'sale', params:{testing:'testing lang to'}})
     }
   },
   components:{PropertyCard },
