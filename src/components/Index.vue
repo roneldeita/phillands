@@ -134,7 +134,7 @@ export default {
   .el-select{
     min-width: 200px;
   }
-  .dropdown{
+  .el-dropdown-menu{
     margin-top: 10px;
     margin-right: 15px;
     width: 180px;

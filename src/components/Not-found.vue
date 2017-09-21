@@ -4,6 +4,10 @@
     <br>
     <p class="four-o-four text-muted">404</p>
     <p>PAGE NOT FOUND</p>
+    <router-link class="btn btn-success" :to="{ name: 'sale'}">Search propery</router-link><br>
+    <router-link class="btn" :to="{ name: 'rent' }">Rent a propery</router-link><br>
+    <router-link class="btn" :to="{ name: 'pre-selling' }">Pre-selling</router-link><br>
+
   </div>
 </template>
 

@@ -1,12 +1,12 @@
 [
   {
-    "id":1,
+    "id":"0pws6gtehc86",
     "name":"Apartments",
     "for_sale":false,
     "for_rent":true
   },
   {
-    "id":2,
+    "id":"gbf67djsnxre",
     "name":"Bed-Spaces",
     "for_sale":false,
     "for_rent":true

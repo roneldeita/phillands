@@ -6,19 +6,17 @@ const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
 const PROFILE = '';
 
-const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
-const CLIENT_DOMAIN = 'roneldeita.auth0.com';
-const REDIRECT_URL = window.location.href;
-const SCOPE = 'full_access';
-const AUDIENCE = 'http://phillands.com';
-const LOGO = 'http://phillands.com/static/img/PL_Logo_250px.3abadf0.png';
-
-// const CLIENT_ID = 'l2hXuS0JvmqsnmGMMqOF7140jUG8MJmv';
+// const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
 // const CLIENT_DOMAIN = 'roneldeita.auth0.com';
-// const REDIRECT_URL = window.location.href;
 // const SCOPE = 'full_access';
-// const AUDIENCE = 'http://phillands.dev';
-// const LOGO = 'http://localhost:8080/static/img/PL_Logo_250px.3abadf0.png';
+// const AUDIENCE = 'http://phillands.com';
+// const LOGO = 'http://phillands.com/static/img/PL_Logo_250px.3abadf0.png';
+
+const CLIENT_ID = 'l2hXuS0JvmqsnmGMMqOF7140jUG8MJmv';
+const CLIENT_DOMAIN = 'roneldeita.auth0.com';
+const SCOPE = 'full_access';
+const AUDIENCE = 'http://phillands.dev';
+const LOGO = 'http://localhost:8080/static/img/PL_Logo_250px.3abadf0.png';
 
 
 var router = new Router({
@@ -27,11 +25,10 @@ var router = new Router({
 
 // lock options
 var options = {
+  allowedConnections: ['Username-Password-Authentication', 'facebook', 'google-oauth2'],
   auth: {
     responseType: "token",
-    redirectUrl:REDIRECT_URL,
-    redirect:false,
-    sso: false,
+    redirect:false
   },
   theme: {
     logo: LOGO,
@@ -129,6 +126,8 @@ export function logout() {
   clearAccessToken();
   clearIdToken();
   clearProfile();
+
+  router.push('/');
   location.reload();
 }
 

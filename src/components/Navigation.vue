@@ -70,11 +70,16 @@ export default {
         selectSearch:'1',
         allowedSearchRoutes:[
           'sale',
-          'rent'
+          'rent',
+          'pre-selling',
+          'foreclosure'
         ],
         allowedSellertRoutes:[
           'profile',
-          'listings'
+          'listings',
+          'for-approval',
+          'archives',
+          'inactive'
         ],
         profile: JSON.parse(getProfile())
       }
@@ -93,28 +98,39 @@ export default {
         this.$router.push('/');
       },
       goToPath(path){
-        this.$router.push('/'+path);
+        this.$router.push({ name: path});
       },
       handleNavCommand:function(command){
         if(command === "logout"){
           this.handleLogout();
         }else{
           this.activeNav = command;
-          this.changeTab({name:command});
+          this.$router.push({ name: command});
         }
       },
       handleIconClick(){
-        console.log(this.activeNav);
-        console.log(this.inputSearch);
-        console.log(this.selectSearch);
+        // console.log(this.activeNav);
+        // console.log(this.inputSearch);
+        // console.log(this.selectSearch);
       },
       changeTab:function(tab, event){
-        console.log(tab.name);
-        this.$router.push(tab.name);
+         this.$router.push({ name: tab.name});
       }
     },
     mounted(){
-      this.activeNav=this.$route.name;
+      //set activeNav
+      var listings = [
+        'listings',
+        'for-approval',
+        'archives',
+        'inactive'
+      ];
+      if(listings.includes(this.$route.name)){
+        this.activeNav = 'listings';
+      }else{
+        this.activeNav = this.$route.name;
+      }
+
       this.selectSearch = this.$route.params.select_search;
       this.inputSearch = this.$route.params.input_search;
       if(this.$route.params.input_search != ''){
@@ -162,14 +178,14 @@ export default {
   .el-select{
     min-width: 160px;
   }
-</style>
-
-<style>
-  .dropdown{
+  .el-dropdown-menu{
     margin-top: 10px;
     margin-right: 15px;
     width: 180px;
   }
+</style>
+
+<style>
   .main-nav .el-tabs__header{
     margin: 0 !important;
   }

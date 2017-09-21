@@ -13,8 +13,8 @@
         <span class="fa fa-bath"></span> <span>2</span>
       </p>
     </div>
-    <el-dialog title="" :visible.sync="dialogVisible" size="large">
-      <el-row>
+    <el-dialog title=""  :visible.sync="dialogVisible" size="large">
+      <el-row class="dialog-container">
         <el-col :xs="24 ":md="12">
           <div class="carousel-container">
             <el-carousel indicator-position="outside" :autoplay="false">
@@ -32,13 +32,34 @@
             <p class="location"><span class="fa fa-map-marker"></span> {{ location }} </p>
             <hr>
             <span class="fa fa-bed"></span> <span>3</span>
-            <span class="fa fa-bath" style="margin-left:15px"></span> <span>2</span>
-            <span class="fa fa-home" style="margin-left:15px"></span> <span>642 Sqm</span>
+            <span class="fa fa-bath" style="margin-left:25px"></span> <span>2</span>
+            <span class="fa fa-home" style="margin-left:25px"></span> <span>642 Sqm</span>
             <p>Posted 7 days ago</p>
             <hr>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <hr>
-            <el-button type="success" style="width:100%">CONTACT SELLER</el-button>
+              <el-row>
+                <el-col :xs="24" :sm="24" :md="5" :lg="4" class="">
+                  <img src="static/person-icon-8.png" class="img-circle" alt="" style="width:75px">
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="19" :lg="20" class="">
+                  <p style="line-height:12px">Posted By</p>
+                  <p style="font-size:22px;line-height:22px;margin-top:-10px" class="txt-pl-green">Miguel Martin Napiza</p>
+                  <p style="line-height:12px;margin-top:-5px">Member since November 8, 2016</p>
+                </el-col>
+              </el-row>
+            <hr>
+            <el-row gutter="20">
+              <el-col :xs="24" :span="12" style="margin-bottom:10px">
+                <el-button type="default" style="width:100%">VIEW FULL LISTING</el-button>
+              </el-col>
+              <el-col :xs="24" :span="12" style="margin-bottom:10px">
+                <el-button type="success" style="width:100%">CONTACT SELLER</el-button>
+              </el-col>
+              <el-col :span="24" style="padding:10px" class="text-center">
+                <a href=""><span class="fa fa-bug"></span> Report this listing</a>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
       </el-row>
@@ -74,6 +95,9 @@ export default {
 </style>
 
 <style scoped>
+  .img-circle{
+    border-radius: 50%;
+  }
   .card{
     padding: 0px;
     margin-bottom: 15px;
@@ -100,6 +124,9 @@ export default {
     object-fit: cover;
     height: 380px;
     min-height: 380px;
+  }
+  .dialog-container{
+    background-color: #000000;
   }
 
   .card-info-container{
@@ -154,9 +181,9 @@ export default {
   }
   .carousel-container{
     padding: 50px 0px 20px 0px;
-    background-color: #000000;
   }
   .info-container{
+    background-color: #ffffff;
     color:#636363;
     padding: 10px 35px 30px 35px;
   }
