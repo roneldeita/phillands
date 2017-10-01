@@ -8,13 +8,15 @@ import Paginate from 'vuejs-paginate'
 import ElementUI from 'element-ui'//ElementUi
 import 'element-ui/lib/theme-default/index.css'//ElementUiTheme
 import * as VueGoogleMaps from 'vue2-google-maps'
+import VueLazyload from 'vue-lazyload'// for img
 
-Vue.use(VueResource)
+
 Vue.use(ElementUI)
+Vue.use(VueLazyload)
 Vue.use(VueGoogleMaps, {
    load: {
      key: 'AIzaSyATSZ8ZMz0L0e3dNxz3hzNJw7FHyFcZFcs',
-     v: '3.28',
+     v: '3.29',
      libraries: 'places', //// If you need to use place input
    }
  });

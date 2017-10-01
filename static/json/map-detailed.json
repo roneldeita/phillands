@@ -40,7 +40,7 @@
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -70,9 +70,6 @@
         "elementType": "geometry",
         "stylers": [
             {
-                "visibility": "simplified"
-            },
-            {
                 "color": "#69be00"
             },
             {
@@ -100,7 +97,7 @@
         "elementType": "geometry.stroke",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -151,7 +148,7 @@
         "elementType": "labels.icon",
         "stylers": [
             {
-                "visibility": "off"
+                "visibility": "on"
             }
         ]
     },
@@ -210,9 +207,6 @@
         "featureType": "water",
         "elementType": "geometry",
         "stylers": [
-            {
-                "visibility": "simplified"
-            },
             {
                 "color": "#00b2dd"
             },

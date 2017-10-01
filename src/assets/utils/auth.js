@@ -1,108 +1,85 @@
-import decode from 'jwt-decode';
 import axios from 'axios';
-import auth0 from 'auth0-js';
 import Router from 'vue-router';
-import Auth0Lock from 'auth0-lock';
-const ID_TOKEN_KEY = 'id_token';
+const BASE_URL = 'http://103.16.170.117:8090/property';
 const ACCESS_TOKEN_KEY = 'access_token';
+const USER = 'user';
 
-// const CLIENT_ID = 'LFMSdDdhUELn8nDp0Z21nKn0Ux7eo0pN';
-// const CLIENT_DOMAIN = 'roneldeita.auth0.com';
-// const REDIRECT = 'http://phillands.com/callback';
-// const SCOPE = 'full_access';
-// const AUDIENCE = 'http://phillands.com';
-
-const CLIENT_ID = 'l2hXuS0JvmqsnmGMMqOF7140jUG8MJmv';
-const CLIENT_DOMAIN = 'roneldeita.auth0.com';
-const REDIRECT = 'http://localhost:8080/callback';
-const SCOPE = 'full_access';
-const AUDIENCE = 'http://phillands.dev';
-
-var auth = new auth0.WebAuth({
-  clientID: CLIENT_ID,
-  domain: CLIENT_DOMAIN
+var router = new Router({
+   mode: "history",
 });
 
-export function login() {
-  auth.authorize({
-    responseType: 'token id_token',
-    redirectUri: REDIRECT,
-    audience: AUDIENCE,
-    scope: SCOPE
+
+export function login(data) {
+  axios.post('http://103.16.170.117:8090/login',data)
+  .then(function (response) {
+    localStorage.setItem(ACCESS_TOKEN_KEY, response.data.token);
+    localStorage.setItem(USER, JSON.stringify(response.data.user));
+
+    location.reload();
+
+
+  })
+  .catch(function (error) {
+    //console.log(JSON.stringify(error))
+
+  });
+
+}
+
+export function register(data) {
+  axios.post('http://103.16.170.117:8090/register', data)
+  .then(function (response) {
+    //location.reload();
+    login({email:data.email, password:data.password})
+    //console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
   });
 }
 
-var router = new Router({
-   mode: 'history',
-});
-
-export function logout() {
-  clearIdToken();
-  clearAccessToken();
-  router.go('/');
-}
 
 export function requireAuth(to, from, next) {
   if (!isLoggedIn()) {
+    //console.log(to)
     next({
       path: '/',
-      query: { redirect: to.fullPath }
+      query: { redirect: to.name }
     });
   } else {
     next();
   }
 }
 
-export function getIdToken() {
-  return localStorage.getItem(ID_TOKEN_KEY);
+export function isLoggedIn(){
+  const idToken = getIdToken();
+  return !!idToken;
 }
 
-export function getAccessToken() {
+export function getIdToken() {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 }
 
-function clearIdToken() {
-  localStorage.removeItem(ID_TOKEN_KEY);
+export function getProfile(){
+  return localStorage.getItem(USER);
+}
+
+/* logout */
+export function logout() {
+  clearAccessToken();
+  clearProfile();
+
+  router.push('/');
+  location.reload();
 }
 
 function clearAccessToken() {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
 }
 
-// Helper function that will allow us to extract the access_token and id_token
-function getParameterByName(name) {
-  let match = RegExp('[#&]' + name + '=([^&]*)').exec(window.location.hash);
-  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+function clearProfile() {
+  localStorage.removeItem(USER);
 }
 
-// Get and store access_token in local storage
-export function setAccessToken() {
-  let accessToken = getParameterByName('access_token');
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-}
 
-// Get and store id_token in local storage
-export function setIdToken() {
-  let idToken = getParameterByName('id_token');
-  localStorage.setItem(ID_TOKEN_KEY, idToken);
-}
-
-export function isLoggedIn() {
-  const idToken = getIdToken();
-  return !!idToken && !isTokenExpired(idToken);
-}
-
-function getTokenExpirationDate(encodedToken) {
-  const token = decode(encodedToken);
-  if (!token.exp) { return null; }
-
-  const date = new Date(0);
-  date.setUTCSeconds(token.exp);
-
-  return date;
-}
-
-function isTokenExpired(token) {
-  const expirationDate = getTokenExpirationDate(token);
-  return expirationDate < new Date();
-}
+/* end of logout */

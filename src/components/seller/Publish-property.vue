@@ -10,7 +10,8 @@
             <step-one
               @offertype="changeOfferType"
               @propertytype="changePropertyType"
-              @sellingprice="changeSellingPrice"></step-one>
+              @sellingprice="changeSellingPrice"
+              @continue="continueStep"></step-one>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -32,7 +33,9 @@
               @parking="changeParking"
               @floorarea="changeFloorArea"
               @lotarea="changeLotArea"
-              @balcony="changeBalcony"></step-two>
+              @balcony="changeBalcony"
+              @continue="continueStep"
+              @back="previousStep"></step-two>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -47,10 +50,12 @@
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 2">
-          <el-col :xs="24"  :offset="3" :span="9" class="form-container">
+          <el-col :xs="24" :offset="3" :span="9" class="form-container">
             <step-three
              @formatedaddress="setLocation"
-             @dragmarker="setMarker"></step-three>
+             @dragmarker="setMarker"
+             @continue="continueStep"
+             @back="previousStep"></step-three>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -69,7 +74,9 @@
             <step-four
               @description="changeDescription"
               @youtubeurl="changeYoutubeUrl"
-              @images="handleChange"></step-four>
+              @images="handleChange"
+              @continue="continueStep"
+              @back="previousStep"></step-four>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -91,7 +98,9 @@
               @mobileprovider="changeMobileProvider"
               @mobile="changeMobile"
               @homeprovider="changeHomeProvider"
-              @home="changeHome"></step-five>
+              @home="changeHome"
+              @finish="handlePublish"
+              @back="previousStep"></step-five>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -107,38 +116,13 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row type="flex" class="row-bg">
-      <el-col :xs="24" :offset="3" :span="9" style="max-width:503px" class="form-container">
-        <el-button
-          class="pull-left"
-          size="large"
-          :class="activeStep <= 0 ? 'hidden' : ''"
-          @click="activeStep--">Back</el-button>
-        <el-button
-          type="success"
-          :class="activeStep <= 0 ? 'pull-left | force-left' : 'pull-right'"
-          size="large"
-          :disabled="activeStep >= 4"
-          :hidden="activeStep >= 4"
-          @click="continueStep">Continue</el-button>
-        <el-button
-          type="success"
-          class="pull-right"
-          v-show="activeStep === 4"
-          size="large"
-          @click="handlePublish"
-          >Finish</el-button>
-      </el-col>
-    </el-row>
-    <!--{{ property }}<br>
-    {{ unitDetails }}<br>
-    {{ location }}<br>
-    {{ media }}<br>
-    {{ contacts }} -->
+    <!-- {{ property }} -->
   </div>
 </template>
 
 <script>
+import { getIdToken, getProfile } from '../../assets/utils/auth.js';
+
 import axios from 'axios'
 
 import stepOne from './step-one.vue'
@@ -152,6 +136,7 @@ export default {
   data(){
     return{
       activeStep:0,
+      finishButton:false,
       //progressStep:0,
       property: {
         offer_type:1,//int
@@ -174,7 +159,7 @@ export default {
         administrative_area_level_1:'',
         country:'',
         postal_code:'',
-        images:'',
+        images:[],
         youtube_url:'',
         full_name:'',
         email:'',
@@ -187,8 +172,13 @@ export default {
   },
   components:{ stepOne, stepTwo, stepThree, stepFour, stepFive },
   methods:{
-    continueStep:function(){
+    continueStep:function(step){
+      document.documentElement.scrollTop = 0;
       this.activeStep++;
+    },
+    previousStep:function(step){
+      document.documentElement.scrollTop = 0;
+      this.activeStep--;
     },
     changeOfferType:function(type){
       this.property.offer_type = parseInt(type);
@@ -221,6 +211,17 @@ export default {
       this.property.description = desc;
     },
     setLocation:function(place){
+      //clear everything first
+      this.property.formatted_address = '';
+      this.street_number = '';
+      this.route = '';
+      this.locality ='';
+      this.administrative_area_level_2 ='';
+      this.administrative_area_level_1='';
+      this.country ='';
+      this.postal_code = '';
+
+      //then populate
       this.property.formatted_address = place.formatted_address;
 
       var self = this.property;
@@ -248,7 +249,16 @@ export default {
       this.property.lng = latlong.lng;
     },
     handleChange:function(file){
-      this.property.images = file[0]['raw'];
+      //console.log(file[0]['raw']);
+      //this.property.images = file[0]['raw'];
+      this.property.images = [];
+      const self = this.property.images;
+      file.forEach(function(raw){
+        self.push(raw['raw']);
+      });
+
+      //console.log(this.property.images);
+
     },
     changeYoutubeUrl:function(url){
       this.property.youtube_url = url;
@@ -273,17 +283,33 @@ export default {
     },
     handlePublish:function(){
       const formData = new FormData();
+
+      var AUTH_TOKEN = getIdToken();
+
       const self = this;
 
       Object.keys(this.property).forEach(function(key){
-        formData.append(key, self.property[key]);
+        if(key === 'images'){
+          self.property[key].forEach(function(file){
+            formData.append('images', file)
+          })
+        }else{
+          formData.append(key, self.property[key]);
+        }
       });
 
-      formData.append(this.property.images.raw, this.property.images.name)
+       axios.defaults.headers.common['token'] = AUTH_TOKEN;
+      // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
-      axios.post('http://192.168.0.11:8080/property/create', formData)
+      self.finishButton = true;
+
+      axios.post('http://103.16.170.117:8090/property/create', formData)
       .then(function(response){
-        console.log(response.data);
+
+        if(response.data.message === "success"){
+          self.$router.push({name:'publish-completed'});
+        }
+
       })
       .catch( function(error){
         console.log(error);
@@ -302,12 +328,6 @@ export default {
 <style scoped>
 .cont{
     margin-top: -25px;
-}
-.hidden{
-  display:none;
-}
-.force-left{
-  margin-left: 0px;
 }
 .el-step__head.is-text{
   font-size: 24px;

@@ -1,20 +1,18 @@
 <template>
   <div class="container-fluid">
     <el-row :gutter="20">
+      <el-col :xs="24" :sm="18" :md="18" style="margin:-15px 0 10px 0">
+        <h6 class="text-left">{{ total_properties }} Listing found</h6>
+      </el-col>
       <el-col :xs="24" :sm="18" :md="18">
         <el-row :gutter="20">
           <el-col :sm="12" :md="12" :lg="8" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
-            <!-- <advertisement :img="property.img"></advertisement> -->
-            <property-card
-              :title="property.title"
-              :location="property.location"
-              :img="property.img">
-            </property-card>
+            <property-card :property="property"></property-card>
           </el-col>
         </el-row>
         <div class="" style="width:100%">
           <paginate
-            :page-count="total_properties"
+            :page-count="page_count"
             :click-handler="switchToPage"
             :prev-text="'Prev'"
             :next-text="'Next'"
@@ -31,30 +29,32 @@
       <el-col :xs="24" :sm="6" :md="6">
         <el-row>
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
-            <advertisement :img="add.img"></advertisement>
+            <!-- <advertisement :img="add.img"></advertisement> -->
           </el-col>
         </el-row>
       </el-col>
     </el-row>
   </div>
+
 </template>
 <script>
 //components
 import PropertyCard from './Property-card.vue'
 import Advertisement from './Advertisement.vue'
 //json
-import Properties from '../../static/json/properties.json'
+//import Properties from '../../static/json/properties.json'
 //api
-import { getPublicStartupBattles } from '../assets/utils/battles-api.js'
+import { getProperties } from '../assets/utils/properties-api.js'
 
 export default {
   name: "sale",
-  props:['input_search', 'select_search'],
+  props:['search'],
   data:function(){
     return{
-      publicBattles:'',
+      property_source:'',
       properties:[],
-      total_properties:0,
+      total_properties:'',
+      page_count:0,
       item_per_page: 6,
       adds:[
         { id:1, img:'/static/adds/exotiq.jpg' },
@@ -65,29 +65,38 @@ export default {
   methods:{
     loadProperties(start, end){
       var arr = [];
-      for (var elem in Properties) {
-         arr.push(Properties[elem]);
+      for (var elem in this.property_source) {
+         arr.push(this.property_source[elem]);
       }
       var items = arr.slice(start, end);
       this.properties = JSON.parse(JSON.stringify(items));
+       //console.log(this.properties);
     },
     switchToPage(page){
       var end = this.item_per_page * page;
       var start = end - this.item_per_page;
       this.loadProperties(start, end);
     },
-    getPublicStartupBattles() {
-      getPublicStartupBattles().then((battles) => {
-        this.publicBattles = battles;
+    getSales(property_type, location) {
+
+      getProperties(1, property_type, location).then((property) => {
+        this.property_source = property.properties;
+        this.loadProperties(0, this.item_per_page);//load the properties
+        this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
+        this.page_count = Object.keys(this.property_source).length / this.item_per_page;//identify how many page
       });
     }
   },
   mounted(){
-    this.total_properties = Object.keys(Properties).length / this.item_per_page;
-    this.loadProperties(0, this.item_per_page);
-    this.getPublicStartupBattles();
+    this.getSales();
+    //console.log(this.$route.params.property_type)
   },
-  components:{ PropertyCard, Advertisement }
+  components:{ PropertyCard, Advertisement },
+  watch:{
+    'search':function(value){
+      this.getSales(value.property_type, value.location)
+    }
+  }
 }
 </script>
 <style scoped>

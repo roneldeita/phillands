@@ -11,11 +11,12 @@
         <form class="form-inline" v-if="allowedSearchRoutes.includes($route.name)">
           <el-row type="flex" class="row-bg search-continer" justify="start">
             <el-col :span="24">
-              <el-input v-model="inputSearch" placeholder="Type the location? e.g Quezon City" size="midium" icon="search" :on-icon-click="handleIconClick">
-                <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
-                  <el-option label="House and Lot" value="1"></el-option>
-                  <el-option label="Condominium" value="2"></el-option>
-                  <el-option label="Land" value="3"></el-option>
+              <el-input v-model="searchLocation" placeholder="Type the location? e.g Quezon City" size="midium" icon="search" :on-icon-click="handleSearch">
+                <el-select slot="prepend" v-model="propertyType" placeholder="Select">
+                  <el-option label="All" value=""></el-option>
+                  <el-option label="House and Lot" value="2"></el-option>
+                  <el-option label="Condominium" value="1"></el-option>
+                  <el-option label="Townhouse" value="3"></el-option>
                 </el-select>
               </el-input>
             </el-col>
@@ -24,15 +25,15 @@
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item" v-show="isLoggedIn()">
             <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</button>
-            <button type="button" class="btn btn-success" v-show="$route.name === 'publish-property'" @click="goToPath('sale')">Cancel</button>
+            <button type="button" class="btn btn-success" v-show="$route.name === 'publish-property'" @click="goToPath('listings')">Cancel</button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="handleLogin()">Login/Register</a>
+            <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="LoginWasClicked()">Login/Register</a>
           </li>
           <li class="nav-item" v-if="isLoggedIn()">
             <el-dropdown trigger="click" style="padding:0px 25px" @command="handleNavCommand">
               <span class="el-dropdown-link">
-                <img :src="profile.picture" class="img-circle" :alt="profile.name" width="35" height="35">
+                <img :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
                 <i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu class="dropdown" slot="dropdown">
@@ -45,7 +46,7 @@
         </ul>
       </div>
     </nav>
-    <el-tabs v-model="activeNav" v-if="allowedSearchRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
+    <el-tabs v-model="activeNav" v-if="allowedNavRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="For Sale" name="sale"></el-tab-pane>
       <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
       <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
@@ -59,20 +60,31 @@
 </template>
 
 <script>
-import { isLoggedIn, login, logout, getProfile } from '../assets/utils/lock.js';
+import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
 
 export default {
     name: "navigation",
     data(){
       return{
         activeNav:'',
-        inputSearch:'',
-        selectSearch:'1',
+        searchLocation:'',
+        propertyType:'1',
         allowedSearchRoutes:[
           'sale',
           'rent',
           'pre-selling',
-          'foreclosure'
+          'foreclosure',
+          'login',
+          'register',
+          'view-property'
+        ],
+        allowedNavRoutes:[
+          'sale',
+          'rent',
+          'pre-selling',
+          'foreclosure',
+          'login',
+          'register'
         ],
         allowedSellertRoutes:[
           'profile',
@@ -85,11 +97,18 @@ export default {
       }
     },
     methods:{
-      handleLogin() {
-        login();
+      LoginWasClicked:function(){
+        this.$emit('login');
       },
       handleLogout() {
         logout();
+      },
+      handleLogin() {
+        //login();
+        this.$router.push({name:'login'});
+      },
+      handleRegister(){
+        this.$router.push({name:'register'});
       },
       isLoggedIn() {
         return isLoggedIn();
@@ -108,13 +127,15 @@ export default {
           this.$router.push({ name: command});
         }
       },
-      handleIconClick(){
-        // console.log(this.activeNav);
-        // console.log(this.inputSearch);
-        // console.log(this.selectSearch);
+      handleSearch:function(){
+        console.log('offer_type: ' + this.activeNav);
+        console.log('location: ' + this.searchLocation);
+        console.log('property_type: ' + this.propertyType);
+        //this.changeTab(this.activeNav)
+        this.$emit('search', { offer_type: this.activeNav, property_type:this.propertyType, location:this.searchLocation});
       },
       changeTab:function(tab, event){
-         this.$router.push({ name: tab.name});
+        this.$router.push({ name: tab.name});
       }
     },
     mounted(){
@@ -131,11 +152,11 @@ export default {
         this.activeNav = this.$route.name;
       }
 
-      this.selectSearch = this.$route.params.select_search;
-      this.inputSearch = this.$route.params.input_search;
-      if(this.$route.params.input_search != ''){
-        this.handleIconClick();
-      }
+      this.propertyType = this.$route.params.property_type;
+      this.searchLocation = this.$route.params.location;
+      //if(this.$route.params.property_type != ''){
+        this.handleSearch();
+      //}
     }
 }
 </script>
@@ -173,7 +194,7 @@ export default {
     background-color: #ffffff;
     box-shadow: 0 4px 2px -3px #d9d9d9;
     margin-top: 60px;
-    z-index: 1;
+    z-index: 3;
   }
   .el-select{
     min-width: 160px;

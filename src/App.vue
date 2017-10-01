@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-      <navigation v-if="$route.name != 'index'"></navigation>
+      <navigation v-if="$route.name != 'index'" @login="LoginWasClicked" @search="searchWasClicked"></navigation>
 
-      <router-view></router-view>
+      <router-view  @login="LoginWasClicked" :search="search"></router-view>
       <!-- <users></users> -->
+      <login-modal :modal="dialogVisible" @modalclose="closeLoginDialog"></login-modal>
 
   </div>
 </template>
@@ -13,6 +14,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 import Index from './components/Index.vue';
 import Navigation from './components/Navigation.vue';
+import LoginModal from './components/auth/Login-modal.vue';
 import Users from './components/Users.vue';
 import User from './components/User.vue';
 
@@ -20,18 +22,22 @@ export default {
   name: 'app',
   data(){
     return{
-      dialogVisible: false
+      dialogVisible: false,
+      search:''
     }
   },
   methods:{
-    handleDialog:function(){
-      this.$refs.handledialog.click()
+    closeLoginDialog:function(){
+      this.dialogVisible = false
     },
-    showDialog:function(){
+    LoginWasClicked:function(){
       this.dialogVisible = true;
+    },
+    searchWasClicked(value){
+      this.search = value
     }
   },
-  components:{ Index, Navigation, Users, User  },
+  components:{ Index, Navigation, Users, User, LoginModal  },
 
 }
 </script>
@@ -55,6 +61,12 @@ export default {
   padding-top: 150px;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
 .el-tabs__item,
 .nav-link{
   color:#636363;
@@ -63,7 +75,9 @@ export default {
 .btn-pl-blue{
   background-color: #336699;
 }
-.btn-pl-green{
+.btn-pl-green,
+.btn-pl-green:hover,
+.btn-pl-green:focus{
   background-color: #56BA50;
 }
 .txt-pl-green{

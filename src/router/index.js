@@ -9,15 +9,17 @@ import Rent from '@/components/Rent'
 import Sale from '@/components/Sale'
 import PreSelling from '@/components/Pre-selling'
 import Foreclosure from '@/components/Foreclosure'
+import viewProperty from '@/components/View-property'
 import Profile from '@/components/seller/profile'
 import Listings from '@/components/seller/listings'
 import PublishProperty from '@/components/seller/Publish-property'
+import PublishCompleted from '@/components/seller/Publish-completed'
 
 import Users from '@/components/Users'
 import User from '@/components/User'
 
 //middlewares
-import { requireAuth } from '../assets/utils/lock';
+import { requireAuth } from '../assets/utils/auth';
 
 Vue.use(Router)
 
@@ -29,6 +31,7 @@ export default new Router({
         { path: '/callback', name: 'callback', component: Callback },
         { path: '/rent', name: 'rent', component: Rent, props: true },
         { path: '/sale', name: 'sale', component: Sale, props: true },
+        { path: '/property/:property_no', name: 'view-property', component: viewProperty},
         { path: '/pre-selling', name: 'pre-selling', component: PreSelling, props: true },
         { path: '/foreclosure', name: 'foreclosure', component:Foreclosure, props: true },
         { path: '/profile', name:'profile', beforeEnter:requireAuth, component: Profile },
@@ -37,6 +40,7 @@ export default new Router({
         { path: '/listings/archives', name:'archives', beforeEnter:requireAuth, component: Listings },
         { path: '/listings/inactive', name:'inactive', beforeEnter:requireAuth, component: Listings },
         { path: '/publish-property', name: 'publish-property', beforeEnter:requireAuth, component: PublishProperty },
+        { path: '/publish-completed', name: 'publish-completed', beforeEnter:requireAuth, component: PublishCompleted},
 
         { path: '/users', name: 'users', beforeEnter: requireAuth, component: Users },
         { path: '/user/:userName', name: 'user', component: User }

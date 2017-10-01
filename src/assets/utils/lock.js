@@ -1,6 +1,7 @@
 import decode from 'jwt-decode';
 import Auth0Lock from 'auth0-lock';
 import Router from 'vue-router';
+import axios from 'axios'
 
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
@@ -25,7 +26,13 @@ var router = new Router({
 
 // lock options
 var options = {
-  allowedConnections: ['Username-Password-Authentication', 'facebook', 'google-oauth2'],
+  // additionalSignUpFields: [
+  //   { name:'first_name', placeholder:'Your first name'},
+  //   { name:'last_name', placeholder:'Your last Name'},
+  //   { name:'contact', placeholder:'Contact Number'}
+  // ],
+  //allowedConnections: ['Username-Password-Authentication', 'facebook', 'google-oauth2'],
+  allowedConnections: ['Username-Password-Authentication'],
   auth: {
     responseType: "token",
     redirect:false
@@ -57,6 +64,10 @@ lock.on("authenticated", function(authResult) {
     localStorage.setItem(ACCESS_TOKEN_KEY, authResult.accessToken);
     localStorage.setItem(ID_TOKEN_KEY, authResult.idToken);
     localStorage.setItem(PROFILE, JSON.stringify(profile));
+
+    console.log(profile);
+
+
     //reload page after the token were set
     if(isLoggedIn){
       setTimeout(function(){
@@ -71,6 +82,27 @@ export function login() {
   lock.show();
 
 }
+
+
+//create user
+lock.on("signup submit", function(){
+
+    // axios.post('http://103.16.170.117:8090/register', {
+    //   first_name:' ',
+    //   last_name:' ',
+    //   email : localStorage.getItem(PROFILE.email),
+    //   password :'February19',
+    //   contact: ' '
+    // })
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+
+});
+
 
 /* middleware for authentication */
 export function requireAuth(to, from, next) {

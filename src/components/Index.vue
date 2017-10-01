@@ -2,7 +2,7 @@
   <div id="home" class="">
     <ul class="nav justify-content-end" style="margin-top:14px">
       <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="handleLogin()" style="margin-top:0px">Login/Register</a>
+        <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="LoginWasClicked()" style="margin-top:0px">Login/Register</a>
       </li>
       <li class="nav-item" v-show="isLoggedIn()">
         <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</button>
@@ -10,7 +10,7 @@
       <li class="nav-item" v-if="isLoggedIn()">
         <el-dropdown trigger="click" style="padding:0px 25px" @command="handleNavCommand">
           <span class="el-dropdown-link">
-            <img :src="profile.picture" class="img-circle" :alt="profile.name" width="35" height="35">
+            <img :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
             <i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu class="dropdown" slot="dropdown">
@@ -34,9 +34,9 @@
       <el-col :xs="22" :sm="20" :md="20">
         <el-input v-model="inputSearch" placeholder="Type the location? e.g Quezon City" size="large" icon="search" :on-icon-click="handleIconClick">
           <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
-            <el-option label="House and Lot" value="1"></el-option>
-            <el-option label="Condominium" value="2"></el-option>
-            <el-option label="Land" value="3"></el-option>
+            <el-option label="House and Lot" value="2"></el-option>
+            <el-option label="Condominium" value="1"></el-option>
+            <el-option label="Townhouse" value="3"></el-option>
           </el-select>
         </el-input>
       </el-col>
@@ -48,8 +48,8 @@
           <p class="sub-title">Featured <span class="txt-pl-green">Properties</span></p>
           <el-tab-pane label="For Sale" name="sale"><featured-sale></featured-sale></el-tab-pane>
           <el-tab-pane label="For Rent" name="rent"><featured-rent></featured-rent></el-tab-pane>
-          <el-tab-pane label="Pre-Selling" name="pre-selling"> For Pre-selling</el-tab-pane>
-          <el-tab-pane label="Foreclosure" name="foreclosure">For Forclosure</el-tab-pane>
+          <el-tab-pane label="Pre-Selling" name="pre-selling">No listing yet</el-tab-pane>
+          <el-tab-pane label="Foreclosure" name="foreclosure">No listing yet</el-tab-pane>
         </el-tabs>
       </el-col>
     </el-row>
@@ -57,24 +57,25 @@
 </template>
 
 <script>
-import { isLoggedIn, login, logout, getProfile } from '../assets/utils/lock.js';
+import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
+
 export default {
   name: 'index',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       inputSearch:'',
-      selectSearch:'1',
+      selectSearch:'2',
       activeNav:'sale',
       profile:JSON.parse(getProfile())
     }
   },
   methods:{
-    handleLogin() {
-      login();
+    LoginWasClicked:function(){
+      this.$emit('login');
     },
     handleLogout() {
       logout();
@@ -86,20 +87,23 @@ export default {
       if(command === "logout"){
         this.handleLogout();
       }else{
-        this.$router.push('/'+command);
+        this.$router.push({ name: command});
       }
     },
     isLoggedIn() {
       return isLoggedIn();
     },
     handleIconClick:function(){
-      this.$router.push({name:this.activeNav, params:{input_search:this.inputSearch, select_search:this.selectSearch}})
+      this.$router.push({name:this.activeNav, params:{property_type:this.selectSearch, location:this.inputSearch }})
     },
     handleClick:function(tab, event){
       //console.log(tab.name)
     }
   },
-  components:{ FeaturedSale, FeaturedRent }
+  components:{ FeaturedSale, FeaturedRent },
+  mounted(){
+    //console.log(getProfile());
+  }
 }
 </script>
 

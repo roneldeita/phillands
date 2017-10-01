@@ -1,16 +1,16 @@
 <template>
   <div class="">
     <el-card :body-style="{ padding: '0px' }" class="card">
-      <img :src="img">
+      <img v-lazy="'http://103.16.170.117:8090/images/'+property.property_media[0].uploaded_filename" @click="handleCard(property.property_no)">
     </el-card>
     <button type="success" class="btn btn-success btn-pl-green" @click="dialogVisible = true">VIEW LISTING</button>
     <div class="card-info-container">
-      <p class="card-price">Php 2,000,000.00</p>
-      <p class="card-title text-left">{{ title }}</p>
-      <p class="card-location"><span class="pe-7s-map-marker"></span> {{ location }}</p>
+      <p class="card-price">Php {{ formatNumber(property.price) }}</p>
+      <p class="card-title text-left">House And Lot For Sale</p>
+      <p class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.formatted_address }}</p>
       <p class="card-other text-right">
-        <span class="fa fa-bed"></span> <span>3</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="fa fa-bath"></span> <span>2</span>
+        <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
+        <span class="fa fa-bath" style="margin-left:20px"></span> <span>{{ property.property_detail.bathrooms }}</span>
       </p>
     </div>
     <el-dialog title=""  :visible.sync="dialogVisible" size="large">
@@ -18,8 +18,8 @@
         <el-col :xs="24 ":md="12">
           <div class="carousel-container">
             <el-carousel indicator-position="outside" :autoplay="false">
-              <el-carousel-item v-for="item in 4" :key="item">
-                <img :src="img" style="height:100%">
+              <el-carousel-item v-for="img in property.property_media" :key="img.id">
+                  <img v-lazy="'http://103.16.170.117:8090/images/'+img.uploaded_filename" style="height:100%">
               </el-carousel-item>
             </el-carousel>
           </div>
@@ -27,16 +27,16 @@
         <el-col :sm="24" :md="12">
           <div class="info-container text-left">
           	<br><br>
-            <p class="price">Php 2,000,000.00</p>
-            <p class="title">{{ title }}</p>
-            <p class="location"><span class="fa fa-map-marker"></span> {{ location }} </p>
+            <p class="price">Php {{ formatNumber(property.price) }}</p>
+            <p class="title">House And Lot For Sale</p>
+            <p class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.formatted_address }}</p>
             <hr>
-            <span class="fa fa-bed"></span> <span>3</span>
-            <span class="fa fa-bath" style="margin-left:25px"></span> <span>2</span>
-            <span class="fa fa-home" style="margin-left:25px"></span> <span>642 Sqm</span>
-            <p>Posted 7 days ago</p>
+            <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
+            <span class="fa fa-bath" style="margin-left:25px"></span> <span>{{ property.property_detail.bathrooms }}</span>
+            <span class="fa fa-home" style="margin-left:25px"></span> <span>{{ property.property_detail.lot_area }} Sqm</span>
+            <p>Posted MM D, YYYY</p>
             <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p style="white-space: pre-wrap">{{ property.property_detail.description }}</p>
             <hr>
               <el-row>
                 <el-col :xs="24" :sm="24" :md="5" :lg="4" class="">
@@ -44,17 +44,17 @@
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="19" :lg="20" class="">
                   <p style="line-height:12px">Posted By</p>
-                  <p style="font-size:22px;line-height:22px;margin-top:-10px" class="txt-pl-green">Miguel Martin Napiza</p>
-                  <p style="line-height:12px;margin-top:-5px">Member since November 8, 2016</p>
+                  <p style="font-size:22px;line-height:22px;margin-top:-10px" class="txt-pl-green">{{ property.owner_id }}</p>
+                  <p style="line-height:12px;margin-top:-5px">Member since MM D, YYYY</p>
                 </el-col>
               </el-row>
             <hr>
-            <el-row gutter="20">
+            <el-row :gutter="20">
               <el-col :xs="24" :span="12" style="margin-bottom:10px">
-                <el-button type="default" style="width:100%">VIEW FULL LISTING</el-button>
+                <el-button type="default" style="width:100%" @click="handleCard(property.property_no)">VIEW FULL LISTING</el-button>
               </el-col>
               <el-col :xs="24" :span="12" style="margin-bottom:10px">
-                <el-button type="success" style="width:100%">CONTACT SELLER</el-button>
+                <el-button type="success" style="width:100%" @click="handleCard(property.property_no)">CONTACT SELLER</el-button>
               </el-col>
               <el-col :span="24" style="padding:10px" class="text-center">
                 <a href=""><span class="fa fa-bug"></span> Report this listing</a>
@@ -70,16 +70,26 @@
 <script>
 export default {
   name:"property-card",
-  props:['title','location' ,'img'],
+  props:['property'],
   data(){
     return{
-      dialogVisible:false
+      dialogVisible:false,
+      primary_img:'http://103.16.170.117:8090/images/'+this.property.property_media[0].uploaded_filename
+    }
+  },
+  methods:{
+    formatNumber: function(num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+  	},
+    handleCard: function(propertyNo){
+      this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     }
   }
 }
 </script>
 
 <style>
+
   .el-dialog__header{
     padding: 0px !important;
   }
@@ -95,6 +105,11 @@ export default {
 </style>
 
 <style scoped>
+  img[lazy=loading] {
+    background-image: url('../../static/cube.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
   .img-circle{
     border-radius: 50%;
   }
@@ -211,6 +226,5 @@ export default {
   }
   .info-container .location{
     font-size: 18px;
-    line-height: 18px;
   }
 </style>
