@@ -11,20 +11,29 @@
         <form class="form-inline" v-if="allowedSearchRoutes.includes($route.name)">
           <el-row type="flex" class="row-bg search-continer" justify="start">
             <el-col :span="24">
-              <el-input v-model="searchLocation" placeholder="Type the location? e.g Quezon City" size="midium" icon="search" :on-icon-click="handleSearch">
-                <el-select slot="prepend" v-model="propertyType" placeholder="Select">
-                  <el-option label="All" value=""></el-option>
-                  <el-option label="House and Lot" value="2"></el-option>
-                  <el-option label="Condominium" value="1"></el-option>
-                  <el-option label="Townhouse" value="3"></el-option>
-                </el-select>
-              </el-input>
+              <el-autocomplete style="width:100%"
+                v-model="searchLocation"
+                placeholder="Type the location? e.g Quezon City"
+                size="midium"
+                icon="search"
+                :on-icon-click="handleSearch"
+                @select="handleSearch"
+                :fetch-suggestions="querySearch"
+                @focus="querySearch"
+                class="inline-input">
+                  <el-select slot="prepend" v-model="propertyType" placeholder="Select" @change="handleSearch">
+                    <!-- <el-option label="All" value=""></el-option> -->
+                    <el-option label="House and Lot" value="2"></el-option>
+                    <el-option label="Condominium" value="1"></el-option>
+                    <el-option label="Townhouse" value="3"></el-option>
+                  </el-select>
+              </el-autocomplete>
             </el-col>
           </el-row>
         </form>
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item" v-show="isLoggedIn()">
-            <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</button>
+            <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property' && $route.name != 'edit-property'" @click="goToPath('publish-property')">Publish Property</button>
             <button type="button" class="btn btn-success" v-show="$route.name === 'publish-property'" @click="goToPath('listings')">Cancel</button>
           </li>
           <li class="nav-item">
@@ -60,6 +69,7 @@
 </template>
 
 <script>
+import { getLocality } from '../assets/utils/properties-api.js'
 import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
 
 export default {
@@ -69,6 +79,7 @@ export default {
         activeNav:'',
         searchLocation:'',
         propertyType:'1',
+        links:[],
         allowedSearchRoutes:[
           'sale',
           'rent',
@@ -103,13 +114,6 @@ export default {
       handleLogout() {
         logout();
       },
-      handleLogin() {
-        //login();
-        this.$router.push({name:'login'});
-      },
-      handleRegister(){
-        this.$router.push({name:'register'});
-      },
       isLoggedIn() {
         return isLoggedIn();
       },
@@ -124,8 +128,29 @@ export default {
           this.handleLogout();
         }else{
           this.activeNav = command;
-          this.$router.push({ name: command});
+          this.$router.replace({ name: command});
         }
+      },
+      querySearch(queryString, cb) {
+        var links = this.links;
+        var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+        // call callback function to return suggestions
+        cb(results);
+        console.log(results);
+      },
+      createFilter(queryString) {
+        return (link) => {
+          return (link.value.indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      loadLocality() {
+        getLocality().then((localities) => {
+          var arr= [];
+          for (var key in localities) {
+             arr.push({"value": localities[key].locality.toLowerCase()});
+          }
+          this.links = arr;
+        });
       },
       handleSearch:function(){
         console.log('offer_type: ' + this.activeNav);
@@ -135,7 +160,7 @@ export default {
         this.$emit('search', { offer_type: this.activeNav, property_type:this.propertyType, location:this.searchLocation});
       },
       changeTab:function(tab, event){
-        this.$router.push({ name: tab.name});
+        this.$router.replace({ name: tab.name});
       }
     },
     mounted(){
@@ -154,9 +179,9 @@ export default {
 
       this.propertyType = this.$route.params.property_type;
       this.searchLocation = this.$route.params.location;
-      //if(this.$route.params.property_type != ''){
-        this.handleSearch();
-      //}
+      this.loadLocality();
+
+      this.handleSearch();
     }
 }
 </script>

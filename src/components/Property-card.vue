@@ -1,12 +1,12 @@
 <template>
   <div class="">
     <el-card :body-style="{ padding: '0px' }" class="card">
-      <img v-lazy="'http://103.16.170.117:8090/images/'+property.property_media[0].uploaded_filename" @click="handleCard(property.property_no)">
+      <img v-lazy="'http://103.16.170.117:8090/images/'+property.property_media[0].uploaded_filename" @click="dialogVisible = true">
     </el-card>
     <button type="success" class="btn btn-success btn-pl-green" @click="dialogVisible = true">VIEW LISTING</button>
     <div class="card-info-container">
-      <p class="card-price">Php {{ formatNumber(property.price) }}</p>
-      <p class="card-title text-left">House And Lot For Sale</p>
+      <p class="card-price">Php {{ formatNumber(property.price) }} <span v-if="property.offer_type === 2">/ mo.</span></p>
+      <p class="card-title text-left">{{ property.property_detail.title }}</p>
       <p class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.formatted_address }}</p>
       <p class="card-other text-right">
         <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
@@ -27,14 +27,15 @@
         <el-col :sm="24" :md="12">
           <div class="info-container text-left">
           	<br><br>
-            <p class="price">Php {{ formatNumber(property.price) }}</p>
-            <p class="title">House And Lot For Sale</p>
+            <p class="view-property-link pull-right txt-pl-green" @click="handleCard(property.property_no)">View full details</p>
+            <p class="price">Php {{ formatNumber(property.price) }} <span v-if="property.offer_type === 2">/ mo.</span></p>
+            <p class="title">{{ property.property_detail.title }}</p>
             <p class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.formatted_address }}</p>
             <hr>
             <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
             <span class="fa fa-bath" style="margin-left:25px"></span> <span>{{ property.property_detail.bathrooms }}</span>
             <span class="fa fa-home" style="margin-left:25px"></span> <span>{{ property.property_detail.lot_area }} Sqm</span>
-            <p>Posted MM D, YYYY</p>
+            <p>Posted {{ property.createdAt | moment("calendar") }}</p>
             <hr>
             <p style="white-space: pre-wrap">{{ property.property_detail.description }}</p>
             <hr>
@@ -44,8 +45,8 @@
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="19" :lg="20" class="">
                   <p style="line-height:12px">Posted By</p>
-                  <p style="font-size:22px;line-height:22px;margin-top:-10px" class="txt-pl-green">{{ property.owner_id }}</p>
-                  <p style="line-height:12px;margin-top:-5px">Member since MM D, YYYY</p>
+                  <p style="font-size:22px;line-height:22px;margin-top:-10px" class="txt-pl-green">{{ property.property_contact.full_name }}</p>
+                  <p style="line-height:12px;margin-top:-5px">Member Since {{ property.property_contact.createdAt | moment("calendar") }}</p>
                 </el-col>
               </el-row>
             <hr>
@@ -87,22 +88,6 @@ export default {
   }
 }
 </script>
-
-<style>
-
-  .el-dialog__header{
-    padding: 0px !important;
-  }
-  .el-dialog__body{
-    padding: 0px !important;
-  }
-  .el-dialog__headerbtn{
-    position: absolute !important;
-    right: 0 !important;
-    padding: 8px 10px !important;
-    z-index: 999999!important;
-  }
-</style>
 
 <style scoped>
   img[lazy=loading] {
@@ -167,6 +152,12 @@ export default {
     cursor: pointer;
   }
 
+  .view-property-link{
+    margin-top:10px;
+    font-size: 16px;
+    text-decoration:underline;
+    cursor:pointer;
+  }
   .card-price,
   .card-title,
   .card-location,

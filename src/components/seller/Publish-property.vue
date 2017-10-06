@@ -1,7 +1,7 @@
 <template>
   <div class="cont">
     <div class="main-nav fixed-top" style="margin-top:66px">
-      <el-progress status="success" :show-text="false" :stroke-width="10" :percentage="activeStep === 0 ? activeStep + 5 :activeStep * 20"></el-progress>
+      <el-progress status="success" :show-text="false" :stroke-width="10" :percentage="activeStep === 0 ? activeStep + 5 :activeStep * 16.6"></el-progress>
     </div>
     <el-row type="flex" class="row-bg">
       <el-col :span="24">
@@ -26,7 +26,7 @@
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 1">
-          <el-col :xs="24" :offset="3" :span="9" class="form-container">
+          <el-col :xs="24" :offset="3" :sm="9" class="form-container">
             <step-two
               @bedrooms="changeBedrooms"
               @bathrooms="changeBathrooms"
@@ -52,10 +52,10 @@
         <el-row v-show="activeStep === 2">
           <el-col :xs="24" :offset="3" :span="9" class="form-container">
             <step-three
-             @formatedaddress="setLocation"
-             @dragmarker="setMarker"
-             @continue="continueStep"
-             @back="previousStep"></step-three>
+              @amenities="changeAmenities"
+              @back="previousStep"
+              @continue="continueStep"
+              ></step-three>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -72,11 +72,10 @@
         <el-row v-show="activeStep === 3">
           <el-col :xs="24" :offset="3" :span="9" class="form-container">
             <step-four
-              @description="changeDescription"
-              @youtubeurl="changeYoutubeUrl"
-              @images="handleChange"
-              @continue="continueStep"
-              @back="previousStep"></step-four>
+             @formatedaddress="setLocation"
+             @dragmarker="setMarker"
+             @continue="continueStep"
+             @back="previousStep"></step-four>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -92,7 +91,29 @@
         </el-row>
         <el-row v-show="activeStep === 4">
           <el-col :xs="24" :offset="3" :span="9" class="form-container">
-            <step-five v-show="activeStep === 4"
+            <step-five
+              @title="changeTitle"
+              @description="changeDescription"
+              @youtubeurl="changeYoutubeUrl"
+              @images="handleChange"
+              @continue="continueStep"
+              @back="previousStep"></step-five>
+          </el-col>
+          <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
+            <div class="card text-left" style="width: 350px;">
+              <div class="card-block">
+                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
+                <p class="card-text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row v-show="activeStep === 5">
+          <el-col :xs="24" :offset="3" :span="9" class="form-container">
+            <step-six v-show="activeStep === 5"
               @fullname="changeFullname"
               @email="changeEmail"
               @mobileprovider="changeMobileProvider"
@@ -100,7 +121,7 @@
               @homeprovider="changeHomeProvider"
               @home="changeHome"
               @finish="handlePublish"
-              @back="previousStep"></step-five>
+              @back="previousStep"></step-six>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
@@ -125,11 +146,12 @@ import { getIdToken, getProfile } from '../../assets/utils/auth.js';
 
 import axios from 'axios'
 
-import stepOne from './step-one.vue'
-import stepTwo from './step-two.vue'
-import stepThree from './step-three.vue'
-import stepFour from './step-four.vue'
-import stepFive from './step-five.vue'
+import stepOne from './Step-one.vue'
+import stepTwo from './Step-two.vue'
+import stepThree from './Step-three.vue'
+import stepFour from './Step-four.vue'
+import stepFive from './Step-five.vue'
+import stepSix from './Step-six.vue'
 
 export default {
   name:'publish-property',
@@ -148,6 +170,8 @@ export default {
         floor_area:0,//int
         lot_area:0,//int
         balcony:1,//int
+        amenities:['Parking'],//text
+        title:'',//varchar
         description:'',//text
         formatted_address:'',//varchar
         lat:'',//varchar
@@ -170,7 +194,7 @@ export default {
       }
     }
   },
-  components:{ stepOne, stepTwo, stepThree, stepFour, stepFive },
+  components:{ stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix },
   methods:{
     continueStep:function(step){
       document.documentElement.scrollTop = 0;
@@ -207,19 +231,25 @@ export default {
     changeBalcony:function(balcony){
       this.property.balcony = parseInt(balcony);
     },
+    changeAmenities:function(amenities){
+      this.property.amenities = amenities;
+    },
+    changeTitle:function(title){
+      this.property.title = title;
+    },
     changeDescription:function(desc){
       this.property.description = desc;
     },
     setLocation:function(place){
       //clear everything first
       this.property.formatted_address = '';
-      this.street_number = '';
-      this.route = '';
-      this.locality ='';
-      this.administrative_area_level_2 ='';
-      this.administrative_area_level_1='';
-      this.country ='';
-      this.postal_code = '';
+      this.property.street_number = '';
+      this.property.route = '';
+      this.property.locality ='';
+      this.property.administrative_area_level_2 ='';
+      this.property.administrative_area_level_1='';
+      this.property.country ='';
+      this.property.postal_code = '';
 
       //then populate
       this.property.formatted_address = place.formatted_address;

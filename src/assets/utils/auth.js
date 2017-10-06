@@ -41,13 +41,29 @@ export function register(data) {
 
 export function requireAuth(to, from, next) {
   if (!isLoggedIn()) {
-    //console.log(to)
     next({
       path: '/',
       query: { redirect: to.name }
     });
   } else {
     next();
+  }
+}
+
+export function isAdmin(to, from, next){
+  if(!isLoggedIn()){//check if logged in
+    next({
+      path: '/',
+    });
+  } else {
+    const profile = JSON.parse(getProfile());
+    if(profile.role === 2){//check if role is admin
+      next();
+    }else{
+      next({
+        path: '/',
+      });
+    }
   }
 }
 

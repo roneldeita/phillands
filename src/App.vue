@@ -5,7 +5,6 @@
       <router-view  @login="LoginWasClicked" :search="search"></router-view>
       <!-- <users></users> -->
       <login-modal :modal="dialogVisible" @modalclose="closeLoginDialog"></login-modal>
-
   </div>
 </template>
 
@@ -83,4 +82,18 @@ input[type=number]::-webkit-outer-spin-button {
 .txt-pl-green{
   color: #56BA50
 }
+
+.el-dialog__header{
+  padding: 0px !important;
+}
+.el-dialog__body{
+  padding: 0px !important;
+}
+.el-dialog__headerbtn{
+  position: absolute !important;
+  right: 0 !important;
+  padding: 8px 10px !important;
+  z-index: 999999!important;
+}
+
 </style>

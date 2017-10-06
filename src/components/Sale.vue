@@ -69,7 +69,7 @@ export default {
          arr.push(this.property_source[elem]);
       }
       var items = arr.slice(start, end);
-      this.properties = JSON.parse(JSON.stringify(items));
+      this.properties = items;
        //console.log(this.properties);
     },
     switchToPage(page){
@@ -78,8 +78,7 @@ export default {
       this.loadProperties(start, end);
     },
     getSales(property_type, location) {
-
-      getProperties(1, property_type, location).then((property) => {
+      getProperties(1, Number(property_type), location).then((property) => {
         this.property_source = property.properties;
         this.loadProperties(0, this.item_per_page);//load the properties
         this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
@@ -94,6 +93,7 @@ export default {
   components:{ PropertyCard, Advertisement },
   watch:{
     'search':function(value){
+    //  console.log(value.property_type);
       this.getSales(value.property_type, value.location)
     }
   }

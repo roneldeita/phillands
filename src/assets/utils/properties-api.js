@@ -1,13 +1,18 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://103.16.170.117:8090/property';
+const BASE_URL = 'http://103.16.170.117:8090'
+const API_URL = 'http://103.16.170.117:8090/property';
 
-export {getProperties, getSales, getRents, getProperty};
+export {baseUrl, getProperties, getProperty, getLocality};
+
+function baseUrl(){
+  return BASE_URL;
+}
 
 
 function getProperties(offerType, propertyType, location){
 
-  const parameters = { status: 2  }
+  const parameters = { status: 1  }
 
   if(offerType !=''){
     parameters['offer_type'] = offerType;
@@ -21,30 +26,14 @@ function getProperties(offerType, propertyType, location){
     parameters['locality'] = location;
   }
 
-  return axios.get( BASE_URL, { params:parameters} ).then( response => response.data)
+  return axios.get( API_URL, { params:parameters} ).then( response => response.data)
 
-}
-
-function getSales(property_type, location){
-  const parameters = {offer_type: 1, status: 2}
-
-  if(property_type){
-    parameters['property_type'] = property_type;
-  }
-
-  if(location){
-    parameters['locality'] = location;
-  }
-
-  return axios.get( BASE_URL, { params:parameters} ).then( response => response.data)
-}
-
-function getRents(){
-  const parameters = {offer_type: 2, status: 2}
-  return axios.get( BASE_URL, { params:parameters} ).then( response => response.data)
 }
 
 function getProperty(propertyNo){
-  const parameters = {property_no:propertyNo}
-  return axios.get( BASE_URL, { params:parameters} ).then( response => response.data)
+  return axios.get(API_URL+'/'+propertyNo).then( response => response.data)
+}
+
+function getLocality(){
+  return axios.get(BASE_URL+'/locality').then( response => response.data)
 }

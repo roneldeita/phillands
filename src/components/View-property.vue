@@ -1,14 +1,14 @@
 <template>
   <el-row class="view-container text-left" v-if="property">
     <el-col :span="24" class="">
-      <img :src="'http://103.16.170.117:8090/images/'+property.property_media[0].uploaded_filename" alt="" class="primary-img">
+      <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" alt="" class="primary-img">
       <el-button class="view-photos" @click="dialogVisible = true">View Photos</el-button>
     </el-col>
     <el-col :span="24">
-      <el-dialog title="" :visible.sync="dialogVisible" size="small" class="text-center">
-        <el-carousel :autoplay="false" arrow="always"  height="500px">
+      <el-dialog title="" :visible.sync="dialogVisible" size="large" class="text-center">
+        <el-carousel :autoplay="false" arrow="always"  height="500px" style="background:black">
           <el-carousel-item v-for="img in property.property_media" :key="img.id">
-            <img :src="'http://103.16.170.117:8090/images/'+img.uploaded_filename" style="height:100%;">
+            <img v-lazy="imgUrl+img.uploaded_filename" style="height:100%">
           </el-carousel-item>
         </el-carousel>
       </el-dialog>
@@ -16,8 +16,8 @@
     <el-col :offset="3" :xs="24" :span="18" class="body-container">
       <el-row>
         <el-col :xs="24" :span="14" style="padding:20px 30px 0 0" class="info-container">
-          <p class="title">This is where the title goes</p>
-          <p class="location" v-cloak>{{ property.property_location.formatted_address }}</p>
+          <p class="title">{{ property.property_detail.title }}</p>
+          <p class="location" >{{ property.property_location.formatted_address }}</p>
           <p class="description">{{ property.property_detail.description }}</p>
           <h4>Details</h4>
           <el-row class="">
@@ -25,7 +25,7 @@
               <ul class="detail_list">
                 <li>Offer type: <b>{{ property.offer_type }}</b></li>
                 <li>Property type: <b>{{ property.property_type }}</b></li>
-                <li>Total Price: <b>{{ property.price }}</b></li>
+                <li>Total Price: <b>{{ property.price }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
                 <li>Bedrooms: <b>{{ property.property_detail.bedrooms }}</b></li>
                 <li>Bathrooms: <b>{{ property.property_detail.bathrooms }}</b></li>
               </ul>
@@ -40,7 +40,16 @@
               </ul>
             </el-col>
           </el-row>
+          <h4>Amenities</h4>
+          <el-row>
+            <el-col :span="12" v-for="amenity in property.property_detail.amenities.split(',')" :key="0">
+              <ul class="amenity_list">
+                <li><span class="fa fa-check txt-pl-green" style="font-size:10px"></span> {{ amenity }}</li>
+              </ul>
+            </el-col>
+          </el-row>
           <h4>Location</h4>
+          <p>{{ property.property_location.formatted_address }}</p>
           <gmap-map style="width: 100%; height: 300px;z-index:1" :zoom="zoom" :options="{styles:style}" :center="marker">
             <gmap-marker
               :draggable="false"
@@ -61,39 +70,44 @@
 
           </div>
         </el-col>
-        <el-col :xs="24" :span="10" class="form-container" style="height:520px; background:#F0F0F0; padding:25px">
-          <h3 class="text-center">Ask about the property</h3>
-          <el-form :model="askSeller">
-            <el-form-item label="" prop="desc">
-              <el-input type="textarea" placeholder="Message Inquiry" :rows="5"></el-input>
-            </el-form-item>
-            <el-row :gutter="10">
-              <el-col :span="12">
-                <el-form-item label="" prop="desc">
-                  <el-input placeholder="First Name"></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="" prop="desc">
-                  <el-input placeholder="First Name"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-form-item label="" prop="desc">
-              <el-input placeholder="Contact Number" :rows="5"></el-input>
-            </el-form-item>
-            <el-form-item label="" prop="desc">
-              <el-input placeholder="Email" :rows="5"></el-input>
-            </el-form-item>
-            <p>I would Like to:</p>
-            <el-radio-group v-model="askSeller.inquery">
-              <el-radio :label="1">Know more information</el-radio><br>
-              <el-radio :label="2">Schedule an appointment</el-radio>
-            </el-radio-group>
-            <el-form-item>
-              <el-button type="success" class="btn-pl-green" style="width:100%">Contact Seller</el-button>
-            </el-form-item>
-          </el-form>
+        <el-col :xs="24" :span="10" class="form-container" style="height:480px;">
+          <div style="background:#F0F0F0; padding:5px 20px 5px 20px; margin-bottom:15px">
+            <p class="form-title text-center">Ask about the property</p>
+            <el-form :model="askSeller">
+              <el-form-item label="" prop="desc">
+                <el-input type="textarea" placeholder="Message Inquiry" :rows="3"></el-input>
+              </el-form-item>
+              <el-row :gutter="10">
+                <el-col :span="12">
+                  <el-form-item label="" prop="desc">
+                    <el-input placeholder="First Name"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="" prop="desc">
+                    <el-input placeholder="First Name"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-form-item label="" prop="desc">
+                <el-input placeholder="Contact Number" :rows="5"></el-input>
+              </el-form-item>
+              <el-form-item label="" prop="desc">
+                <el-input placeholder="Email" :rows="5"></el-input>
+              </el-form-item>
+              <p>I would Like to:</p>
+              <el-radio-group v-model="askSeller.inquery">
+                <el-radio :label="1">Know more information</el-radio><br>
+                <el-radio :label="2">Schedule an appointment</el-radio>
+              </el-radio-group>
+              <el-form-item>
+                <el-button type="success" class="btn-pl-green" style="width:100%">Contact Seller</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div style="background:#F0F0F0; padding:25px">
+            <el-button style="width:100%"><span class="fa fa-heart-o"></span> Save to Wish List</el-button>
+          </div>
         </el-col>
       </el-row>
     </el-col>
@@ -104,12 +118,14 @@
 //json
 import MapStyle from '../../static/json/map-detailed.json'
 //api
-import { getProperty } from '../assets/utils/properties-api.js'
+import { baseUrl, getProperty } from '../assets/utils/properties-api.js'
 
 export default {
   name:'view-property',
+  props:['search'],
   data(){
     return{
+      imgUrl:'',
       property:'',
       zoom:18,
       marker: {lat: 14.5677961, lng: 121.0206435},
@@ -124,7 +140,7 @@ export default {
   methods:{
     getProperty:function(property_no){
       getProperty(property_no).then((property) =>{
-          this.property = property.properties[0];
+          this.property = property;
           this.setLatLng();
       });
     },
@@ -137,14 +153,28 @@ export default {
   },
   mounted(){
     this.getProperty(this.$route.params.property_no);
-    this.style = MapStyle;
+    this.imgUrl = baseUrl() + '/images/';
+    //this.style = MapStyle;
+  },
+  watch:{
+    'search':function(value){
+      //console.log(value);
+      //this.$router.push({name:'sale', params:{offer_type:2, property_type:value.property_type, location:value.location }})
+      //this.getSales(value.property_type, value.location)
+    }
   }
 }
 </script>
 
 <style scoped>
-  h3{
-    margin: 10px 0 20px 0;
+  img[lazy=loading] {
+    background-image: url('../../static/cube.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .form-title{
+    font-size: 26px;
+    margin: 5px 0 10px 0;
   }
   h4{
     margin: 35px 0 20px 0;
@@ -187,13 +217,18 @@ export default {
     list-style: none;
     margin-left: -40px;
   }
+  .amenity_list{
+    list-style: none;
+    margin-left: -40px;
+    margin-bottom: 2px;
+  }
   .detail_list li{
     margin-bottom: 10px
   }
   .form-container{
     position: -webkit-sticky;
     position: sticky;
-    top:80px;
+    top:65px;
   }
   .el-form-item{
     margin-bottom: 12px

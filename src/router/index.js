@@ -14,12 +14,15 @@ import Profile from '@/components/seller/profile'
 import Listings from '@/components/seller/listings'
 import PublishProperty from '@/components/seller/Publish-property'
 import PublishCompleted from '@/components/seller/Publish-completed'
+import EditProperty from '@/components/seller/Edit-property'
+
+import Admin from '@/components/admin/Dashboard'
 
 import Users from '@/components/Users'
 import User from '@/components/User'
 
 //middlewares
-import { requireAuth } from '../assets/utils/auth';
+import { requireAuth, isAdmin } from '../assets/utils/auth';
 
 Vue.use(Router)
 
@@ -39,8 +42,12 @@ export default new Router({
         { path: '/listings/for-approval', name:'for-approval', beforeEnter:requireAuth, component: Listings },
         { path: '/listings/archives', name:'archives', beforeEnter:requireAuth, component: Listings },
         { path: '/listings/inactive', name:'inactive', beforeEnter:requireAuth, component: Listings },
+        { path: '/listings/wishlist', name:'wishlist', beforeEnter:requireAuth, component: Listings },
         { path: '/publish-property', name: 'publish-property', beforeEnter:requireAuth, component: PublishProperty },
-        { path: '/publish-completed', name: 'publish-completed', beforeEnter:requireAuth, component: PublishCompleted},
+        { path: '/publish-completed', name: 'publish-completed', beforeEnter:requireAuth, component: PublishCompleted },
+        { path: '/edit-property/:property_no', name: 'edit-property', beforeEnter:requireAuth, component: EditProperty },
+
+        { path: '/admin', name: 'admin', beforeEnter:isAdmin, component:Admin},
 
         { path: '/users', name: 'users', beforeEnter: requireAuth, component: Users },
         { path: '/user/:userName', name: 'user', component: User }

@@ -19,7 +19,7 @@ export default {
   name:'publish-completed',
   methods:{
     handleBtn:function(){
-      this.$router.push({name:'listings'})
+      window.location.href = 'listings/for-approval';
     }
   }
 }

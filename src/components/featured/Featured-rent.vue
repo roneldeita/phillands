@@ -21,7 +21,7 @@ import PropertyCard from '.././Property-card.vue'
 //json
 //import Properties from '../../../static/json/properties.json'
 //api
-import { getRents } from '../../assets/utils/properties-api.js'
+import { getProperties } from '../../assets/utils/properties-api.js'
 
 export default {
   name:'featured-sale',
@@ -44,7 +44,7 @@ export default {
       	this.$router.push({name:'sale', params:{testing:''}})
     },
     getRents() {
-      getRents().then((property) => {
+      getProperties(2).then((property) => {
         this.property_source = property.properties;
         this.loadProperties();
       });

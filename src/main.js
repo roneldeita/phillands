@@ -9,10 +9,12 @@ import ElementUI from 'element-ui'//ElementUi
 import 'element-ui/lib/theme-default/index.css'//ElementUiTheme
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueLazyload from 'vue-lazyload'// for img
+import VueMoment from 'Vue-moment'// datetime library
 
 
 Vue.use(ElementUI)
 Vue.use(VueLazyload)
+Vue.use(VueMoment)
 Vue.use(VueGoogleMaps, {
    load: {
      key: 'AIzaSyATSZ8ZMz0L0e3dNxz3hzNJw7FHyFcZFcs',

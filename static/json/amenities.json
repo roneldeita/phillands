@@ -1,0 +1,48 @@
+[
+  {
+    "value": "Swimming Pool",
+    "label": "Swimming Pool"
+  }, {
+    "value": "Parking",
+    "label": "Parking"
+  }, {
+    "value": "Internet/Wifi",
+    "label": "Internet/Wifi"
+  }, {
+    "value": "Jogging Path",
+    "label": "Jogging Path"
+  }, {
+    "value": "Spa",
+    "label": "Spa"
+  }, {
+    "value": "Laundry",
+    "label": "Laundry"
+  }, {
+    "value": "Gym",
+    "label": "Gym"
+  }, {
+    "value": "Landscape Garden",
+    "label": "Landscape Garden"
+  }, {
+    "value": "Playground",
+    "label": "Playground"
+  }, {
+    "value": "24-hour Security",
+    "label": "24-hour Security"
+  }, {
+    "value": "Basketball Court",
+    "label": "Basketball Court"
+  }, {
+    "value": "Function Area",
+    "label": "Function Area"
+  }, {
+    "value": "Clubhouse",
+    "label": "Clubhouse"
+  }, {
+    "value": "Balcony",
+    "label": "Balcony"
+  }, {
+    "value": "Fully Fenced",
+    "label": "Fully Fenced"
+  }
+]

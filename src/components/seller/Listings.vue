@@ -6,7 +6,7 @@
           <el-menu-item index="published">Published Listings</el-menu-item>
           <el-menu-item index="for-approval">For Approval</el-menu-item>
           <el-menu-item index="archives">Archives</el-menu-item>
-          <el-menu-item index="inactive">Inactive</el-menu-item>
+          <el-menu-item index="wishlist">Wish List</el-menu-item>
         </el-menu>
         <br>
         <el-button style="width:100%; padding-top:15px; padding-bottom:15px"  @click="goToPublishListing">New Listing</el-button>
@@ -28,8 +28,8 @@
         <div v-if="activeMenu === 'archives'">
           <property-box v-for="n in 0" :key="n" :info="archives"></property-box>
         </div>
-        <div v-if="activeMenu === 'inactive'">
-          <property-box v-for="n in 0" :key="n" :info="inactives"></property-box>
+        <div v-if="activeMenu === 'wishlist'">
+          <property-box v-for="n in 0" :key="n" :info="wishlist"></property-box>
         </div>
       </el-col>
     </el-row>
@@ -49,16 +49,19 @@ export default {
       published :'',
       forApproval : '',
       archives : 'Archives',
-      inactives : 'Inactive Postings'
+      inactives : 'Inactive Postings',
+      wishlist : 'Wish List',
     }
   },
   methods:{
     handleMenu:function(itemMenu) {
       this.activeMenu = itemMenu;
+      this.getApproval();
+      this.getPublished();
       if(itemMenu === 'published'){
-        this.$router.push({name:'listings'});
+        this.$router.replace({name:'listings'});
       }else{
-        this.$router.push({name:itemMenu});
+        this.$router.replace({name:itemMenu});
       }
     },
     goToPublishListing(){
@@ -67,7 +70,7 @@ export default {
     getPublished:function(){
       const self = this;
       var profile = JSON.parse(getProfile());
-      axios.get('http://103.16.170.117:8090/property',{ params:{owner_id: profile.id, status: 2}})
+      axios.get('http://103.16.170.117:8090/property',{ params:{owner_id: profile.id, status: 1}})
       .then(function (response) {
         self.published = response.data.properties
       })
@@ -78,7 +81,7 @@ export default {
     getApproval:function(){
       const self = this;
       var profile = JSON.parse(getProfile());
-      axios.get('http://103.16.170.117:8090/property',{ params:{owner_id: profile.id, status: 1}})
+      axios.get('http://103.16.170.117:8090/property',{ params:{owner_id: profile.id, status: 2}})
       .then(function (response) {
         self.forApproval = response.data.properties
       })

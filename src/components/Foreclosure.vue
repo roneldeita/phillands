@@ -1,5 +1,5 @@
 <template>
-  <h1>Forclosur</h1>
+  <h1>Forclosure</h1>
 </template>
 
 <script>

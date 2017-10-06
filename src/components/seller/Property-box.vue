@@ -8,10 +8,12 @@
           <img v-if="info.property_media.length != 0" v-lazy="'http://103.16.170.117:8090/images/'+info.property_media[0].uploaded_filename" alt="">
         </el-col>
         <el-col :xs="24" :span="16">
-          <h4>Title Goes Heres</h4>
+          <h4>{{ info.property_detail.title }}</h4>
           <p>{{ info.property_location.formatted_address }}</p>
-          <el-button>Edit</el-button>
-          <el-button type="success" class="btn-pl-green" @click="previewProperty">Preview</el-button>
+          <p style="margin-top:-15p;color:#999999">Updated {{ info.updatedAt | moment("calendar") }}</p>
+          <el-button @click="handleEditProperty(info.property_no)">Edit Listing</el-button>
+          <el-button v-if="info.status === 1" type="success" class="btn-pl-green" @click="previewProperty">Preview</el-button>
+          <el-button v-if="info.status === 2" type="success" class="btn-pl-green" @click="unpublishListing">Unpublish</el-button>
         </el-col>
       </el-row>
   </el-card>
@@ -24,6 +26,12 @@ export default {
   methods:{
     previewProperty: function(propertyNo){
       window.open('/property/'+this.info.property_no, '_blank')
+    },
+    handleEditProperty: function(propertyNo){
+      this.$router.push({name:'edit-property', params:{property_no:propertyNo}})
+    },
+    unpublishListing: function(){
+
     }
   }
 }
