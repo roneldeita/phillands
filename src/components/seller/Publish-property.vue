@@ -328,12 +328,12 @@ export default {
         }
       });
 
-       axios.defaults.headers.common['token'] = AUTH_TOKEN;
+      axios.defaults.headers.common['token'] = AUTH_TOKEN;
       // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
       self.finishButton = true;
 
-      axios.post('http://103.16.170.117:8090/property/create', formData)
+      axios.post('http://103.16.170.117:8090/broker/property/create', formData)
       .then(function(response){
 
         if(response.data.message === "success"){

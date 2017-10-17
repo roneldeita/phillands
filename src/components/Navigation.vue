@@ -23,8 +23,8 @@
                 class="inline-input">
                   <el-select slot="prepend" v-model="propertyType" placeholder="Select" @change="handleSearch">
                     <!-- <el-option label="All" value=""></el-option> -->
-                    <el-option label="House and Lot" value="2"></el-option>
                     <el-option label="Condominium" value="1"></el-option>
+                    <el-option label="House and Lot" value="2"></el-option>
                     <el-option label="Townhouse" value="3"></el-option>
                   </el-select>
               </el-autocomplete>
@@ -32,17 +32,21 @@
           </el-row>
         </form>
         <ul class="nav navbar-nav ml-auto">
-          <li class="nav-item" v-show="isLoggedIn()">
-            <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property' && $route.name != 'edit-property'" @click="goToPath('publish-property')">Publish Property</button>
+          <li class="nav-item" v-if="isLoggedIn()">
+            <button type="button" class="btn btn-success" v-if="!publishPropertyBtn.includes($route.name)" @click="goToPath('publish-property')">Publish Property</button>
             <button type="button" class="btn btn-success" v-show="$route.name === 'publish-property'" @click="goToPath('listings')">Cancel</button>
+            <button type="button" class="btn btn-success" v-show="$route.name === 'view-property'" @click="handleBack">Back</button>
+          </li>
+          <li v-if="!isLoggedIn()">
+            <button type="button" class="btn btn-success" v-show="$route.name === 'view-property'" @click="handleBack">Back</button>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="LoginWasClicked()">Login/Register</a>
           </li>
-          <li class="nav-item" v-if="isLoggedIn()">
+          <li class="nav-item" id="dropdown-lg" v-if="isLoggedIn()">
             <el-dropdown trigger="click" style="padding:0px 25px" @command="handleNavCommand">
               <span class="el-dropdown-link">
-                <img :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
+                <img v-if="profile" :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
                 <i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu class="dropdown" slot="dropdown">
@@ -51,6 +55,16 @@
                 <el-dropdown-item command="logout">Log out</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
+          </li>
+          <li class="nav-item dropdown" id="dropdown-sm">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img v-if="profile" :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="javascript:void(0)" @click="handleNavCommand('profile')">Profile</a>
+              <a class="dropdown-item" href="javascript:void(0)" @click="handleNavCommand('listings')">Listings</a>
+              <a class="dropdown-item" href="javascript:void(0)" @click="handleNavCommand('logout')">Log out</a>
+            </div>
           </li>
         </ul>
       </div>
@@ -64,6 +78,12 @@
     <el-tabs v-model="activeNav" v-if="allowedSellertRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="Profile" name="profile"></el-tab-pane>
       <el-tab-pane label="Listings" name="listings"></el-tab-pane>
+    </el-tabs>
+    <el-tabs v-model="activeNav" v-if="allowedAdminRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
+      <el-tab-pane label="Dashboard" name="admin-dashboard"></el-tab-pane>
+      <el-tab-pane label="Users" name="admin-users"></el-tab-pane>
+      <el-tab-pane label="Listings" name="admin-listings"></el-tab-pane>
+      <el-tab-pane label="Advertisements" name="admin-ads"></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -80,6 +100,15 @@ export default {
         searchLocation:'',
         propertyType:'1',
         links:[],
+        publishPropertyBtn:[
+          'publish-property',
+          'edit-property',
+          'view-property',
+          'admin-dashboard',
+          'admin-users',
+          'admin-listings',
+          'admin-ads'
+        ],
         allowedSearchRoutes:[
           'sale',
           'rent',
@@ -87,7 +116,7 @@ export default {
           'foreclosure',
           'login',
           'register',
-          'view-property'
+          //'view-property'
         ],
         allowedNavRoutes:[
           'sale',
@@ -102,7 +131,13 @@ export default {
           'listings',
           'for-approval',
           'archives',
-          'inactive'
+          'wishlist'
+        ],
+        allowedAdminRoutes:[
+          'admin-dashboard',
+          'admin-users',
+          'admin-listings',
+          'admin-ads'
         ],
         profile: JSON.parse(getProfile())
       }
@@ -121,9 +156,13 @@ export default {
         this.$router.push('/');
       },
       goToPath(path){
-        this.$router.push({ name: path});
+        if(path === 'listings'){
+          this.activeNav = 'listings';
+        }
+        this.$router.replace({ name: path});
       },
       handleNavCommand:function(command){
+        console.log(command)
         if(command === "logout"){
           this.handleLogout();
         }else{
@@ -153,14 +192,21 @@ export default {
         });
       },
       handleSearch:function(){
-        console.log('offer_type: ' + this.activeNav);
-        console.log('location: ' + this.searchLocation);
-        console.log('property_type: ' + this.propertyType);
+        // console.log('offer_type: ' + this.activeNav);
+        // console.log('location: ' + this.searchLocation);
+        // console.log('property_type: ' + this.propertyType);
         //this.changeTab(this.activeNav)
         this.$emit('search', { offer_type: this.activeNav, property_type:this.propertyType, location:this.searchLocation});
       },
       changeTab:function(tab, event){
         this.$router.replace({ name: tab.name});
+      },
+      handleBack:function(){
+        var self = this;
+        this.$router.go(-1);
+        setTimeout(function(){
+          self.handleSearch();
+        }, 300);
       }
     },
     mounted(){
@@ -175,6 +221,11 @@ export default {
         this.activeNav = 'listings';
       }else{
         this.activeNav = this.$route.name;
+      }
+
+      //for admin
+      if(this.$route.name === 'admin-dashboard'){
+        this.activeNav = 'admin-dashboard';
       }
 
       this.propertyType = this.$route.params.property_type;
@@ -239,5 +290,34 @@ export default {
   div.el-progress-bar__outer,
   div.el-progress-bar__inner{
     border-radius: 0px !important;
+  }
+
+  @media (min-width: 991px){
+    #dropdown-lg{
+      display: block !important;
+    }
+    #dropdown-sm{
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 991px){
+    #dropdown-lg{
+      display: none !important;
+    }
+    #dropdown-sm{
+      display: block !important;
+    }
+    .search-continer{
+      margin-top: 5px;
+    }
+    .navbar-collapse .navbar-nav .nav-item{
+      margin: 10px 0 0 0;
+      text-align: left;
+    }
+    .navbar-collapse .navbar-nav a.dropdown-toggle{
+      padding-top: 0px !important;
+      margin-top: -10px;
+    }
   }
 </style>

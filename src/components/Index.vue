@@ -32,13 +32,22 @@
     </el-row>
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :xs="22" :sm="20" :md="20">
-        <el-input v-model="inputSearch" placeholder="Type the location? e.g Quezon City" size="large" icon="search" :on-icon-click="handleIconClick">
-          <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
-            <el-option label="House and Lot" value="2"></el-option>
-            <el-option label="Condominium" value="1"></el-option>
-            <el-option label="Townhouse" value="3"></el-option>
-          </el-select>
-        </el-input>
+        <el-autocomplete
+          style="width:100%"
+          v-model="inputSearch"
+          placeholder="Type the location? e.g Quezon City"
+          size="large"
+          icon="search"
+          :on-icon-click="handleIconClick"
+          :fetch-suggestions="querySearch"
+          @focus="querySearch"
+          class="inline-input">
+            <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
+              <el-option label="Condominium" value="1"></el-option>
+              <el-option label="House and Lot" value="2"s></el-option>
+              <el-option label="Townhouse" value="3"></el-option>
+            </el-select>
+        </el-autocomplete>
       </el-col>
     </el-row>
     <br>
@@ -57,6 +66,7 @@
 </template>
 
 <script>
+import { getLocality } from '../assets/utils/properties-api.js'
 import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
 
 import FeaturedSale from './featured/Featured-sale.vue'
@@ -68,7 +78,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       inputSearch:'',
-      selectSearch:'2',
+      selectSearch:'1',
       activeNav:'sale',
       profile:JSON.parse(getProfile())
     }
@@ -93,6 +103,27 @@ export default {
     isLoggedIn() {
       return isLoggedIn();
     },
+    querySearch(queryString, cb) {
+      var links = this.links;
+      var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+      // call callback function to return suggestions
+      cb(results);
+      console.log(results);
+    },
+    createFilter(queryString) {
+      return (link) => {
+        return (link.value.indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
+    loadLocality() {
+      getLocality().then((localities) => {
+        var arr= [];
+        for (var key in localities) {
+           arr.push({"value": localities[key].locality.toLowerCase()});
+        }
+        this.links = arr;
+      });
+    },
     handleIconClick:function(){
       this.$router.push({name:this.activeNav, params:{property_type:this.selectSearch, location:this.inputSearch }})
     },
@@ -102,6 +133,7 @@ export default {
   },
   components:{ FeaturedSale, FeaturedRent },
   mounted(){
+    this.loadLocality();
     //console.log(getProfile());
   }
 }

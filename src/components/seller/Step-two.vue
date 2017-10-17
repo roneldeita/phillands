@@ -73,7 +73,6 @@ export default {
       bedrooms:'Studio',
       bathrooms:1,
       parking:'None',
-
       balcony:'Yes'
     }
   },

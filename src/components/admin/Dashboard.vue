@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div>
     <h1>Administrative Area</h1>
     <p>{{ profile.role}}</p>
@@ -7,6 +7,8 @@
 
 <script>
 import { getProfile } from '../../assets/utils/auth.js';
+//components
+import navigation from '../Navigation.vue'
 
 export default {
   name:'admin-dashboard',
@@ -17,7 +19,8 @@ export default {
   },
   mounted(){
     this.profile = JSON.parse(getProfile());
-  }
+  },
+  components:{  navigation  }
 
 }
 </script>

@@ -3,6 +3,7 @@
       <h2>Location</h2><br>
       <h5>Address</h5>
       <gmap-autocomplete class="form-control" @place_changed="setLocation"></gmap-autocomplete><br>
+      <div class="alert alert-info"><span class="el-icon-warning"></span> Drag the Map Marker and point it to the exact location of the property</div>
       <gmap-map :class="mapStyle" ref="gmap" :zoom="zoom" :center="center" :options="{styles:style}"  @center_changed="centerChange">
         <gmap-marker
           :draggable="true"

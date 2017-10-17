@@ -41,7 +41,7 @@ export default {
       this.properties = JSON.parse(JSON.stringify(items));
     },
     ViewAll(){
-      	this.$router.push({name:'sale', params:{testing:''}})
+        this.$router.push({name:'rent', params:{property_type:'1', location:''}})
     },
     getRents() {
       getProperties(2).then((property) => {

@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <el-row :gutter="20">
       <el-col :xs="24" :sm="18" :md="18" style="margin:-15px 0 10px 0">
-        <h6 class="text-left">{{ total_properties }} Listing found</h6>
+        <h6 class="text-left">{{ total_properties }} properties found</h6>
       </el-col>
       <el-col :xs="24" :sm="18" :md="18">
         <el-row :gutter="20">
@@ -29,7 +29,7 @@
       <el-col :xs="24" :sm="6" :md="6">
         <el-row>
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
-            <!-- <advertisement :img="add.img"></advertisement> -->
+            <advertisement :img="add.img"></advertisement>
           </el-col>
         </el-row>
       </el-col>
@@ -56,8 +56,11 @@ export default {
       page_count:0,
       item_per_page: 6,
       adds:[
-        { id:1, img:'/static/adds/exotiq.jpg' },
-        { id:2, img:'/static/adds/selling.jpg' },
+        { id:1, img:'/static/adds/Ads1.jpg' },
+        { id:2, img:'/static/adds/Ads2.jpg' },
+        { id:3, img:'/static/adds/Ads3.jpg' },
+        { id:4, img:'/static/adds/Ads4.jpg' },
+        { id:5, img:'/static/adds/Ads5.jpg' }
       ]
     }
   },

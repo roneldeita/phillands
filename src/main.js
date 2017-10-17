@@ -5,27 +5,45 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import Paginate from 'vuejs-paginate'
-import ElementUI from 'element-ui'//ElementUi
-import 'element-ui/lib/theme-default/index.css'//ElementUiTheme
+import ElementUI from 'element-ui'// ElementUi
+import 'element-ui/lib/theme-default/index.css'// ElementUiTheme
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueLazyload from 'vue-lazyload'// for img
-import VueMoment from 'Vue-moment'// datetime library
+import VueAuthenticate from 'vue-authenticate'
+import VueAxios from 'vue-axios'
+import axios from 'axios';
+import VueMoment from 'vue-moment-jalaali'// datetime library
 
 
 Vue.use(ElementUI)
 Vue.use(VueLazyload)
 Vue.use(VueMoment)
+Vue.use(VueAxios, axios)
 Vue.use(VueGoogleMaps, {
    load: {
      key: 'AIzaSyATSZ8ZMz0L0e3dNxz3hzNJw7FHyFcZFcs',
      v: '3.29',
      libraries: 'places', //// If you need to use place input
    }
- });
+ })
+Vue.use(VueAuthenticate, {
+  baseUrl: 'http://103.16.170.117:8090', // Your API domain
+
+  providers: {
+    facebook: {
+      clientId: '152018012048990',
+      redirectUri: window.location.origin+'/auth/callback' // Your client app URL
+    },
+    google: {
+      clientId: '683005103605-dqtsbo3ujkc2eftkpj8cnumvggsrrni3.apps.googleusercontent.com',
+      redirectUri: window.location.origin+'/auth/callback' // Your client app URL
+    }
+  }
+})
 
 Vue.component('paginate', Paginate)
-Vue.component('gmap-map', VueGoogleMaps.Map);
-Vue.component('gmap-marker', VueGoogleMaps.Marker);
+Vue.component('gmap-map', VueGoogleMaps.Map)
+Vue.component('gmap-marker', VueGoogleMaps.Marker)
 
 Vue.config.productionTip = true
 

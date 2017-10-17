@@ -1,21 +1,27 @@
 <template>
-  <el-row class="text-left" style="margin:-40px 0 100px 0">
+  <el-row class="text-left" style="margin:-20px 0 100px 0">
     <div class="main-nav fixed-top"></div>
-    <el-col :offset="2" :span="20">
-      <h4>Edit Mode: <span style="color:#A9A9A9">You can change the details of your listing below.</span></h4><br>
+    <el-col :sm="24" :offset="2" :md="15" class="head-container">
+      <h4>Edit Mode: <span style="color:#A9A9A9; line-height:20px">You can change the details of your listing below.</span></h4><br>
     </el-col>
-    <el-col :offset="2" :span="20">
+    <el-col :xs="24" :md="5" class="text-right head-container">
+      <el-button type="success" class="btn btn-pl-green" style="width:150px" size="large" @click="handleCard(property_no)">Preview Listing</el-button>
+    </el-col>
+    <el-col :sm="24" :offset="2" :md="20" class="head-container">
+      <img v-if="mediaForm.media[0]" v-lazy="imgUrl+mediaForm.media[0].uploaded_filename" alt="" class="primary-img">
+    </el-col>
+    <el-col :offset="2" :sm="20" :md="20" class="head-container">
       <el-card class="box-card">
           <div class="text-right">
             <el-button v-if="!basicEdit" @click="basicEdit = true">Edit</el-button>
-            <el-button v-if="basicEdit" type="success" class="btn-pl-green"  @click="saveTitle = false">Save</el-button>
+            <el-button v-if="basicEdit" type="success" class="btn-pl-green"  @click="saveBasic">Save</el-button>
             <el-button v-if="basicEdit" @click="basicEdit = false; cancelBasicEdit(property_no)">Cancel</el-button>
           </div>
           <div v-if="!basicEdit">
             <p class="label">Title</p>
             <h4>{{ basicForm.title }}</h4>
             <p class="label">Description</p>
-            <p style="white-space: pre-wrap; max-height:165px; overflow-y:scroll">{{ basicForm.description }}</p>
+            <p style="white-space: pre-wrap; max-height:130px; overflow-y:scroll">{{ basicForm.description }}</p>
           </div>
           <el-form v-if="basicEdit" :model="basicForm" :rules="basicRules" ref="basicForm" label-width="0" class="form">
             <el-form-item label="Title" prop="title">
@@ -31,7 +37,7 @@
         <div class="text-right">
           <h4 class="pull-left txt-pl-green">Key Information</h4>
           <el-button v-if="!keyInfoEdit" @click="keyInfoEdit = true">Edit</el-button>
-          <el-button v-if="keyInfoEdit" type="success" class="btn-pl-green"  @click="saveTitle = false">Save</el-button>
+          <el-button v-if="keyInfoEdit" type="success" class="btn-pl-green"  @click="saveKeyInfo" disabled>Save</el-button>
           <el-button v-if="keyInfoEdit" @click="keyInfoEdit = false; cancelkeyInfoEdit()">Cancel</el-button>
         </div>
         <el-row v-if="!keyInfoEdit">
@@ -69,7 +75,7 @@
             </el-form-item>
           </el-col>
           <el-col :sm="12" :md="8" :lg="24">
-            <el-form-item style="display:inline-block;" prop="sellingPrice" class="">
+            <el-form-item style="display:inline-block;" prop="price" class="">
               <p class="label"><span class="required">*</span>{{ keyInfoForm.offer_type ==="2" ? 'Rental Fee' : 'Selling Price'}}</p>
               <el-input type="number" class="amount" placeholder="Enter the amount" v-model="keyInfoForm.price">
                 <template slot="prepend">₱</template>
@@ -84,7 +90,7 @@
         <div class="text-right">
           <h4 class="pull-left txt-pl-green">Unit Details</h4>
           <el-button v-if="!unitDetailEdit" @click="unitDetailEdit = true">Edit</el-button>
-          <el-button v-if="unitDetailEdit" type="success" class="btn-pl-green"  @click="saveTitle = false">Save</el-button>
+          <el-button v-if="unitDetailEdit" type="success" class="btn-pl-green"  @click="saveUnitDetail">Save</el-button>
           <el-button v-if="unitDetailEdit" @click="unitDetailEdit = false; cancelUnitDetailEdit()">Cancel</el-button>
         </div>
         <el-row v-if="!unitDetailEdit" class="">
@@ -129,25 +135,21 @@
                 <el-input-number v-model="unitDetailForm.parking" :min="0" :max="10"></el-input-number>
               </el-form-item>
             </el-col>
-            <el-col :sm="12" :md="6" :lg="18" class="">
-              <el-form-item label="" prop="bedrooms">
-                <el-form-item prop="floor_area" class="">
+            <el-col :sm="12" :md="6" :lg="18">
+                <el-form-item prop="floor_area">
                   <p class="label"><span class="required">*</span>Floor Area</p>
                   <el-input type="number" class="amount" v-model="unitDetailForm.floor_area" style="max-width:150px">
                     <template slot="append">sqm</template>
                   </el-input>
                 </el-form-item>
-              </el-form-item>
             </el-col>
-            <el-col :sm="12" :md="6" :lg="6" class="">
-              <el-form-item label="" prop="bedrooms">
-                <el-form-item prop="lot_area" class="">
+            <el-col :sm="12" :md="6" :lg="6">
+                <el-form-item prop="lot_area" label="">
                   <p class="label"><span class="required">*</span>Lot Area</p>
                   <el-input type="number" class="amount" v-model="unitDetailForm.lot_area" style="max-width:150px">
                     <template slot="append">sqm</template>
                   </el-input>
                 </el-form-item>
-              </el-form-item>
             </el-col>
           </el-row>
         </el-form>
@@ -157,7 +159,7 @@
         <div class="text-right">
           <h4 class="pull-left txt-pl-green">Amenities</h4>
           <el-button v-if="!amenitiesEdit" @click="amenitiesEdit = true">Edit</el-button>
-          <el-button v-if="amenitiesEdit" type="success" class="btn-pl-green"  @click="saveTitle = false">Save</el-button>
+          <el-button v-if="amenitiesEdit" type="success" class="btn-pl-green"  @click="saveAmenities">Save</el-button>
           <el-button v-if="amenitiesEdit" @click="amenitiesEdit = false; cancelAmenitiesEdit()">Cancel</el-button>
         </div>
         <el-row v-if="!amenitiesEdit" class="">
@@ -193,7 +195,7 @@
         <div class="text-right">
           <h4 class="pull-left txt-pl-green">Location</h4>
           <el-button v-if="!locationEdit" @click="locationEdit = true">Edit</el-button>
-          <el-button v-if="locationEdit" type="success" class="btn-pl-green"  @click="saveTitle = false">Save</el-button>
+          <el-button v-if="locationEdit" type="success" class="btn-pl-green"  @click="saveTitle = false" disabled>Save</el-button>
           <el-button v-if="locationEdit" @click="locationEdit = false; cancelLocationEdit()">Cancel</el-button>
         </div>
         <el-row>
@@ -239,28 +241,34 @@
             </gmap-map>
           </el-col>
         </el-row>
-
       </el-card>
     </el-col>
-    <!-- {{ locationForm }} -->
   </el-row>
 </template>
 
 <script>
+import axios from 'axios';
 //api
-import { getProperty } from '../../assets/utils/properties-api.js'
+import { baseUrl, getProperty } from '../../assets/utils/properties-api.js'
+import { getIdToken } from '../../assets/utils/auth.js'
 //json
 import amenitiesOpts from '../../../static/json/amenities.json'
 export default {
   name:'edit-property',
   data(){
     return{
+      property_id:'',
       property_no:'',
+      basicEdit:false,
       keyInfoEdit:false,
       unitDetailEdit:false,
       amenitiesEdit:false,
       amenitiesOptions: [],
       locationEdit:false,
+      basicForm:{
+        title:'',
+        description:'',
+      },
       keyInfoForm:{
         offer_type:'',
         property_type:'',
@@ -280,6 +288,9 @@ export default {
       amenitiesForm:{
         amenities:''
       },
+      mediaForm:{
+        media:[]
+      },
       locationForm:{
         formatted_address:'',//varchar
         lat:'',//varchar
@@ -294,34 +305,38 @@ export default {
         lat:0,
         lng:0
       },
-      keyInfoRules:{
-        offer_type:[
-          { required: true, message: 'Title is required', trigger: 'blur' }
-        ]
-      },
-      unitDetailRules:{},
-      ammenitiesRules:{},
-      locationRules:{},
-      basicEdit:false,
-      basicForm:{
-        title:'',
-        description:'',
-      },
       basicRules:{
         title:[
           { required: true, message: 'Title is required', trigger: 'blur' }
         ],
         description:[
-          { required: true, message: 'Description is required', trigger: 'blur' }
+          { required: true, message: 'Description is required', trigger: 'blur' },
+          { min: 20, max: 2000, message: 'Description should be atleast 20 characters and max of 2000', trigger: 'blur' }
         ]
       },
-      mapstyle:[]
+      keyInfoRules:{
+        price:[
+          { required: true, message: 'Price is required', trigger: 'blur' }
+        ]
+      },
+      unitDetailRules:{
+        floor_area:[
+          { required: true, message: 'Floor Area is required', trigger: 'blur' }
+        ],
+        lot_area:[
+          { required: true, message: 'Lot Area is required', trigger: 'blur' }
+        ]
+      },
+      ammenitiesRules:{},
+      locationRules:{},
+      imgUrl:''
     }
   },
   methods:{
     getProperty:function(property_no){
       getProperty(property_no).then((property) =>{
           console.log(property);
+          this.property_id = property.id;
           this.property_no = property.property_no;
           //basic info
           this.basicForm.title = property.property_detail.title;
@@ -334,8 +349,8 @@ export default {
           this.unitDetailForm.bedrooms = property.property_detail.bedrooms;
           this.unitDetailForm.bathrooms = property.property_detail.bathrooms;
           this.unitDetailForm.parking = property.property_detail.parking;
-          this.unitDetailForm.floor_area = property.property_detail.floor_area;
-          this.unitDetailForm.lot_area = property.property_detail.lot_area;
+          this.unitDetailForm.floor_area = property.property_detail.floor_area.toString();
+          this.unitDetailForm.lot_area = property.property_detail.lot_area.toString();
           this.unitDetailForm.balcony = property.property_detail.balcony;
           //amenities
           this.amenitiesForm.amenities = property.property_detail.amenities.split(",");
@@ -343,6 +358,8 @@ export default {
           this.locationForm.formatted_address = property.property_location.formatted_address;
           this.locationForm.lat = Number(property.property_location.lat);
           this.locationForm.lng = Number(property.property_location.lng);
+          //
+          this.mediaForm.media = property.property_media;
       });
     },
     formatNumber: function(num) {
@@ -367,7 +384,6 @@ export default {
         this.basicForm.title = property.property_detail.title;
         this.basicForm.description = property.property_detail.description;
       });
-
     },
     cancelkeyInfoEdit:function(){
       getProperty(this.property_no).then((property) =>{
@@ -445,15 +461,125 @@ export default {
     setMarker: function(place){
       this.locationForm.lat = place.latLng.lat();
       this.locationForm.lng = place.latLng.lng();
-      //this.updateCenter();
     },
     centerChange: function(center){
       this.locationForm.lat = center.lat();
       this.locationForm.lng = center.lng();
-      //this.updateCenter();
+    },
+    saveBasic:function(){
+      const self = this;
+      var basic = {
+        id : this.property_id,
+        edit: 'details',
+        title: this.basicForm.title,
+        description: this.basicForm.description
+      }
+      this.$refs.basicForm.validate((valid) => {
+        if(valid){
+          axios.defaults.headers.common['token'] = getIdToken();
+          return axios.post(baseUrl()+'/broker/property/update', basic)
+          .then(function(response){
+            if(response.data.message === "Success"){
+              self.basicEdit = false;
+              self.$message({
+                message: 'The information was successfully updated',
+                type: 'success'
+              });
+            };
+          }).catch(function(error){
+            //console.log(error)
+          });
+        }
+      });
+    },
+    saveKeyInfo:function(){
+      const self = this;
+      var keyInfo = {
+        id : this.property_id,
+        edit: 'details',
+        offer_type: this.keyInfoForm.offer_type,
+        property_type : this.keyInfoForm.property_type,
+        price: this.keyInfoForm.price
+      }
+      console.log(keyInfo);
+      this.$refs.keyInfoForm.validate((valid) => {
+        if(valid){
+          axios.defaults.headers.common['token'] = getIdToken();
+          return axios.post(baseUrl()+'/broker/property/update', keyInfo)
+          .then(function(response){
+            if(response.data.message === "Success"){
+              self.keyInfoEdit = false;
+              self.$message({
+                message: 'The information was successfully updated',
+                type: 'success'
+              });
+            };
+          }).catch(function(error){
+            //console.log(error)
+          });
+        }
+      });
+    },
+    saveUnitDetail:function(){
+      const self = this;
+      var unitDetail = {
+        id : this.property_id,
+        edit: 'details',
+        bedrooms:this.unitDetailForm.bedrooms,
+        bathrooms:this.unitDetailForm.bathrooms,
+        parking:this.unitDetailForm.parking,
+        floor_area:this.unitDetailForm.floor_area,
+        lot_area:this.unitDetailForm.lot_area,
+        balcony:this.unitDetailForm.balcony
+      }
+      this.$refs.unitDetailForm.validate((valid) => {
+        if(valid){
+          axios.defaults.headers.common['token'] = getIdToken();
+          return axios.post(baseUrl()+'/broker/property/update', unitDetail)
+          .then(function(response){
+            if(response.data.message === "Success"){
+              self.unitDetailEdit = false;
+              self.$message({
+                message: 'The information was successfully updated',
+                type: 'success'
+              });
+            };
+          }).catch(function(error){
+            //console.log(error)
+          });
+        }
+      });
+    },
+    saveAmenities:function(){
+      const self = this;
+      var amenities = {
+        id: this.property_id,
+        edit: 'details',
+        amenities: this.amenitiesForm.amenities.toString()
+      }
+
+      console.log(amenities.amenities);
+      axios.defaults.headers.common['token'] = getIdToken();
+      return axios.post(baseUrl()+'/broker/property/update', amenities)
+      .then(function(response){
+        if(response.data.message === "Success"){
+          self.amenitiesEdit = false;
+          self.$message({
+            message: 'The information was successfully updated',
+            type: 'success'
+          });
+        };
+      }).catch(function(error){
+        //console.log(error)
+      });
+    },
+    handleCard: function(propertyNo){
+      this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     }
   },
   mounted(){
+    document.documentElement.scrollTop = 0;//scroll top
+    this.imgUrl = baseUrl() + '/images/';
     this.getProperty(this.$route.params.property_no);
     this.amenitiesOptions = amenitiesOpts;
   }
@@ -489,6 +615,11 @@ export default {
     margin-top: 60px;
     z-index: 5;
   }
+  .primary-img{
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
   .el-card{
     box-shadow: 0px 0px 0px 0px !important;
     border-radius: 2px !important;
@@ -508,10 +639,24 @@ export default {
     color: #999999;
     font-size: 14px;
     padding-top: 0px;
-    margin-bottom: 2px;;
+    margin-bottom: 5px;;
   }
   .required{
     color:#ff4949;
     margin-right:4px
+  }
+
+  @media (max-width: 991px) {
+    .head-container{
+      margin: 0px;
+      padding: 0px 5px;
+    }
+  }
+
+  @media (max-width: 769px) {
+    .form-container{
+      margin-left: 0px;
+      padding: 0px 5px;
+    }
   }
 </style>

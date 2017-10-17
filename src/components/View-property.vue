@@ -6,7 +6,7 @@
     </el-col>
     <el-col :span="24">
       <el-dialog title="" :visible.sync="dialogVisible" size="large" class="text-center">
-        <el-carousel :autoplay="false" arrow="always"  height="500px" style="background:black">
+        <el-carousel :autoplay="false" arrow="always" height="500px" style="background:black">
           <el-carousel-item v-for="img in property.property_media" :key="img.id">
             <img v-lazy="imgUrl+img.uploaded_filename" style="height:100%">
           </el-carousel-item>
@@ -23,25 +23,25 @@
           <el-row class="">
             <el-col :span="12">
               <ul class="detail_list">
-                <li>Offer type: <b>{{ property.offer_type }}</b></li>
-                <li>Property type: <b>{{ property.property_type }}</b></li>
-                <li>Total Price: <b>{{ property.price }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
-                <li>Bedrooms: <b>{{ property.property_detail.bedrooms }}</b></li>
-                <li>Bathrooms: <b>{{ property.property_detail.bathrooms }}</b></li>
+                <li>Offer type: <b>For {{ property.offer_type === 1 ? 'Sale' : 'Rent' }}</b></li>
+                <li>Property type: <b>{{ propertyType() }}</b></li>
+                <li>Total Price: ₱ <b>{{ formatNumber(property.price) }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
+                <li>Bedrooms: <b>{{ property.property_detail.bedrooms != 0 ? property.property_detail.bedrooms : 'Studio Type' }}</b></li>
+                <li>Bathrooms: <b>{{ property.property_detail.bathrooms != 0 ? property.property_detail.bathrooms : 'None' }}</b></li>
               </ul>
             </el-col>
             <el-col :span="12">
               <ul class="detail_list">
                 <li>Property id: <b>{{ property.property_no }}</b></li>
-                <li>Parking: <b>{{ property.property_detail.parking }}</b></li>
+                <li>Parking: <b>{{ property.property_detail.parking != 0? property.property_detail.parking :'None'  }}</b></li>
                 <li>Floor Area: <b>{{ property.property_detail.floor_area }} sqm</b></li>
                 <li>Lot Area: <b>{{ property.property_detail.lot_area }} sqm</b></li>
                 <li>Balcony: <b>{{ property.property_detail.balcony ? 'Yes' : 'No' }}</b></li>
               </ul>
             </el-col>
           </el-row>
-          <h4>Amenities</h4>
-          <el-row>
+          <el-row v-if="property.property_detail.amenities">
+            <h4>Amenities</h4>
             <el-col :span="12" v-for="amenity in property.property_detail.amenities.split(',')" :key="0">
               <ul class="amenity_list">
                 <li><span class="fa fa-check txt-pl-green" style="font-size:10px"></span> {{ amenity }}</li>
@@ -67,10 +67,26 @@
             </gmap-circle>
           </gmap-map>
           <div class="extra-div" style="height:500px">
-
           </div>
         </el-col>
-        <el-col :xs="24" :span="10" class="form-container" style="height:480px;">
+        <el-col :xs="24" :span="10" class="form-container" style="height:480px;margin-top:-52px;">
+          <div style="background-color:#56BA50; color:#ffffff; padding:10px 20px">
+            	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span><span v-if="property.offer_type === 2">/mo.</span>
+              <div class="pull-right">
+                <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
+                  <div slot="content">Add this property<br/>to your Wish List</div>
+                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleAddWishList">
+                    <span class="fa fa-heart-o"></span>
+                  </el-button>
+                </el-tooltip>
+                <el-tooltip placement="top" v-if="wishlist.includes(property.property_no)">
+                  <div slot="content">Remove this property<br/>from your Wish List</div>
+                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleRemoveWishList">
+                    <span class="fa fa-heart"></span>
+                  </el-button>
+                </el-tooltip>
+              </div>
+          </div>
           <div style="background:#F0F0F0; padding:5px 20px 5px 20px; margin-bottom:15px">
             <p class="form-title text-center">Ask about the property</p>
             <el-form :model="askSeller">
@@ -105,8 +121,14 @@
               </el-form-item>
             </el-form>
           </div>
-          <div style="background:#F0F0F0; padding:25px">
-            <el-button style="width:100%"><span class="fa fa-heart-o"></span> Save to Wish List</el-button>
+          <div style="background:#F0F0F0; padding:10px" class="text-center">
+            <a href=""><span class="fa fa-bug"></span> Report this listing</a>
+            <!-- <el-button style="width:100%" v-if="!wishlist.includes(property.property_no)" @click="handleAddWishList">
+              <span class="fa fa-heart-o"></span> Add to Wish List
+            </el-button>
+            <el-button style="width:100%" v-if="wishlist.includes(property.property_no)" @click="handleRemoveWishList">
+              <span class="fa fa-heart txt-pl-green"></span> Remove from Wish List
+            </el-button> -->
           </div>
         </el-col>
       </el-row>
@@ -115,10 +137,12 @@
 </template>
 
 <script>
+import axios from 'axios';
 //json
 import MapStyle from '../../static/json/map-detailed.json'
 //api
-import { baseUrl, getProperty } from '../assets/utils/properties-api.js'
+import { baseUrl, getProperty, addtoWishlist, getWishList } from '../assets/utils/properties-api.js'
+import { getIdToken } from '../assets/utils/auth.js'
 
 export default {
   name:'view-property',
@@ -133,7 +157,9 @@ export default {
       askSeller:{
         inquery:1
       },
-      dialogVisible: false
+      dialogVisible: false,
+      wishlist:[],
+      wishlistId:''
     }
 
   },
@@ -144,15 +170,85 @@ export default {
           this.setLatLng();
       });
     },
+    getWishlist:function(){
+      getWishList().then((wishlist)=>{
+
+        var arr = [];
+        for(var wish in wishlist){
+          arr.push(wishlist[wish].property.property_no)
+          if(wishlist[wish].property.property_no === this.property.property_no){
+            this.wishlistId = wishlist[wish].id
+          }
+        }
+        this.wishlist = arr;
+      });
+    },
     setLatLng:function(){
       this.marker = {
         lat: Number(this.property.property_location.lat),
         lng: Number(this.property.property_location.lng),
       }
+    },
+    handleAddWishList:function(){
+      const self = this;
+      axios.defaults.headers.common['token'] = getIdToken();
+      return axios.post(baseUrl()+'/client/wishlist/add', { property_id : this.property.id}).
+      then(function(response){
+        self.$message({
+          message: 'This property was added to your wish list',
+          type: 'success'
+        });
+        self.getWishlist();
+      })
+      .catch(function(error){
+        self.$message({
+          message: 'You need to sign in',
+          type: 'info'
+        });
+      });
+    },
+    handleRemoveWishList:function(){
+      const self = this;
+      axios.defaults.headers.common['token'] = getIdToken();
+      return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
+      then(function(response){
+        self.$message({
+          message: 'This property was removed from your wish list',
+          type: 'success'
+        });
+        self.getWishlist();
+      })
+      .catch(function(error){
+        self.$message({
+          message: 'You need to sign in',
+          type: 'info'
+        });
+      });
+    },
+    propertyType:function(){
+      var property_type='';
+      switch(this.property.property_type){
+        case 1:
+          property_type = 'Condominium'
+          break;
+        case 2:
+          property_type = 'House And Lot'
+          break;
+        case 3:
+          property_type = 'Townhouse'
+          break;
+        default:
+          property_type = 'Property'
+      }
+      return property_type;
+    },
+    formatNumber: function(num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
   },
   mounted(){
     this.getProperty(this.$route.params.property_no);
+    this.getWishlist();
     this.imgUrl = baseUrl() + '/images/';
     //this.style = MapStyle;
   },

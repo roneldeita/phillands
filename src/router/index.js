@@ -17,6 +17,9 @@ import PublishCompleted from '@/components/seller/Publish-completed'
 import EditProperty from '@/components/seller/Edit-property'
 
 import Admin from '@/components/admin/Dashboard'
+import AdminUsers from '@/components/admin/user/user.vue'
+import AdminListings from '@/components/admin/listings/listings.vue'
+import AdminAds from '@/components/admin/ads/ads.vue'
 
 import Users from '@/components/Users'
 import User from '@/components/User'
@@ -47,7 +50,10 @@ export default new Router({
         { path: '/publish-completed', name: 'publish-completed', beforeEnter:requireAuth, component: PublishCompleted },
         { path: '/edit-property/:property_no', name: 'edit-property', beforeEnter:requireAuth, component: EditProperty },
 
-        { path: '/admin', name: 'admin', beforeEnter:isAdmin, component:Admin},
+        { path: '/admin', name: 'admin-dashboard', beforeEnter:isAdmin, component:Admin},
+        { path: '/admin/users', name: 'admin-users', beforeEnter:isAdmin, component:AdminUsers },
+        { path: '/admin/listings', name: 'admin-listings', beforeEnter:isAdmin, component:AdminListings },
+        { path: '/admin/ads', name: 'admin-ads', beforeEnter:isAdmin, component:AdminAds },
 
         { path: '/users', name: 'users', beforeEnter: requireAuth, component: Users },
         { path: '/user/:userName', name: 'user', component: User }

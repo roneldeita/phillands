@@ -13,9 +13,15 @@
         </el-col>
         <el-col :offset="2" :span="20" class="">
 
-          <el-tabs v-model="activeAuthTab">
-
+          <el-tabs v-show="!forgetPassword" v-model="activeAuthTab">
             <el-tab-pane label="Login" name="login">
+              <div class="" style="padding:5px 0 10px 0">
+                <el-button type="default" @click="authenticate('google')" style="width:100%"><span class="fa fa-google"></span> Login with google</el-button>
+              </div>
+              <div class="" style="padding:5px 0 10px 0">
+                <el-button type="info" @click="authenticate('facebook')" style="width:100%"><span class="fa fa-facebook-official"></span> Login with facebook</el-button>
+              </div>
+              <p>or</p>
               <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0">
                 <el-form-item label="" prop="email">
                   <el-input v-model="loginForm.email" placeholder="Email"></el-input>
@@ -26,6 +32,7 @@
                 <el-form-item class="text-left" style="margin-top:25px">
                   <el-button type="primary" @click="handleLogin('loginForm')">Login</el-button>
                 </el-form-item>
+                <el-button type="text" @click="forgetPassword = true"> Forgot your password?</el-button>
               </el-form>
             </el-tab-pane>
 
@@ -53,6 +60,22 @@
             </el-tab-pane>
 
           </el-tabs>
+
+          <el-tabs v-show="forgetPassword">
+            <el-tab-pane label="Reset Password">
+              <p class="text-left">Enter the email address associated with your account, and we’ll email you a link to reset your password.</p>
+              <el-form :model="resetPasswordForm" :rules="resetPasswordRules" ref="resetPasswordForm" label-width="0">
+                <el-form-item label="" prop="email" style="margin-bottom:22px">
+                  <el-input v-model="resetPasswordForm.email" placeholder="Email Address"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button class="pull-left" type="text" @click="forgetPassword = false"><span class="el-icon-arrow-left"></span> Back to Login</el-button>
+                  <el-button class="pull-right" type="primary">Send Resend Link</el-button>
+                </el-form-item>
+              </el-form>
+            </el-tab-pane>
+          </el-tabs>
+
         </el-col>
       </el-row>
       <br>
@@ -62,15 +85,17 @@
 
 <script>
 import axios from 'axios';
+import { baseUrl } from '../../assets/utils/properties-api.js';
 import { isLoggedIn, login, register } from '../../assets/utils/auth.js';
 
 export default {
   name:'login-modal',
-  props:['modal'],
+  props:['loginmodal'],
   data(){
     return{
-      dialogVisible: this.modal,
+      dialogVisible: this.loginmodal,
       activeAuthTab:'login',
+      forgetPassword:false,
       loginForm:{
         email:'',
         password:''
@@ -81,6 +106,9 @@ export default {
         contact:'',
         email:'',
         password:''
+      },
+      resetPasswordForm:{
+        email:''
       },
       loginRules:{
         email: [
@@ -110,55 +138,77 @@ export default {
         password: [
           { required: true, message: 'Please input password', trigger: 'blur' }
         ]
-      }
+      },
+      resetPasswordRules:{}
     }
   },
   methods:{
     dialogClose:function(){
-      this.$emit('modalclose', this.dialogVisible)
+      this.$emit('loginmodalclose', this.dialogVisible)
+    },
+    authenticate: function (provider) {
+      this.$auth.authenticate(provider).then(function (authResponse) {
+        console.log(authResponse);
+        // Execute application logic after successful social authentication
+      })
     },
     handleLogin:function(formName){
-
-        this.$refs[formName].validate((valid) => {
-
-          if(valid){
-            const self = this;
-
-            axios.post('http://103.16.170.117:8090/login',this.loginForm)
-            .then(function (response) {
-              localStorage.setItem('access_token', response.data.token);
-              localStorage.setItem('user', JSON.stringify(response.data.user));
-
-              location.reload();
-
-            })
-            .catch(function (error) {
-              self.$message.error('Email or Password is incorrect')
-
-            });
-
-          }else{
-            //console.log(valid)
-          }
-
-        });
-    },
-    handleRegistration:function(formName){
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-          register(this.registerForm)
+
+          this.doLogin(this.loginForm);
+
         }else{
-          console.log(valid)
+          //console.log(valid)
+        }
+
+      });
+    },
+    handleRegistration:function(formName){
+
+      this.$refs[formName].validate((valid) => {
+
+        if(valid){
+          const self = this;
+
+          axios.post(baseUrl()+'/register', this.registerForm)
+          .then(function(response) {
+            self.doLogin({email:self.registerForm.email, password:self.registerForm.password});
+          })
+          .catch(function(error) {
+            self.$message.error(error.response.data.message)
+          });
+
+        }else{
+          //
         }
 
       });
 
-    }
+    },
+    doLogin:function(formData){
+      const self = this;
+
+      axios.post(baseUrl()+'/login',formData)
+      .then(function(response) {
+        localStorage.setItem('access_token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+
+        location.reload();
+
+      })
+      .catch(function(error) {
+        self.$message.error('Email or Password is incorrect')
+      });
+    },
+    resetPasswordWasClick:function(){
+      this.$emit('resetpassword');
+    },
   },
   watch:{
-    modal:function(e){
-      this.dialogVisible = this.modal
+    loginmodal:function(e){
+      this.dialogVisible = this.loginmodal
     }
   },
   mounted(){

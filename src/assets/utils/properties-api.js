@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+import { getIdToken } from './auth.js';
+
 const BASE_URL = 'http://103.16.170.117:8090'
 const API_URL = 'http://103.16.170.117:8090/property';
 
-export {baseUrl, getProperties, getProperty, getLocality};
+export {baseUrl, getProperties, getProperty, getLocality, updateProperty, getWishList};
 
 function baseUrl(){
   return BASE_URL;
@@ -36,4 +38,14 @@ function getProperty(propertyNo){
 
 function getLocality(){
   return axios.get(BASE_URL+'/locality').then( response => response.data)
+}
+
+function updateProperty(basic){
+  axios.defaults.headers.common['token'] = getIdToken();
+  return axios.post(BASE_URL+'/broker/property/update', { id: basic.id, edit:'details', title: basic.title, description: basic.description}).then( response => response );
+}
+
+function getWishList(){
+  axios.defaults.headers.common['token'] = getIdToken();
+  return axios.get(BASE_URL+'/client/wishlist').then( response => response.data)
 }

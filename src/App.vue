@@ -2,9 +2,9 @@
   <div id="app">
       <navigation v-if="$route.name != 'index'" @login="LoginWasClicked" @search="searchWasClicked"></navigation>
 
-      <router-view  @login="LoginWasClicked" :search="search"></router-view>
+      <router-view  @login="LoginWasClicked" @ :search="search"></router-view>
       <!-- <users></users> -->
-      <login-modal :modal="dialogVisible" @modalclose="closeLoginDialog"></login-modal>
+      <login-modal :loginmodal="loginVisible" @loginmodalclose="closeLoginDialog"> </login-modal>
   </div>
 </template>
 
@@ -21,18 +21,21 @@ export default {
   name: 'app',
   data(){
     return{
-      dialogVisible: false,
+      loginVisible: false,
       search:''
     }
   },
   methods:{
     closeLoginDialog:function(){
-      this.dialogVisible = false
+      this.loginVisible = false
+    },
+    closeResetPasswordDialog:function(){
+      this.resetPasswordVisible = false
     },
     LoginWasClicked:function(){
-      this.dialogVisible = true;
+      this.loginVisible = true;
     },
-    searchWasClicked(value){
+    searchWasClicked:function(value){
       this.search = value
     }
   },

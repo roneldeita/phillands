@@ -29,7 +29,10 @@
           <property-box v-for="n in 0" :key="n" :info="archives"></property-box>
         </div>
         <div v-if="activeMenu === 'wishlist'">
-          <property-box v-for="n in 0" :key="n" :info="wishlist"></property-box>
+          <property-box v-if="wishlist.length" v-for="item in wishlist" :key="item.id" :info="item"></property-box>
+          <div class="jumbotron" v-else="wishlist.length === 0">
+            <h4><a href="javascript:void(0)" @click="goToPublishListing"> <span class="fa fa-plus"></span> Add Listing</a></h4>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -38,6 +41,7 @@
 
 <script>
 import axios from 'axios'
+import { baseUrl, getWishList } from '../../assets/utils/properties-api.js';
 import { getIdToken, getProfile } from '../../assets/utils/auth.js';
 import PropertyBox from './Property-box.vue'
 
@@ -50,7 +54,7 @@ export default {
       forApproval : '',
       archives : 'Archives',
       inactives : 'Inactive Postings',
-      wishlist : 'Wish List',
+      wishlist : '',
     }
   },
   methods:{
@@ -58,6 +62,7 @@ export default {
       this.activeMenu = itemMenu;
       this.getApproval();
       this.getPublished();
+      this.getWishList();
       if(itemMenu === 'published'){
         this.$router.replace({name:'listings'});
       }else{
@@ -70,7 +75,7 @@ export default {
     getPublished:function(){
       const self = this;
       var profile = JSON.parse(getProfile());
-      axios.get('http://103.16.170.117:8090/property',{ params:{owner_id: profile.id, status: 1}})
+      axios.get(baseUrl()+'/property',{ params:{owner_id: profile.id, status: 1}})
       .then(function (response) {
         self.published = response.data.properties
       })
@@ -81,13 +86,23 @@ export default {
     getApproval:function(){
       const self = this;
       var profile = JSON.parse(getProfile());
-      axios.get('http://103.16.170.117:8090/property',{ params:{owner_id: profile.id, status: 2}})
+      axios.get(baseUrl()+'/property',{ params:{owner_id: profile.id, status: 0}})
       .then(function (response) {
+        console.log(response.data.properties)
         self.forApproval = response.data.properties
       })
       .catch(function (error) {
         console.log(error);
       });
+    },
+    getWishList(){
+      getWishList().then((wishlist)=>{
+        var arr = [];
+        for(var wish in wishlist){
+          arr.push(wishlist[wish].property)
+        }
+        this.wishlist = arr;
+      })
     }
   },
   mounted(){
@@ -99,6 +114,7 @@ export default {
 
     this.getApproval();
     this.getPublished();
+    this.getWishList();
   },
   components:{ PropertyBox },
 
