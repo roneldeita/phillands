@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <el-card :body-style="{ padding: '0px' }" class="card">
-      <img v-lazy="'http://103.16.170.117:8090/images/'+property.property_media[0].uploaded_filename" @click="dialogVisible = true">
+      <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" @click="dialogVisible = true">
     </el-card>
     <button type="success" class="btn btn-success btn-pl-green" @click="dialogVisible = true">VIEW LISTING</button>
     <div class="card-info-container">
@@ -19,7 +19,7 @@
           <div class="carousel-container">
             <el-carousel indicator-position="outside" :autoplay="false">
               <el-carousel-item v-for="img in property.property_media" :key="img.id">
-                  <img v-lazy="'http://103.16.170.117:8090/images/'+img.uploaded_filename" style="height:100%">
+                  <img v-lazy="imgUrl+img.uploaded_filename" style="height:100%">
               </el-carousel-item>
             </el-carousel>
           </div>
@@ -68,13 +68,14 @@
 </template>
 
 <script>
+import { baseUrl } from '../assets/utils/properties-api.js';
 export default {
   name:"property-card",
   props:['property'],
   data(){
     return{
-      dialogVisible:false,
-      primary_img:'http://103.16.170.117:8090/images/'+this.property.property_media[0].uploaded_filename
+      imgUrl:'',
+      dialogVisible:false
     }
   },
   methods:{
@@ -84,6 +85,9 @@ export default {
     handleCard: function(propertyNo){
       this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     }
+  },
+  created(){
+    this.imgUrl = baseUrl() + '/images/';
   }
 }
 </script>

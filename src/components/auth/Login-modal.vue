@@ -27,7 +27,9 @@
                   <el-input v-model="loginForm.email" placeholder="Email"></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="password" style="margin-top:25px">
-                  <el-input type="password" v-model="loginForm.password" placeholder="Password"></el-input>
+                  <el-input :type="password.type" v-model="loginForm.password" placeholder="Password" :on-icon-click="handleViewPassword">
+                  </el-input>
+                  <span :class="password.class" id="show-password" @click="handleViewPassword"></span>
                 </el-form-item>
                 <el-form-item class="text-left" style="margin-top:25px">
                   <el-button type="primary" @click="handleLogin('loginForm')">Login</el-button>
@@ -96,6 +98,10 @@ export default {
       dialogVisible: this.loginmodal,
       activeAuthTab:'login',
       forgetPassword:false,
+      password:{
+        type:'password',
+        class:'fa fa-eye'
+      },
       loginForm:{
         email:'',
         password:''
@@ -193,9 +199,14 @@ export default {
       axios.post(baseUrl()+'/login',formData)
       .then(function(response) {
         localStorage.setItem('access_token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-
-        location.reload();
+        var userInfo = JSON.stringify(response.data.user);
+        localStorage.setItem('user', userInfo);
+        var user = JSON.parse(userInfo);
+        if(user.role === 2){
+          window.location  = '/admin'
+        }else{
+          location.reload();
+        }
 
       })
       .catch(function(error) {
@@ -205,6 +216,15 @@ export default {
     resetPasswordWasClick:function(){
       this.$emit('resetpassword');
     },
+    handleViewPassword: function(){
+      if(this.password.type === 'password'){
+        this.password.type ='text';
+        this.password.class ='fa fa-eye-slash'
+      }else{
+        this.password.type ='password';
+        this.password.class ='fa fa-eye'
+      }
+    }
   },
   watch:{
     loginmodal:function(e){
@@ -218,10 +238,18 @@ export default {
 </script>
 
 <style>
-  @media (max-width: 575px) {
+  #show-password{
+    position: absolute !important;
+    top:10px !important;
+    right: 10px!important;
+    cursor: pointer !important;
+    color: #a6a6a6 !important;
+  }
+  @media (max-width: 768px) {
     .el-dialog--tiny{
       top: 0% !important;
       bottom: 0% !important;
+      min-height: 600px !important;
       height: 100% !important;
       width: 100% !important;
     }

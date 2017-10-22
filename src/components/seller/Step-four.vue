@@ -57,6 +57,7 @@ export default {
       this.$emit('back')
     },
     setLocation: function(place){
+      this.$refs.gmap.resize();
       var address_components = [];
 
       this.marker = {
@@ -65,7 +66,6 @@ export default {
       }
       this.updateCenter();
       this.$emit('formatedaddress', place);
-      this.$refs.gmap.resize();
     },
     setMarker: function(place){
       this.marker = {

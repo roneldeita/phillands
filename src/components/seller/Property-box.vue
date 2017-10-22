@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card text-left">
     <div slot="header" v-if="this.$route.name != 'wishlist'">
-      <p>{{info.status === 1? 'For Approval' : 'Published'}}  <span class="pull-right"> <span class="txt-pl-green">{{ info.property_no }}</span></span></p>
+      <p>{{info.status === 0? 'For Approval' : 'Published'}}  <span class="pull-right"></span></p>
     </div>
       <el-row :gutter="10">
         <el-col :xs="24" :span="8" class="">
@@ -18,7 +18,7 @@
           </div>
           <div v-if="this.$route.name === 'wishlist'">
             <el-button type="success" class="btn-pl-green" @click="previewProperty">Preview</el-button>
-            <el-button :plain="true" type="danger" @click="previewProperty">Remove</el-button>
+            <el-button :plain="true" type="danger" @click="previewProperty(info.property_no)">Remove</el-button>
           </div>
         </el-col>
       </el-row>
@@ -31,7 +31,10 @@ export default {
   props:['name', 'info'],
   methods:{
     previewProperty: function(propertyNo){
-      window.open('/property/'+this.info.property_no, '_blank')
+      //window.open('/property/'+this.info.property_no, '_blank');
+      this.$router.push({name:'view-property',params:{property_no:this.info.property_no}});
+    // console.log(propertyNo);
+    //   this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     },
     handleEditProperty: function(propertyNo){
       this.$router.push({name:'edit-property', params:{property_no:propertyNo}})

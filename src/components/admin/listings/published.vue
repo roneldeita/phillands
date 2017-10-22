@@ -1,0 +1,124 @@
+<template>
+  <div>
+    <el-table
+      v-loading.body="loading"
+      :data="properties"
+      style="">
+      <el-table-column type="expand">
+        <template scope="props">
+          <el-row :gutter="20">
+            <el-col :span="5" style="overflow:hidden">
+              <img v-lazy="imgUrl+props.row.property_media[0].uploaded_filename" style="height:100px;"></img>
+            </el-col>
+            <el-col :span="19" class="text-left">
+              <h4>{{props.row.property_detail.title}}</h4>
+              <p>{{props.row.property_location.formatted_address}}</p>
+              <p style="color:#666666">{{props.row.updatedAt | moment("from")}}</p>
+            </el-col>
+          </el-row>
+        </template>.row.
+      </el-table-column>
+      <el-table-column class="border"
+        label="Date Created"
+        prop="createdAt"
+        align="left"
+        sortable>
+        <template scope="scope">
+          <el-icon name="time"></el-icon>
+          <span style="margin-left: 10px">{{ scope.row.createdAt | moment("from") }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="Title"
+        prop="property_detail.title"
+        align="left"
+        sortable>
+      </el-table-column>
+      <el-table-column
+        label="Property ID"
+        prop="property_no"
+        align="left"
+        sortable>
+      </el-table-column>
+      <el-table-column
+        align="left"
+        label="Operations">
+        <template scope="scope">
+          <el-button type="success" size="small">Approve</el-button>
+          <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">Preview</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination class="text-left" style="margin-top:10px"
+      layout="total, prev, pager, next"
+      :page-size="item_per_page"
+      :total="total_properties"
+      @current-change="switchToPage">
+    </el-pagination>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import { baseUrl, getProperties } from '../../../assets/utils/properties-api.js';
+
+export default {
+  name:'published',
+  data(){
+    return{
+      loading: true,
+      imgUrl:'',
+      item_per_page: 10,
+      total_properties:0,
+      property_source:'',
+      properties:[{}],
+    }
+  },
+  methods:{
+    handlePreview: function(propertyNo){
+      this.$router.push({name:'view-property', params:{property_no:propertyNo}})
+    },
+    loadPublished(start, end){
+      var arr = [];
+      for (var elem in this.property_source) {
+         arr.push(this.property_source[elem]);
+      }
+      var items = arr.slice(start, end);
+      this.properties = items;
+      // console.log(this.published);
+    },
+    switchToPage(page){
+      var end = this.item_per_page * page;
+      var start = end - this.item_per_page;
+      this.loadPublished(start, end);
+    },
+    getPublished:function(){
+      const self = this;
+      axios.get(baseUrl()+'/property',{ params:{ status: 1}})
+      .then(function (response) {
+        self.property_source = response.data.properties
+        if(self.property_source.length > 0){
+          self.loadPublished(0, self.item_per_page);//load the properties
+          self.total_properties = Object.keys(self.property_source).length ;//get the total numbers of properties
+          self.loading = false;
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+  },
+  mounted(){
+    this.getPublished();
+    this.imgUrl = baseUrl() + '/images/';
+  }
+}
+</script>
+
+<style scoped>
+  img[lazy=loading] {
+    background-image: url('../../../../static/cube.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>

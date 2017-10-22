@@ -11,7 +11,7 @@
           </el-col>
         </el-row>
         <div class="" style="width:100%">
-          <paginate
+          <!-- <paginate
             :page-count="page_count"
             :click-handler="switchToPage"
             :prev-text="'Prev'"
@@ -23,7 +23,13 @@
             :next-class="'page-item'"
             :next-link-class="'page-link'"
             :containerClass="'pagination justify-content-center'">
-          </paginate>
+          </paginate> -->
+          <el-pagination
+            layout="total, prev, pager, next"
+            :page-size="item_per_page"
+            :total="total_properties"
+            @current-change="switchToPage">
+          </el-pagination>
         </div>
       </el-col>
       <el-col :xs="24" :sm="6" :md="6">
@@ -52,7 +58,7 @@ export default {
     return{
       property_source:'',
       properties:[],
-      total_properties:'',
+      total_properties:0,
       page_count:0,
       item_per_page: 6,
       adds:[
@@ -80,7 +86,7 @@ export default {
       this.loadProperties(start, end);
     },
     getRents(property_type, location) {
-      getProperties(2, property_type, location).then((property) => {
+      getProperties(2,  Number(property_type), location).then((property) => {
         this.property_source = property.properties;
         this.loadProperties(0, this.item_per_page);//load the properties
         this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
@@ -89,7 +95,7 @@ export default {
     }
   },
   mounted(){
-    this.getRents();
+    this.getRents(this.$route.params.property_type, this.$route.params.location);
   },
   components:{ PropertyCard, Advertisement },
   watch:{

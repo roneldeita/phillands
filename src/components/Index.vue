@@ -44,7 +44,7 @@
           class="inline-input">
             <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
               <el-option label="Condominium" value="1"></el-option>
-              <el-option label="House and Lot" value="2"s></el-option>
+              <el-option label="House and Lot" value="2"></el-option>
               <el-option label="Townhouse" value="3"></el-option>
             </el-select>
         </el-autocomplete>

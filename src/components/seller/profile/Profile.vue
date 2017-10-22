@@ -20,7 +20,14 @@
             </div>
               <el-row :gutter="10">
                 <el-col :xs="24" :span="8" class="">
-
+                  <p class="label">First Name</p>
+                  <p>{{ profile.first_name }}</p>
+                  <p class="label">Last Name</p>
+                  <p>{{ profile.last_name }}</p>
+                  <p class="label">Mobile Name</p>
+                  <p>+63 0943 594 6758</p>
+                  <p class="label">Email Address</p>
+                  <p>{{ profile.email }}</p>
                 </el-col>
               </el-row>
           </el-card>
@@ -32,7 +39,7 @@
 
 <script>
 
-import { getProfile } from '../../assets/utils/auth.js';
+import { getProfile } from '../../../assets/utils/auth.js';
 
 export default {
   name:'profile',
@@ -101,5 +108,11 @@ export default {
     box-shadow: 0px 0px 0px 0px !important;
     border-radius: 2px !important;
     margin-bottom: 20px;
+  }
+  .label{
+    color: #999999;
+    font-size: 14px;
+    padding-top: 0px;
+    margin-bottom: 5px;;
   }
 </style>

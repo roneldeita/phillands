@@ -6,6 +6,7 @@ import router from './router'
 import VueResource from 'vue-resource'
 import Paginate from 'vuejs-paginate'
 import ElementUI from 'element-ui'// ElementUi
+import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-default/index.css'// ElementUiTheme
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueLazyload from 'vue-lazyload'// for img
@@ -15,7 +16,7 @@ import axios from 'axios';
 import VueMoment from 'vue-moment-jalaali'// datetime library
 
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale })
 Vue.use(VueLazyload)
 Vue.use(VueMoment)
 Vue.use(VueAxios, axios)

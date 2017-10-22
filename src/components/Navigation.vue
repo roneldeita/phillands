@@ -34,8 +34,8 @@
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item" v-if="isLoggedIn()">
             <button type="button" class="btn btn-success" v-if="!publishPropertyBtn.includes($route.name)" @click="goToPath('publish-property')">Publish Property</button>
-            <button type="button" class="btn btn-success" v-show="$route.name === 'publish-property'" @click="goToPath('listings')">Cancel</button>
-            <button type="button" class="btn btn-success" v-show="$route.name === 'view-property'" @click="handleBack">Back</button>
+            <el-button v-show="$route.name === 'publish-property'" @click="goToPath('listings')">Cancel</el-button>
+            <button type="button" class="btn btn-success" v-show="$route.name === 'view-property' || $route.name ==='edit-property'" @click="handleBack">Back</button>
           </li>
           <li v-if="!isLoggedIn()">
             <button type="button" class="btn btn-success" v-show="$route.name === 'view-property'" @click="handleBack">Back</button>
@@ -56,7 +56,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </li>
-          <li class="nav-item dropdown" id="dropdown-sm">
+          <li class="nav-item dropdown" id="dropdown-sm" v-if="isLoggedIn()">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <img v-if="profile" :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
             </a>
@@ -192,6 +192,7 @@ export default {
         });
       },
       handleSearch:function(){
+        //console.log(this.propertyType);
         // console.log('offer_type: ' + this.activeNav);
         // console.log('location: ' + this.searchLocation);
         // console.log('property_type: ' + this.propertyType);
@@ -199,7 +200,7 @@ export default {
         this.$emit('search', { offer_type: this.activeNav, property_type:this.propertyType, location:this.searchLocation});
       },
       changeTab:function(tab, event){
-        this.$router.replace({ name: tab.name});
+        this.$router.replace({ name: tab.name, params:{property_type:this.propertyType, location:this.searchLocation }});
       },
       handleBack:function(){
         var self = this;
@@ -228,7 +229,10 @@ export default {
         this.activeNav = 'admin-dashboard';
       }
 
-      this.propertyType = this.$route.params.property_type;
+      if(this.$route.params.property_type){
+        this.propertyType = this.$route.params.property_type;
+      }
+      console.log(this.$route.params.property_type);
       this.searchLocation = this.$route.params.location;
       this.loadLocality();
 

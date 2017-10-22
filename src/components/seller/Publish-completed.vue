@@ -5,10 +5,11 @@
         <div class="main-nav fixed-top" style="margin-top:66px">
           <el-progress :show-text="false" :stroke-width="10" :percentage="100"></el-progress>
         </div>
-        <h2>Your listing is ready to publish!</h2>
-        <p>Make sure your details are updated so our users can easily contact you at the right channel.</p><br><br>
-        <el-button class="pull-left" size="large" @click="handleBtn">Edit Listing</el-button>
-        <el-button type="success" class="pull-right btn-pl-green" size="large" @click="handleBtn">Go to your Listing</el-button>
+        <h1><span class="fa fa-check-circle txt-pl-green"></span></h1>
+        <h2>Your listing was successfully saved!</h2>
+        <p>Your listing will be shown to the buyers once approved.</p><br><br>
+        <!-- <el-button class="pull-left" size="large" @click="handleBtn">Edit Listing</el-button> -->
+        <el-button type="success" class="pull-left btn-pl-green" size="large" @click="handleBtn">View your listing</el-button>
       </el-col>
     </el-row>
   </div>

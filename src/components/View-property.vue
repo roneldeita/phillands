@@ -73,6 +73,12 @@
           <div style="background-color:#56BA50; color:#ffffff; padding:10px 20px">
             	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span><span v-if="property.offer_type === 2">/mo.</span>
               <div class="pull-right">
+                <el-tooltip placement="top">
+                  <div slot="content">Share this property<br/>on Facebook</div>
+                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleAddWishList">
+                    <span class="fa fa-facebook"></span>
+                  </el-button>
+                </el-tooltip>
                 <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
                   <div slot="content">Add this property<br/>to your Wish List</div>
                   <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleAddWishList">
@@ -277,7 +283,7 @@ export default {
     font-weight:300;
   }
   .view-container{
-    margin-top: -85px
+    margin-top: -85px;
   }
   .primary-img{
     width: 100%;

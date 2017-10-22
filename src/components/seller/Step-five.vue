@@ -48,7 +48,7 @@
         <h5>Paste your YouTube video URL</h5>
         <el-input class="input" v-model="youtubeUrl" @change="changeYoutubeUrl">
           <template slot="prepend">YouTube URL</template>
-        </el-input>
+        </el-input><br>
       </el-col>
       <el-col :span="24" class="input">
         <el-button type="btn-pl-green" size="large" @click="backToPreviousStep">Back</el-button>

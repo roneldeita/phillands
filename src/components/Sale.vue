@@ -11,7 +11,7 @@
           </el-col>
         </el-row>
         <div class="" style="width:100%">
-          <paginate
+          <!-- <paginate
             :page-count="page_count"
             :click-handler="switchToPage"
             :prev-text="'Prev'"
@@ -23,7 +23,13 @@
             :next-class="'page-item'"
             :next-link-class="'page-link'"
             :containerClass="'pagination justify-content-center'">
-          </paginate>
+          </paginate> -->
+          <el-pagination
+            layout="total, prev, pager, next"
+            :page-size="item_per_page"
+            :total="total_properties"
+            @current-change="switchToPage">
+          </el-pagination>
         </div>
       </el-col>
       <el-col :xs="24" :sm="6" :md="6">
@@ -53,7 +59,7 @@ export default {
     return{
       property_source:'',
       properties:[],
-      total_properties:'',
+      total_properties:0,
       page_count:0,
       item_per_page: 6,
       adds:[
@@ -90,13 +96,11 @@ export default {
     }
   },
   mounted(){
-    this.getSales();
-    //console.log(this.$route.params.property_type)
+    this.getSales(this.$route.params.property_type, this.$route.params.location);
   },
   components:{ PropertyCard, Advertisement },
   watch:{
     'search':function(value){
-    //  console.log(value.property_type);
       this.getSales(value.property_type, value.location)
     }
   }

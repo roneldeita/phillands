@@ -2,7 +2,8 @@
   <div id="app">
       <navigation v-if="$route.name != 'index'" @login="LoginWasClicked" @search="searchWasClicked"></navigation>
 
-      <router-view  @login="LoginWasClicked" @ :search="search"></router-view>
+      <router-view class="router-view" @login="LoginWasClicked" @ :search="search"></router-view>
+      <!-- <bottom-navigation class="footer"></bottom-navigation> -->
       <!-- <users></users> -->
       <login-modal :loginmodal="loginVisible" @loginmodalclose="closeLoginDialog"> </login-modal>
   </div>
@@ -14,6 +15,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
 import Index from './components/Index.vue';
 import Navigation from './components/Navigation.vue';
 import LoginModal from './components/auth/Login-modal.vue';
+import BottomNavigation from './components/BottomNavigation.vue';
 import Users from './components/Users.vue';
 import User from './components/User.vue';
 
@@ -39,7 +41,7 @@ export default {
       this.search = value
     }
   },
-  components:{ Index, Navigation, Users, User, LoginModal  },
+  components:{ Index, Navigation, LoginModal, BottomNavigation, Users, User,  },
 
 }
 </script>
@@ -49,18 +51,36 @@ export default {
 @import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
 @import url('../node_modules/pe7-icon/dist/dist/pe-icon-7-stroke.min.css');
 @import url('../node_modules/font-awesome/css/font-awesome.min.css');
-
 .border{
     border: 1px solid #999999
 }
 
-#app {
+html{
+  height: 100%
+}
+
+body{
+  min-height: 100%
+}
+
+
+#app{
   font-family: 'Didact Gothic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #636363 !important;
   padding-top: 150px;
+  min-height:550px;
+}
+
+.router-view{
+  min-height:550px;
+  height:auto;
+}
+
+.footer{
+  height: 50px
 }
 
 input[type=number]::-webkit-inner-spin-button,
