@@ -3,7 +3,7 @@
     <el-card :body-style="{ padding: '0px' }" class="card">
       <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" @click="dialogVisible = true">
     </el-card>
-    <button type="success" class="btn btn-success btn-pl-green" @click="dialogVisible = true">VIEW LISTING</button>
+    <button type="button" class="btn btn-success btn-view" @click="dialogVisible = true">VIEW LISTING</button>
     <div class="card-info-container">
       <p class="card-price">₱ {{ formatNumber(property.price) }} <span v-if="property.offer_type === 2">/ mo.</span></p>
       <p class="card-title text-left">{{ property.property_detail.title }}</p>
@@ -54,10 +54,10 @@
                 <el-button type="default" style="width:100%" @click="handleCard(property.property_no)">VIEW FULL LISTING</el-button>
               </el-col>
               <el-col :xs="24" :span="12" style="margin-bottom:10px">
-                <el-button type="success" style="width:100%" @click="handleCard(property.property_no)">CONTACT SELLER</el-button>
+                <el-button type="success" class="btn-pl-green" style="width:100%" @click="handleCard(property.property_no)">CONTACT SELLER</el-button>
               </el-col>
               <el-col :span="24" style="padding:10px" class="text-center">
-                <a href=""><span class="fa fa-bug"></span> Report this listing</a>
+                <a href=""><span class="fa fa-flag-o"></span> Report this listing</a>
               </el-col>
             </el-row>
           </div>
@@ -115,8 +115,8 @@ export default {
     -moz-filter: brightness(40%);
   }*/
 
-  .card:hover + .btn,
-  .btn:hover{
+  .card:hover + .btn-view,
+  .btn-view:hover{
     visibility: visible;
     background-color: #56BA50;
     border: 1px solid #56BA50;
@@ -141,7 +141,7 @@ export default {
     background: rgba(0, 0, 0, .4);
   }
 
-  .btn{
+  .btn-view{
     visibility: hidden;
     position: relative;
     margin-top: -480px;
@@ -151,7 +151,7 @@ export default {
     transform: translateX(0%); /* By this.. */
     border-radius: 0px;
     font-size: 14px;
-    padding: 6px 30px;
+    padding: 8px 30px 6px 30px;
     cursor: pointer;
   }
 

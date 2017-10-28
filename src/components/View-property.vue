@@ -1,4 +1,4 @@
-<template>
+ <template>
   <el-row class="view-container text-left" v-if="property">
     <el-col :span="24" class="">
       <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" alt="" class="primary-img">
@@ -75,7 +75,7 @@
               <div class="pull-right">
                 <el-tooltip placement="top">
                   <div slot="content">Share this property<br/>on Facebook</div>
-                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleAddWishList">
+                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none">
                     <span class="fa fa-facebook"></span>
                   </el-button>
                 </el-tooltip>
@@ -93,48 +93,40 @@
                 </el-tooltip>
               </div>
           </div>
-          <div style="background:#F0F0F0; padding:5px 20px 5px 20px; margin-bottom:15px">
+          <div style="background:#F0F0F0; padding:5px 20px 10px 20px"  v-loading="loadingContact">
             <p class="form-title text-center">Ask about the property</p>
-            <el-form :model="askSeller">
-              <el-form-item label="" prop="desc">
-                <el-input type="textarea" placeholder="Message Inquiry" :rows="3"></el-input>
+            <el-form :model="inquireForm" :rules="inquireRules" ref="inquireForm">
+              <el-form-item label="" prop="message">
+                <el-input type="textarea" v-model="inquireForm.message" placeholder="Message Inquiry" :rows="3"></el-input>
               </el-form-item>
               <el-row :gutter="10">
                 <el-col :span="12">
-                  <el-form-item label="" prop="desc">
-                    <el-input placeholder="First Name"></el-input>
+                  <el-form-item label="" prop="first_name">
+                    <el-input v-model="inquireForm.first_name" placeholder="First Name"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="" prop="desc">
-                    <el-input placeholder="First Name"></el-input>
+                  <el-form-item label="" prop="last_name">
+                    <el-input v-model="inquireForm.last_name" placeholder="Last Name"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-form-item label="" prop="desc">
-                <el-input placeholder="Contact Number" :rows="5"></el-input>
+              <el-form-item label="" prop="contact">
+                <el-input type="number" v-model="inquireForm.contact" placeholder="Contact Number"></el-input>
               </el-form-item>
-              <el-form-item label="" prop="desc">
-                <el-input placeholder="Email" :rows="5"></el-input>
+              <el-form-item label="" prop="email">
+                <el-input v-model="inquireForm.email" placeholder="Email" :rows="5"></el-input>
               </el-form-item>
               <p>I would Like to:</p>
-              <el-radio-group v-model="askSeller.inquery">
+              <el-radio-group v-model="inquireForm.inquery">
                 <el-radio :label="1">Know more information</el-radio><br>
                 <el-radio :label="2">Schedule an appointment</el-radio>
               </el-radio-group>
               <el-form-item>
-                <el-button type="success" class="btn-pl-green" style="width:100%">Contact Seller</el-button>
+                <el-button type="success" class="btn-pl-green" style="width:100%" @click="handleInquiry('inquireForm')">Contact Seller</el-button>
               </el-form-item>
             </el-form>
-          </div>
-          <div style="background:#F0F0F0; padding:10px" class="text-center">
-            <a href=""><span class="fa fa-bug"></span> Report this listing</a>
-            <!-- <el-button style="width:100%" v-if="!wishlist.includes(property.property_no)" @click="handleAddWishList">
-              <span class="fa fa-heart-o"></span> Add to Wish List
-            </el-button>
-            <el-button style="width:100%" v-if="wishlist.includes(property.property_no)" @click="handleRemoveWishList">
-              <span class="fa fa-heart txt-pl-green"></span> Remove from Wish List
-            </el-button> -->
+            <a href="#" style="display:block; margin-top:-10px" class="text-center"><span class="fa fa-flag-o"></span> Report this listing</a>
           </div>
         </el-col>
       </el-row>
@@ -148,7 +140,7 @@ import axios from 'axios';
 import MapStyle from '../../static/json/map-detailed.json'
 //api
 import { baseUrl, getProperty, addtoWishlist, getWishList } from '../assets/utils/properties-api.js'
-import { getIdToken } from '../assets/utils/auth.js'
+import { getIdToken, getAccess } from '../assets/utils/auth.js'
 
 export default {
   name:'view-property',
@@ -160,8 +152,32 @@ export default {
       zoom:18,
       marker: {lat: 14.5677961, lng: 121.0206435},
       style: [],
-      askSeller:{
-        inquery:1
+      loadingContact:false,
+      inquireForm:{
+        inquery:1,
+        message:'I am interested about this property...',
+        first_name:'',
+        last_name:'',
+        contact:'',
+        email:''
+      },
+      inquireRules:{
+        message:[
+          { required: true, message: 'Required', trigger: 'blur' }
+        ],
+        first_name:[
+          { required: true, message: 'First Name is required', trigger: 'blur' }
+        ],
+        last_name:[
+          { required: true, message: 'Last Name is required', trigger: 'blur' }
+        ],
+        contact:[
+          { required: true, message: 'Contact Number is required', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: 'Please input email', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+        ]
       },
       dialogVisible: false,
       wishlist:[],
@@ -174,6 +190,43 @@ export default {
       getProperty(property_no).then((property) =>{
           this.property = property;
           this.setLatLng();
+      });
+    },
+    handleInquiry:function(formName){
+      const self = this;
+
+      this.$refs[formName].validate((valid) => {
+        if(valid){
+          self.loadingContact = true;
+          var inquireData = this.inquireForm;
+          inquireData['property_id'] = self.property.id;
+          inquireData['to_user_id'] = self.property.owner_id;
+
+          axios.post(baseUrl()+'/inquiry/send', inquireData)
+          .then(function(response){
+            if(response.data.message === 'Success'){
+              self.$alert('Your inquiry has been successfully sent to the property owner.', 'Inquiry Sent', {
+                confirmButtonText: 'OK',
+                type:'success'
+              });
+              self.inquireForm = {
+                inquery:1,
+                message:'I am interested about this property...',
+                first_name:'',
+                last_name:'',
+                contact:'',
+                email:''
+              };
+              self.loadingContact = false;
+            }
+          }).catch(function(error){
+            console.log(error);
+            self.loadingContact = false;
+          });
+        }else{
+          self.loadingContact = false;
+          //console.log(valid)
+        }
       });
     },
     getWishlist:function(){
@@ -207,10 +260,11 @@ export default {
         self.getWishlist();
       })
       .catch(function(error){
-        self.$message({
-          message: 'You need to sign in',
-          type: 'info'
-        });
+        self.$emit('login');
+        // self.$message({
+        //   message: 'You need to sign in',
+        //   type: 'info'
+        // });
       });
     },
     handleRemoveWishList:function(){
@@ -331,9 +385,6 @@ export default {
     position: -webkit-sticky;
     position: sticky;
     top:65px;
-  }
-  .el-form-item{
-    margin-bottom: 12px
   }
 
   @media (max-width : 769px){

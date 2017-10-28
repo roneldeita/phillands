@@ -3,13 +3,13 @@
     <el-row :gutter="0">
       <el-col :xs="24" :offset="2" :span="5" class="navmenu-container">
         <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleMenu">
-          <el-menu-item index="published">Published Listings</el-menu-item>
-          <el-menu-item index="for-approval">For Approval</el-menu-item>
+          <el-menu-item index="published">Published Listings <el-badge :value="publishCount" :max="99" class="item"></el-badge></el-menu-item>
+          <el-menu-item index="for-approval">For Approval <el-badge :value="forApprovalCount" :max="99" class="item"></el-badge></el-menu-item>
           <el-menu-item index="archives">Archives</el-menu-item>
-          <el-menu-item index="wishlist">Wish List</el-menu-item>
+          <el-menu-item index="wishlist">Wish List <el-badge :value="wishlistCount" :max="99" class="item"></el-badge></el-menu-item>
         </el-menu>
         <br>
-        <el-button style="width:100%; padding-top:15px; padding-bottom:15px"  @click="goToPublishListing">New Listing</el-button>
+        <el-button style="width:100%; padding-top:15px; padding-bottom:15px"  @click="goToPublishListing"><span class="fa fa-add"></span> New Listing</el-button>
       </el-col>
       <el-col :xs="24" :span="14" class="property-container">
         <div v-if="activeMenu === 'published'">
@@ -42,31 +42,38 @@
 <script>
 import axios from 'axios'
 import { baseUrl, getWishList } from '../../assets/utils/properties-api.js';
-import { getIdToken, getProfile } from '../../assets/utils/auth.js';
+import { getIdToken } from '../../assets/utils/auth.js';
 import PropertyBox from './Property-box.vue'
 
 export default {
   name:'listings',
   data(){
     return{
+      userAccess:{},
       activeMenu:'published',
-      published :'',
-      forApproval : '',
+      published :{},
+      publishCount:0,
+      forApproval : {},
+      forApprovalCount:0,
       archives : 'Archives',
       inactives : 'Inactive Postings',
-      wishlist : '',
+      wishlist : {},
+      wishlistCount:0,
     }
   },
   methods:{
     handleMenu:function(itemMenu) {
       this.activeMenu = itemMenu;
-      this.getApproval();
-      this.getPublished();
-      this.getWishList();
       if(itemMenu === 'published'){
         this.$router.replace({name:'listings'});
-      }else{
-        this.$router.replace({name:itemMenu});
+        this.getPublished();
+      }else if(itemMenu === 'for-approval'){
+        this.$router.replace({name:'for-approval'});
+        this.getApproval();
+      }
+      else if(itemMenu === 'wishlist'){
+        this.$router.replace({name:'wishlist'});
+        this.getWishList();
       }
     },
     goToPublishListing(){
@@ -74,25 +81,26 @@ export default {
     },
     getPublished:function(){
       const self = this;
-      var profile = JSON.parse(getProfile());
-      axios.get(baseUrl()+'/property',{ params:{owner_id: profile.id, status: 1}})
+      axios.defaults.headers.common['token'] = getIdToken();
+      axios.get(baseUrl()+'/property',{ params:{ status: 1}})
       .then(function (response) {
-        self.published = response.data.properties
+          self.published = response.data.properties;
+          self.publishCount = response.data.properties.length;
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
     },
     getApproval:function(){
       const self = this;
-      var profile = JSON.parse(getProfile());
-      axios.get(baseUrl()+'/property',{ params:{owner_id: profile.id, status: 0}})
+      axios.defaults.headers.common['token'] = getIdToken();
+      axios.get(baseUrl()+'/property',{ params:{status: 0}})
       .then(function (response) {
-        console.log(response.data.properties)
-        self.forApproval = response.data.properties
+        self.forApproval = response.data.properties;
+        self.forApprovalCount = response.data.properties.length;
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
     },
     getWishList(){
@@ -102,24 +110,31 @@ export default {
           arr.push(wishlist[wish].property)
         }
         this.wishlist = arr;
-      })
+        this.wishlistCount = arr.length;
+      });
     }
   },
-  mounted(){
+  created(){
     if(this.$route.name === 'listings'){
       this.activeMenu = 'published';
     }else{
       this.activeMenu = this.$route.name;
     }
-
-    this.getApproval();
     this.getPublished();
+    this.getApproval();
     this.getWishList();
   },
-  components:{ PropertyBox },
-
+  components:{ PropertyBox }
 }
 </script>
+
+<style>
+.el-badge__content{
+  /*border: 0px !important;
+  background-color: #ff4c4c !important;*/
+  line-height: 14px;
+}
+</style>
 
 <style scoped>
 .navmenu-container{

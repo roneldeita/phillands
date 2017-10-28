@@ -88,7 +88,7 @@
 <script>
 import axios from 'axios';
 import { baseUrl } from '../../assets/utils/properties-api.js';
-import { isLoggedIn, login, register } from '../../assets/utils/auth.js';
+import { isLoggedIn, login, register, getAccess } from '../../assets/utils/auth.js';
 
 export default {
   name:'login-modal',
@@ -150,7 +150,8 @@ export default {
   },
   methods:{
     dialogClose:function(){
-      this.$emit('loginmodalclose', this.dialogVisible)
+      this.$emit('loginmodalclose', this.dialogVisible);
+      //this.$router.replace({name:'index'});
     },
     authenticate: function (provider) {
       this.$auth.authenticate(provider).then(function (authResponse) {
@@ -201,13 +202,19 @@ export default {
         localStorage.setItem('access_token', response.data.token);
         var userInfo = JSON.stringify(response.data.user);
         localStorage.setItem('user', userInfo);
-        var user = JSON.parse(userInfo);
-        if(user.role === 2){
-          window.location  = '/admin'
-        }else{
-          location.reload();
-        }
-
+        getAccess()
+        .then(response =>{
+          if(response.role === 2){
+            window.location  = '/admin'
+          }else{
+            if(self.$route.query.redirect !=''){
+              self.$router.replace({path:self.$route.query.redirect});
+              location.reload();
+            }else{
+              location.reload();
+            }
+          }
+        });
       })
       .catch(function(error) {
         self.$message.error('Email or Password is incorrect')

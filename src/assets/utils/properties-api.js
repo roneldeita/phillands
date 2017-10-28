@@ -14,7 +14,7 @@ function baseUrl(){
 
 function getProperties(offerType, propertyType, location){
 
-  const parameters = { status: 1  }
+  const parameters = { status: 1 }
 
   if(offerType !=''){
     parameters['offer_type'] = offerType;
@@ -27,7 +27,7 @@ function getProperties(offerType, propertyType, location){
   if(location !=''){
     parameters['locality'] = location;
   }
-
+  axios.defaults.headers.common['token'] = null;
   return axios.get( API_URL, { params:parameters} ).then( response => response.data)
 
 }

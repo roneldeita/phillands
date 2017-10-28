@@ -5,12 +5,15 @@
       <h4>Edit Mode: <span style="color:#A9A9A9; line-height:20px">You can change the details of your listing below.</span></h4><br>
     </el-col>
     <el-col :xs="24" :md="5" class="text-right head-container">
-      <el-button type="success" class="btn btn-pl-green" style="width:150px" size="large" @click="handleCard(property_no)">Preview Listing</el-button>
+      <el-button type="success" class="btn-pl-green" style="width:150px" size="large" @click="handleCard(property_no)">Preview Listing</el-button>
     </el-col>
-    <el-col :sm="24" :offset="2" :md="20" class="head-container" style="height:400px; padding:10px 20px">
+    <!-- <el-col :sm="24" :offset="2" :md="20" class="head-container" style="height:600px; padding:10px 20px">
       <img v-if="mediaForm.media[0]" v-lazy="imgUrl+mediaForm.media[0].uploaded_filename" alt="" class="primary-img">
-    </el-col>
+    </el-col> -->
     <el-col :offset="2" :sm="20" :md="20" class="head-container">
+      <el-card class="box-card">
+        <edit-media></edit-media>
+      </el-card>
       <el-card class="box-card">
         <edit-basic></edit-basic>
       </el-card>
@@ -22,9 +25,6 @@
       </el-card>
       <el-card class="box-card">
         <edit-amenities></edit-amenities>
-      </el-card>
-      <el-card class="box-card">
-        <edit-media></edit-media>
       </el-card>
       <el-card class="box-card">
         <edit-location></edit-location>

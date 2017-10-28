@@ -139,7 +139,7 @@ export default {
       var result = '';
 
       const validImage = [ 'image/jpeg', 'image/png' ];
-      const validSize = file.raw.size / 1024 /1024 < 2;
+      const validSize = file.raw.size / 1024 / 1024 < 2;
 
       if(validImage.includes(file.raw.type)){//valid type
         if(!validSize){
@@ -162,10 +162,10 @@ export default {
 
       if(Object.keys(this.list).length === 0){
         result =  { approve:false, msg:'You need to upload an images of the property'}
-      }else if (Object.keys(this.list).length < 4) {
-        result  = { approve:false, msg:'You need to upload at least 4 images'}
-      }else if (Object.keys(this.list).length > 10) {
-        result  = { approve:false, msg:'You cannot upload more than 10 images'}
+      }else if (Object.keys(this.list).length < 3) {
+        result  = { approve:false, msg:'You need to upload at least 3 images'}
+      }else if (Object.keys(this.list).length > 8) {
+        result  = { approve:false, msg:'You cannot upload more than 8 images'}
       }
 
       return result;

@@ -28,7 +28,7 @@
           </el-input>
         </el-form-item>
       </el-form><br>
-      <el-button type="success" class="btn-pl-green" size="large" @click="handleStep('keyInfo')">Continue</el-button>
+      <el-button type="success" class="btn-pl-green"  size="large" @click="handleStep('keyInfo')">Continue</el-button>
     </el-col>
   </el-row>
 </template>

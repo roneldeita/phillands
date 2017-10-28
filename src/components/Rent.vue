@@ -95,6 +95,7 @@ export default {
     }
   },
   mounted(){
+    document.documentElement.scrollTop = 0;
     this.getRents(this.$route.params.property_type, this.$route.params.location);
   },
   components:{ PropertyCard, Advertisement },

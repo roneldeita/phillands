@@ -1,8 +1,11 @@
  <template>
   <div id="home" class="">
     <ul class="nav justify-content-end" style="margin-top:14px">
-      <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="LoginWasClicked()" style="margin-top:0px">Login/Register</a>
+      <li v-show="!isLoggedIn()" class="nav-item">
+        <el-button type="success" class="btn-pl-green" @click="LoginWasClickedThenPublish()">Publish Property</el-button>
+      </li>
+      <li v-show="!isLoggedIn()" class="nav-item">
+        <a class="nav-link" href="javascript:void(0)" @click="LoginWasClicked()" style="margin-top:0px">Login/Register</a>
       </li>
       <li class="nav-item" v-show="isLoggedIn()">
         <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</button>
@@ -25,9 +28,7 @@
     <el-row type="flex" class="row-bg text-left" justify="center">
       <el-col :xs="22" :sm="20" :md="20">
         <a href="/"><img class="logo " src="../assets/PL_Logo_250px.png" alt=""></a>
-        <p class="title">
-          The best way to find home and<br>
-          settle your future.</p><br>
+        <slogan></slogan>
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg" justify="center">
@@ -55,22 +56,37 @@
       <el-col :xs="22" :sm="20" :md="20">
         <el-tabs v-model="activeNav" @tab-click="handleClick">
           <p class="sub-title">Featured <span class="txt-pl-green">Properties</span></p>
-          <el-tab-pane label="For Sale" name="sale"><featured-sale></featured-sale></el-tab-pane>
-          <el-tab-pane label="For Rent" name="rent"><featured-rent></featured-rent></el-tab-pane>
-          <el-tab-pane label="Pre-Selling" name="pre-selling">No listing yet</el-tab-pane>
-          <el-tab-pane label="Foreclosure" name="foreclosure">No listing yet</el-tab-pane>
+          <el-tab-pane label="For Sale" name="sale"></el-tab-pane>
+          <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
+          <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
+          <el-tab-pane label="Foreclosure" name="foreclosure"></el-tab-pane>
         </el-tabs>
+      </el-col>
+    </el-row>
+    <el-row type="flex" class="row-bg" justify="left">
+      <el-col :xs="22" :offset="2" :sm="14" :md="14">
+        <featured-sale v-show="activeNav ==='sale'"></featured-sale>
+        <featured-rent v-show="activeNav ==='rent'"></featured-rent>
+      </el-col>
+      <el-col :span="6">
+        <el-row :gutter="20">
+          <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
+            <advertisement :img="add.img" style="padding:0px 0 20px 20px"></advertisement>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import Slogan from './content/Slogan.vue'
 import { getLocality } from '../assets/utils/properties-api.js'
 import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
+import Advertisement from './Advertisement.vue'
 
 export default {
   name: 'index',
@@ -80,12 +96,22 @@ export default {
       inputSearch:'',
       selectSearch:'1',
       activeNav:'sale',
-      profile:JSON.parse(getProfile())
+      profile:JSON.parse(getProfile()),
+      adds:[
+        { id:1, img:'/static/adds/Ads1.jpg' },
+        { id:2, img:'/static/adds/Ads2.jpg' },
+        { id:3, img:'/static/adds/Ads3.jpg' },
+      ]
     }
   },
   methods:{
     LoginWasClicked:function(){
       this.$emit('login');
+    },
+    LoginWasClickedThenPublish(){
+      this.$emit('login');
+    //  this.$router.push({redirect:{name:'publish-property'}});
+      this.$router.replace({name:'publish-property'});
     },
     handleLogout() {
       logout();
@@ -108,7 +134,6 @@ export default {
       var results = queryString ? links.filter(this.createFilter(queryString)) : links;
       // call callback function to return suggestions
       cb(results);
-      console.log(results);
     },
     createFilter(queryString) {
       return (link) => {
@@ -128,10 +153,10 @@ export default {
       this.$router.push({name:this.activeNav, params:{property_type:this.selectSearch, location:this.inputSearch }})
     },
     handleClick:function(tab, event){
-      //console.log(tab.name)
+      console.log(tab.name)
     }
   },
-  components:{ FeaturedSale, FeaturedRent },
+  components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement },
   mounted(){
     this.loadLocality();
     //console.log(getProfile());
@@ -155,11 +180,6 @@ export default {
   }
   .img-circle{
     border-radius: 50%;
-  }
-  .title{
-    font-size: 46px;
-    line-height: 52px;
-    color: #636363;
   }
   .sub-title{
     font-size: 28px;

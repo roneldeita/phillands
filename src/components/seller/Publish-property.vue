@@ -14,15 +14,7 @@
               @continue="continueStep"></step-one>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
-            <div class="card text-left" style="width: 350px;">
-              <div class="card-block">
-                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-                <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
-            </div>
+            <screen-tip-one></screen-tip-one>
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 1">
@@ -38,15 +30,7 @@
               @back="previousStep"></step-two>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
-            <div class="card text-left" style="width: 350px;">
-              <div class="card-block">
-                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-                <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
-            </div>
+            <screen-tip-two></screen-tip-two>
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 2">
@@ -59,13 +43,7 @@
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
-              <div class="card-block">
-                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-                <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
+              <screen-tip-three></screen-tip-three>
             </div>
           </el-col>
         </el-row>
@@ -79,13 +57,7 @@
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
-              <div class="card-block">
-                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-                <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
+              <screen-tip-four></screen-tip-four>
             </div>
           </el-col>
         </el-row>
@@ -101,13 +73,7 @@
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
-              <div class="card-block">
-                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-                <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
+              <screen-tip-five></screen-tip-five>
             </div>
           </el-col>
         </el-row>
@@ -125,13 +91,7 @@
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
             <div class="card text-left" style="width: 350px;">
-              <div class="card-block">
-                <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-                <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-              </div>
+              <screen-tip-six></screen-tip-six>
             </div>
           </el-col>
         </el-row>
@@ -143,6 +103,7 @@
 
 <script>
 import { getIdToken, getProfile } from '../../assets/utils/auth.js';
+import { baseUrl } from '../../assets/utils/properties-api.js';
 
 import axios from 'axios'
 
@@ -152,6 +113,13 @@ import stepThree from './Step-three.vue'
 import stepFour from './Step-four.vue'
 import stepFive from './Step-five.vue'
 import stepSix from './Step-six.vue'
+
+import ScreenTipOne from '../content/Screentip-one.vue'
+import ScreenTipTwo from '../content/Screentip-two.vue'
+import ScreenTipThree from '../content/Screentip-three.vue'
+import ScreenTipFour from '../content/Screentip-four.vue'
+import ScreenTipFive from '../content/Screentip-five.vue'
+import ScreenTipSix from '../content/Screentip-six.vue'
 
 export default {
   name:'publish-property',
@@ -194,7 +162,7 @@ export default {
       }
     }
   },
-  components:{ stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix },
+  components:{ stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix, ScreenTipOne, ScreenTipTwo, ScreenTipThree, ScreenTipFour, ScreenTipFive, ScreenTipSix },
   methods:{
     continueStep:function(step){
       document.documentElement.scrollTop = 0;
@@ -313,9 +281,6 @@ export default {
     },
     handlePublish:function(){
       const formData = new FormData();
-
-      var AUTH_TOKEN = getIdToken();
-
       const self = this;
 
       Object.keys(this.property).forEach(function(key){
@@ -329,11 +294,10 @@ export default {
       });
 
       axios.defaults.headers.common['token'] = AUTH_TOKEN;
-      // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
       self.finishButton = true;
 
-      axios.post('http://103.16.170.117:8090/broker/property/create', formData)
+      axios.post(baseUrl()+'/broker/property/create', formData)
       .then(function(response){
 
         if(response.data.message === "success"){

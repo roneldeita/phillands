@@ -2,12 +2,12 @@
   <div>
     <div class="text-right">
       <el-button v-if="!basicEdit" @click="basicEdit = true" icon="edit">Edit</el-button>
-      <el-button v-if="basicEdit" type="success" class="btn-pl-green"  @click="saveBasic">Save</el-button>
+      <el-button type="success" class="btn-pl-green" v-if="basicEdit"  @click="saveBasic">Save</el-button>
       <el-button v-if="basicEdit" @click="basicEdit = false; cancelBasicEdit(property_no)">Cancel</el-button>
     </div>
     <div v-if="!basicEdit">
       <p class="label">Title</p>
-      <h4>{{ basicForm.title }}</h4>
+      <h3>{{ basicForm.title }}</h3>
       <p class="label">Description</p>
       <p style="white-space: pre-wrap; max-height:130px; overflow-y:scroll">{{ basicForm.description }}</p>
     </div>
@@ -52,7 +52,6 @@ export default {
   methods:{
     getProperty:function(property_no){
       getProperty(property_no).then((property) =>{
-          console.log(property);
           this.property_id = property.id;
           this.property_no = property.property_no;
           //basic info

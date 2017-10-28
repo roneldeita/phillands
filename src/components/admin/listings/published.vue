@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div style="margin-bottom: 10px">
+      <el-input placeholder="Please input" v-model="search" style="width:100%">
+        <el-select v-model="searchType" slot="prepend" placeholder="Select" style="width:120px">
+          <el-option label="Property ID" value="property_no"></el-option>
+        </el-select>
+        <el-button slot="append" icon="search"></el-button>
+      </el-input>
+    </div>
     <el-table
       v-loading.body="loading"
       :data="properties"
@@ -13,7 +21,7 @@
             <el-col :span="19" class="text-left">
               <h4>{{props.row.property_detail.title}}</h4>
               <p>{{props.row.property_location.formatted_address}}</p>
-              <p style="color:#666666">{{props.row.updatedAt | moment("from")}}</p>
+              <p style="color:#666666">Updated {{props.row.updatedAt | moment("from")}}</p>
             </el-col>
           </el-row>
         </template>.row.
@@ -44,7 +52,7 @@
         align="left"
         label="Operations">
         <template scope="scope">
-          <el-button type="success" size="small">Approve</el-button>
+          <el-button type="warning" size="small">Unpublish</el-button>
           <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">Preview</el-button>
         </template>
       </el-table-column>
@@ -72,6 +80,8 @@ export default {
       total_properties:0,
       property_source:'',
       properties:[{}],
+      searchType:'property_no',
+      search:''
     }
   },
   methods:{
@@ -94,6 +104,7 @@ export default {
     },
     getPublished:function(){
       const self = this;
+      axios.defaults.headers.common['token'] = null;
       axios.get(baseUrl()+'/property',{ params:{ status: 1}})
       .then(function (response) {
         self.property_source = response.data.properties

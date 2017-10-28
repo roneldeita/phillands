@@ -3,7 +3,7 @@
     <div style="margin-bottom: 10px">
       <el-input placeholder="Please input" v-model="search" style="width:100%">
         <el-select v-model="searchType" slot="prepend" placeholder="Select" style="width:120px">
-          <el-option label="Property ID" value="property_no"></el-option>
+          <el-option label="Email" value="email"></el-option>
         </el-select>
         <el-button slot="append" icon="search"></el-button>
       </el-input>
@@ -27,7 +27,7 @@
         </template>.row.
       </el-table-column>
       <el-table-column class="border"
-        label="Date Created"
+        label="Member since"
         prop="createdAt"
         align="left"
         sortable>
@@ -37,13 +37,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Title"
+        label="Email"
         prop="property_detail.title"
         align="left"
         sortable>
       </el-table-column>
       <el-table-column
-        label="Property ID"
+        label="Name"
         prop="property_no"
         align="left"
         sortable>
@@ -52,7 +52,7 @@
         align="left"
         label="Operations">
         <template scope="scope">
-          <el-button type="success" size="small">Approve</el-button>
+          <el-button type="warning" size="small">Unpublish</el-button>
           <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">Preview</el-button>
         </template>
       </el-table-column>
@@ -71,7 +71,7 @@ import axios from 'axios';
 import { baseUrl, getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
-  name:'published',
+  name:'seller',
   data(){
     return{
       loading: true,
@@ -79,8 +79,8 @@ export default {
       item_per_page: 10,
       total_properties:0,
       property_source:'',
-      properties:[{}],
-      searchType:'property_no',
+      properties:[],
+      searchType:'email',
       search:''
     }
   },
@@ -105,17 +105,18 @@ export default {
     getPublished:function(){
       const self = this;
       axios.defaults.headers.common['token'] = null;
-      axios.get(baseUrl()+'/property',{ params:{ status: 0}})
+      axios.get(baseUrl()+'/property',{ params:{ status: 1}})
       .then(function (response) {
-        self.property_source = response.data.properties
-        if(self.property_source.length > 0){
-          self.loadPublished(0, self.item_per_page);//load the properties
-          self.total_properties = Object.keys(self.property_source).length ;//get the total numbers of properties
+        // self.property_source = response.data.properties
+        // if(self.property_source.length > 0){
+        //   self.loadPublished(0, self.item_per_page);//load the properties
+        //   self.total_properties = Object.keys(self.property_source).length ;//get the total numbers of properties
           self.loading = false;
-        }
+        //}
       })
       .catch(function (error) {
         console.log(error);
+        self.loading = false;
       });
     }
   },

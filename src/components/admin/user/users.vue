@@ -2,29 +2,27 @@
   <el-row>
     <el-col :xs="24" :span="5" class="navmenu-container">
       <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleMenu">
-        <el-menu-item index="for-approval">For Approval</el-menu-item>
-        <el-menu-item index="published">Published</el-menu-item>
-        <el-menu-item index="wishlist">Reported</el-menu-item>
+        <el-menu-item index="sellers">Sellers</el-menu-item>
+        <el-menu-item index="brokers">Brokers</el-menu-item>
+        <el-menu-item index="agents">Agents</el-menu-item>
       </el-menu>
     </el-col>
-    <el-col :span="19" class="data-container" v-if="activeMenu === 'for-approval'">
-      <for-approval></for-approval>
+    <el-col :span="19" class="data-container" v-if="activeMenu === 'sellers'">
+      <seller></seller>
     </el-col>
-    <el-col :span="19" class="data-container" v-if="activeMenu === 'published'">
-      <published></published>
+    <el-col :span="19" class="data-container" v-if="activeMenu === 'broker'">
+
     </el-col>
   </el-row>
 </template>
 
 <script>
-import published from './published.vue';
-import forApproval from './for-approval.vue';
-
+import seller from './seller.vue'
 export default {
-  name:'admin-listings',
+  name:'admin-users',
   data(){
     return{
-      activeMenu:'for-approval',
+      activeMenu:'sellers'
     }
   },
   methods:{
@@ -34,7 +32,7 @@ export default {
   },
   mounted(){
   },
-  components:{ published, forApproval }
+  components:{ seller }
 }
 </script>
 

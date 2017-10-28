@@ -33,12 +33,15 @@
         </form>
         <ul class="nav navbar-nav ml-auto">
           <li class="nav-item" v-if="isLoggedIn()">
-            <button type="button" class="btn btn-success" v-if="!publishPropertyBtn.includes($route.name)" @click="goToPath('publish-property')">Publish Property</button>
-            <el-button v-show="$route.name === 'publish-property'" @click="goToPath('listings')">Cancel</el-button>
-            <button type="button" class="btn btn-success" v-show="$route.name === 'view-property' || $route.name ==='edit-property'" @click="handleBack">Back</button>
+            <el-button type="success" class="btn-pl-green" v-if="!publishPropertyBtn.includes($route.name)" @click="goToPath('publish-property')">Publish Property</el-button>
+            <el-button v-show="$route.name === 'publish-property'" @click="cancelPublish()">Cancel</el-button>
+            <el-button type="success" class="btn-pl-green" v-show="$route.name === 'view-property' || $route.name ==='edit-property'" @click="handleBack">Back</el-button>
           </li>
-          <li v-if="!isLoggedIn()">
-            <button type="button" class="btn btn-success" v-show="$route.name === 'view-property'" @click="handleBack">Back</button>
+          <li v-if="!isLoggedIn()" class="nav-item">
+            <el-button type="success" class="btn-pl-green" v-show="$route.name === 'view-property'" @click="handleBack">Back</el-button>
+          </li>
+          <li v-show="!isLoggedIn()" class="nav-item">
+            <el-button type="success" class="btn-pl-green" v-show="$route.name != 'view-property'" @click="LoginWasClicked()">Publish Property</el-button>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="LoginWasClicked()">Login/Register</a>
@@ -81,9 +84,10 @@
     </el-tabs>
     <el-tabs v-model="activeNav" v-if="allowedAdminRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="Dashboard" name="admin-dashboard"></el-tab-pane>
-      <el-tab-pane label="Users" name="admin-users"></el-tab-pane>
       <el-tab-pane label="Listings" name="admin-listings"></el-tab-pane>
+      <el-tab-pane label="Users" name="admin-users"></el-tab-pane>
       <el-tab-pane label="Advertisements" name="admin-ads"></el-tab-pane>
+      <el-tab-pane label="Contents" name="admin-cms"></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -137,7 +141,8 @@ export default {
           'admin-dashboard',
           'admin-users',
           'admin-listings',
-          'admin-ads'
+          'admin-ads',
+          'admin-cms'
         ],
         profile: JSON.parse(getProfile())
       }
@@ -153,7 +158,22 @@ export default {
         return isLoggedIn();
       },
       GoHome:function(){
-        this.$router.push('/');
+        this.$router.push({name:'index'});
+      },
+      cancelPublish() {
+        this.$confirm('You will discard all the information?', 'Warning', {
+          confirmButtonText: 'Yes, Discard',
+          confirmButtonClass: 'btn-pl-green',
+          cancelButtonText: 'Resume',
+          type: 'warning'
+        }).then(() => {
+          this.goToPath('listings')
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: 'Delete canceled'
+          // });
+        });
       },
       goToPath(path){
         if(path === 'listings'){
@@ -162,7 +182,7 @@ export default {
         this.$router.replace({ name: path});
       },
       handleNavCommand:function(command){
-        console.log(command)
+        //console.log(command)
         if(command === "logout"){
           this.handleLogout();
         }else{
@@ -175,7 +195,7 @@ export default {
         var results = queryString ? links.filter(this.createFilter(queryString)) : links;
         // call callback function to return suggestions
         cb(results);
-        console.log(results);
+        //console.log(results);
       },
       createFilter(queryString) {
         return (link) => {
@@ -232,7 +252,7 @@ export default {
       if(this.$route.params.property_type){
         this.propertyType = this.$route.params.property_type;
       }
-      console.log(this.$route.params.property_type);
+      //console.log(this.$route.params.property_type);
       this.searchLocation = this.$route.params.location;
       this.loadLocality();
 

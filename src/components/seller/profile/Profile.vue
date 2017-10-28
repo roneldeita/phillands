@@ -2,18 +2,26 @@
   <el-row>
     <el-col :offset="2" :span="20">
       <el-row>
-        <el-col :xs="24" :sm="8" :md="5">
+        <el-col :xs="24" :sm="8" :md="5" class="avatar-container">
           <el-upload
             class="avatar-uploader"
             action=""
+            :auto-upload="false"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
+            :on-preview="handlePictureCardPreview"
+            :on-change="handleChange">
             <img v-if="profile" :src="profile.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-col>
         <el-col :xs="24" :sm="14" :md="19">
+          <el-card class="box-card" style="border-color:#F7BA2A;color:#F7BA2A">
+            <span class="fa fa-exclamation-circle pull-left" style="font-size:40px; margin-top:-7px"></span>
+            <h5 style="margin:0px;">
+               Verify your email address
+              <el-button type="text" style="text-decoration:underline" size="small">Verify Email Address</el-button>
+            </h5>
+          </el-card>
           <el-card class="box-card text-left">
             <div slot="header">
               <h5>Account Details</h5>
@@ -38,38 +46,82 @@
 </template>
 
 <script>
+import axios from 'axios';
 
-import { getProfile } from '../../../assets/utils/auth.js';
+import { getProfile, getIdToken } from '../../../assets/utils/auth.js';
+import { baseUrl } from '../../../assets/utils/properties-api.js';
 
 export default {
   name:'profile',
   data(){
     return{
        profile: JSON.parse(getProfile()),
+       tokenAccess: getIdToken(),
        img:''
     }
   },
   methods:{
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    handlePictureCardPreview(){
 
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
+    },
+    handleChange(file, fileList) {
+      const self = this;
+      const formData = new FormData();
+      axios.defaults.headers.common['token'] = getIdToken();
+      formData.append('image', file.raw);
+
+      axios.post(baseUrl()+'/client/profile/update/avatar', formData)
+      .then(function(response){
+        self.getProperty(self.$route.params.property_no);
+        self.$message({
+          message: 'The image was successfully added',
+          type: 'success'
+        });
+      })
+      .catch( function(error){
+        // self.getProperty(self.$route.params.property_no);
+        // self.$message({
+        //   message: 'Unable to upload image',
+        //   type: 'warning'
+        // });
+      });
+    },
+    checkFileBeforeAttach(file, fileList){
+
+      var result = '';
+
+      const validImage = [ 'image/jpeg', 'image/png' ];
+      const validSize = file.raw.size / 1024 / 1024 < 2;
+
+      if(validImage.includes(file.raw.type)){//valid type
+        if(!validSize){
+          result =  { approve:false, msg:'Image size can not exceed 2MB'}
+          fileList.splice(-1);
+        }else{
+          result =  { approve:true, msg:''}
+        }
+      }else{
+        result =  { approve:false, msg:'Invalid Image Type'}
+        fileList.splice(-1);
       }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-      }
-      return isJPG && isLt2M;
+
+      return result;
+
     }
+  },
+  mounted(){
   }
 }
 </script>
 
 <style>
+  .avatar-container .el-upload::before{
+    display: block;
+    text-align: center;
+    content: "Change Avatar";
+    color: #ffffff;
+    background-color: #56BA50;
+  }
   .avatar-uploader .el-upload {
     border: 1px dashed #56BA50;
     border-radius: 6px;

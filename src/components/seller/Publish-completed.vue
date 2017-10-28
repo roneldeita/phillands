@@ -7,9 +7,9 @@
         </div>
         <h1><span class="fa fa-check-circle txt-pl-green"></span></h1>
         <h2>Your listing was successfully saved!</h2>
-        <p>Your listing will be shown to the buyers once approved.</p><br><br>
+        <p>Your listing will be shown to potential buyers once approved.</p><br><br>
         <!-- <el-button class="pull-left" size="large" @click="handleBtn">Edit Listing</el-button> -->
-        <el-button type="success" class="pull-left btn-pl-green" size="large" @click="handleBtn">View your listing</el-button>
+        <el-button type="success" class="btn-pl-green"  size="large" @click="handleBtn">View your listing</el-button>
       </el-col>
     </el-row>
   </div>

@@ -3,6 +3,7 @@ import Router from 'vue-router';
 const BASE_URL = 'http://103.16.170.117:8090';
 const ACCESS_TOKEN_KEY = 'access_token';
 const USER = 'user';
+var user_access = {};
 
 var router = new Router({
    mode: "history",
@@ -26,14 +27,18 @@ export function isAdmin(to, from, next){
       path: '/',
     });
   } else {
-    const profile = JSON.parse(getProfile());
-    if(profile.role === 2){//check if role is admin
-      next();
-    }else{
-      next({
-        path: '/',
-      });
-    }
+    getAccess()
+    .then(response =>{
+      if(response.role === 2){//check if role is admin
+        next();
+      }else{
+        next({
+          path: '/',
+          redirect:{name:'index'}
+        });
+        location.reload();
+      }
+    });
   }
 }
 
@@ -48,6 +53,11 @@ export function getIdToken() {
 
 export function getProfile(){
   return localStorage.getItem(USER);
+}
+
+export function getAccess(){
+  axios.defaults.headers.common['token'] = getIdToken();
+  return axios.post(BASE_URL+'/auth/check').then( response => response.data );
 }
 
 /* logout */

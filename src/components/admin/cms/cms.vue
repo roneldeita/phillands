@@ -1,12 +1,12 @@
 <template>
-  <p>Users</p>
+  <p>Content management</p>
 </template>
 
 <script>
 export default {
-  name:'admin-users'
+  name:'admin-cms'
 }
 </script>
 
-<style>
+<style lang="css">
 </style>

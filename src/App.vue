@@ -2,7 +2,7 @@
   <div id="app">
       <navigation v-if="$route.name != 'index'" @login="LoginWasClicked" @search="searchWasClicked"></navigation>
 
-      <router-view class="router-view" @login="LoginWasClicked" @ :search="search"></router-view>
+      <router-view class="router-view" @login="LoginWasClicked" :search="search"></router-view>
       <!-- <bottom-navigation class="footer"></bottom-navigation> -->
       <!-- <users></users> -->
       <login-modal :loginmodal="loginVisible" @loginmodalclose="closeLoginDialog"> </login-modal>
@@ -100,7 +100,9 @@ input[type=number]::-webkit-outer-spin-button {
 .btn-pl-green,
 .btn-pl-green:hover,
 .btn-pl-green:focus{
-  background-color: #56BA50;
+  background-color: #56BA50 !important;
+  outline: 0 !important;
+  border-color:  #56BA50 !important;
 }
 .txt-pl-green{
   color: #56BA50

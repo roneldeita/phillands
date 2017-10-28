@@ -3,7 +3,7 @@
     <div class="text-right">
       <h4 class="pull-left txt-pl-green">Key Information</h4>
       <el-button v-if="!keyInfoEdit" @click="keyInfoEdit = true" icon="edit">Edit</el-button>
-      <el-button v-if="keyInfoEdit" type="success" class="btn-pl-green"  @click="saveKeyInfo">Save</el-button>
+      <el-button type="success" class="btn-pl-green" v-if="keyInfoEdit"  @click="saveKeyInfo">Save</el-button>
       <el-button v-if="keyInfoEdit" @click="keyInfoEdit = false; cancelkeyInfoEdit()">Cancel</el-button>
     </div>
     <el-row v-if="!keyInfoEdit">
@@ -104,7 +104,6 @@ export default {
     },
     getProperty:function(property_no){
       getProperty(property_no).then((property) =>{
-          console.log(property);
           this.property_id = property.id;
           this.property_no = property.property_no;
           //key info
