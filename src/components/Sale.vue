@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid">
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="18" :md="18" style="margin:-15px 0 10px 0">
+  <div style="width:100%">
+    <el-row :gutter="20" style="margin:-15px 5px 10px 5px">
+      <el-col :xs="24" :sm="18" :md="18">
         <h6 class="text-left">{{ total_properties }} properties found</h6>
       </el-col>
       <el-col :xs="24" :sm="18" :md="18">
@@ -40,8 +40,8 @@
         </el-row>
       </el-col>
     </el-row>
+    <bottom-navigation></bottom-navigation>
   </div>
-
 </template>
 <script>
 //components
@@ -51,13 +51,14 @@ import Advertisement from './Advertisement.vue'
 //import Properties from '../../static/json/properties.json'
 //api
 import { getProperties } from '../assets/utils/properties-api.js'
+import BottomNavigation from './BottomNavigation.vue'
 
 export default {
   name: "sale",
   props:['search'],
   data:function(){
     return{
-      property_source:'',
+      property_source:{},
       properties:[],
       total_properties:0,
       page_count:0,
@@ -85,6 +86,7 @@ export default {
       var end = this.item_per_page * page;
       var start = end - this.item_per_page;
       this.loadProperties(start, end);
+      document.documentElement.scrollTop = 0;
     },
     getSales(property_type, location) {
       getProperties(1, Number(property_type), location).then((property) => {
@@ -99,7 +101,7 @@ export default {
     document.documentElement.scrollTop = 0;
     this.getSales(this.$route.params.property_type, this.$route.params.location);
   },
-  components:{ PropertyCard, Advertisement },
+  components:{ PropertyCard, Advertisement, BottomNavigation },
   watch:{
     'search':function(value){
       this.getSales(value.property_type, value.location)

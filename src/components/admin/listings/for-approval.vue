@@ -52,7 +52,7 @@
         align="left"
         label="Operations">
         <template scope="scope">
-          <el-button type="success" size="small">Approve</el-button>
+          <el-button type="success" size="small" @click="handleApprove(scope.row.id)" icon="circle-check">Approve</el-button>
           <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">Preview</el-button>
         </template>
       </el-table-column>
@@ -68,6 +68,7 @@
 
 <script>
 import axios from 'axios';
+import { getIdToken } from '../../../assets/utils/auth.js';
 import { baseUrl, getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
@@ -81,10 +82,27 @@ export default {
       property_source:'',
       properties:[{}],
       searchType:'property_no',
-      search:''
+      search:'',
+      current_page:1
     }
   },
   methods:{
+    handleApprove:function(propertyId){
+      const self = this;
+      var property ={
+        property_id:propertyId,
+         status:1
+      }
+      axios.defaults.headers.common['token'] = getIdToken();
+      axios.post(baseUrl()+'/admin/property/update', property).then(function(response){
+        self.$notify({
+          title: 'Success',
+          message: 'You have approved the property',
+          type: 'success'
+        }),
+        self.getPublished();
+      });
+    },
     handlePreview: function(propertyNo){
       this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     },
@@ -95,23 +113,29 @@ export default {
       }
       var items = arr.slice(start, end);
       this.properties = items;
+
+
       // console.log(this.published);
     },
     switchToPage(page){
       var end = this.item_per_page * page;
       var start = end - this.item_per_page;
-      this.loadPublished(start, end);
+      this.loadPublished(start, end, false);
+      this.current_page = page;
     },
     getPublished:function(){
       const self = this;
       axios.defaults.headers.common['token'] = null;
       axios.get(baseUrl()+'/property',{ params:{ status: 0}})
       .then(function (response) {
-        self.property_source = response.data.properties
+        self.property_source = response.data.properties.reverse()
         if(self.property_source.length > 0){
-          self.loadPublished(0, self.item_per_page);//load the properties
+          self.loadPublished(0, self.item_per_page,);//load the properties
           self.total_properties = Object.keys(self.property_source).length ;//get the total numbers of properties
           self.loading = false;
+        }
+        if(self.current_page !=0){
+          self.switchToPage(self.current_page);
         }
       })
       .catch(function (error) {

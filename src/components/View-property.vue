@@ -1,137 +1,140 @@
- <template>
-  <el-row class="view-container text-left" v-if="property">
-    <el-col :span="24" class="">
-      <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" alt="" class="primary-img">
-      <el-button class="view-photos" @click="dialogVisible = true">View Photos</el-button>
-    </el-col>
-    <el-col :span="24">
-      <el-dialog title="" :visible.sync="dialogVisible" size="large" class="text-center">
-        <el-carousel :autoplay="false" arrow="always" height="500px" style="background:black">
-          <el-carousel-item v-for="img in property.property_media" :key="img.id">
-            <img v-lazy="imgUrl+img.uploaded_filename" style="height:100%">
-          </el-carousel-item>
-        </el-carousel>
-      </el-dialog>
-    </el-col>
-    <el-col :offset="3" :xs="24" :span="18" class="body-container">
-      <el-row>
-        <el-col :xs="24" :span="14" style="padding:20px 30px 0 0" class="info-container">
-          <p class="title">{{ property.property_detail.title }}</p>
-          <p class="location" >{{ property.property_location.formatted_address }}</p>
-          <p class="description">{{ property.property_detail.description }}</p>
-          <h4>Details</h4>
-          <el-row class="">
-            <el-col :span="12">
-              <ul class="detail_list">
-                <li>Offer type: <b>For {{ property.offer_type === 1 ? 'Sale' : 'Rent' }}</b></li>
-                <li>Property type: <b>{{ propertyType() }}</b></li>
-                <li>Total Price: ₱ <b>{{ formatNumber(property.price) }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
-                <li>Bedrooms: <b>{{ property.property_detail.bedrooms != 0 ? property.property_detail.bedrooms : 'Studio Type' }}</b></li>
-                <li>Bathrooms: <b>{{ property.property_detail.bathrooms != 0 ? property.property_detail.bathrooms : 'None' }}</b></li>
-              </ul>
-            </el-col>
-            <el-col :span="12">
-              <ul class="detail_list">
-                <li>Property id: <b>{{ property.property_no }}</b></li>
-                <li>Parking: <b>{{ property.property_detail.parking != 0? property.property_detail.parking :'None'  }}</b></li>
-                <li>Floor Area: <b>{{ property.property_detail.floor_area }} sqm</b></li>
-                <li>Lot Area: <b>{{ property.property_detail.lot_area }} sqm</b></li>
-                <li>Balcony: <b>{{ property.property_detail.balcony ? 'Yes' : 'No' }}</b></li>
-              </ul>
-            </el-col>
-          </el-row>
-          <el-row v-if="property.property_detail.amenities">
-            <h4>Amenities</h4>
-            <el-col :span="12" v-for="amenity in property.property_detail.amenities.split(',')" :key="0">
-              <ul class="amenity_list">
-                <li><span class="fa fa-check txt-pl-green" style="font-size:10px"></span> {{ amenity }}</li>
-              </ul>
-            </el-col>
-          </el-row>
-          <h4>Location</h4>
-          <p>{{ property.property_location.formatted_address }}</p>
-          <gmap-map style="width: 100%; height: 300px;z-index:1" :zoom="zoom" :options="{styles:style}" :center="marker">
-            <gmap-marker
-              :draggable="false"
-              :clickable="false"
-              :icon="'/static/Philland_Place_Icon-10x10.png'"
-              :position="marker"
-              ></gmap-marker>
-            <gmap-circle
-              :center="marker"
-              :radius="20"
-              :draggable="false"
-              :clickable="false"
-              :options="{fillColor:'#56BA50',strokeWeight:'0', fillOpacity: '0.40'}"
-              style="border:1px">
-            </gmap-circle>
-          </gmap-map>
-          <div class="extra-div" style="height:500px">
-          </div>
-        </el-col>
-        <el-col :xs="24" :span="10" class="form-container" style="height:480px;margin-top:-52px;">
-          <div style="background-color:#56BA50; color:#ffffff; padding:10px 20px">
-            	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span><span v-if="property.offer_type === 2">/mo.</span>
-              <div class="pull-right">
-                <el-tooltip placement="top">
-                  <div slot="content">Share this property<br/>on Facebook</div>
-                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none">
-                    <span class="fa fa-facebook"></span>
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
-                  <div slot="content">Add this property<br/>to your Wish List</div>
-                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleAddWishList">
-                    <span class="fa fa-heart-o"></span>
-                  </el-button>
-                </el-tooltip>
-                <el-tooltip placement="top" v-if="wishlist.includes(property.property_no)">
-                  <div slot="content">Remove this property<br/>from your Wish List</div>
-                  <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleRemoveWishList">
-                    <span class="fa fa-heart"></span>
-                  </el-button>
-                </el-tooltip>
-              </div>
-          </div>
-          <div style="background:#F0F0F0; padding:5px 20px 10px 20px"  v-loading="loadingContact">
-            <p class="form-title text-center">Ask about the property</p>
-            <el-form :model="inquireForm" :rules="inquireRules" ref="inquireForm">
-              <el-form-item label="" prop="message">
-                <el-input type="textarea" v-model="inquireForm.message" placeholder="Message Inquiry" :rows="3"></el-input>
-              </el-form-item>
-              <el-row :gutter="10">
-                <el-col :span="12">
-                  <el-form-item label="" prop="first_name">
-                    <el-input v-model="inquireForm.first_name" placeholder="First Name"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="" prop="last_name">
-                    <el-input v-model="inquireForm.last_name" placeholder="Last Name"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-form-item label="" prop="contact">
-                <el-input type="number" v-model="inquireForm.contact" placeholder="Contact Number"></el-input>
-              </el-form-item>
-              <el-form-item label="" prop="email">
-                <el-input v-model="inquireForm.email" placeholder="Email" :rows="5"></el-input>
-              </el-form-item>
-              <p>I would Like to:</p>
-              <el-radio-group v-model="inquireForm.inquery">
-                <el-radio :label="1">Know more information</el-radio><br>
-                <el-radio :label="2">Schedule an appointment</el-radio>
-              </el-radio-group>
-              <el-form-item>
-                <el-button type="success" class="btn-pl-green" style="width:100%" @click="handleInquiry('inquireForm')">Contact Seller</el-button>
-              </el-form-item>
-            </el-form>
-            <a href="#" style="display:block; margin-top:-10px" class="text-center"><span class="fa fa-flag-o"></span> Report this listing</a>
-          </div>
-        </el-col>
-      </el-row>
-    </el-col>
-  </el-row>
+<template>
+  <div>
+    <el-row class="view-container text-left" v-if="property">
+      <el-col :span="24" class="">
+        <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" alt="" class="primary-img">
+        <el-button class="view-photos" @click="dialogVisible = true">View Photos</el-button>
+      </el-col>
+      <el-col :span="24">
+        <el-dialog title="" :visible.sync="dialogVisible" size="large" class="text-center">
+          <el-carousel :autoplay="false" arrow="always" height="500px" style="background:black">
+            <el-carousel-item v-for="img in property.property_media" :key="img.id">
+              <img v-lazy="imgUrl+img.uploaded_filename" style="height:100%">
+            </el-carousel-item>
+          </el-carousel>
+        </el-dialog>
+      </el-col>
+      <el-col :offset="3" :xs="24" :span="18" class="body-container">
+        <el-row>
+          <el-col :xs="24" :span="14" style="padding:20px 30px 0 0" class="info-container">
+            <p class="title">{{ property.property_detail.title }}</p>
+            <p class="location" >{{ property.property_location.formatted_address }}</p>
+            <p class="description">{{ property.property_detail.description }}</p>
+            <h4>Details</h4>
+            <el-row class="">
+              <el-col :span="12">
+                <ul class="detail_list">
+                  <li>Offer type: <b>For {{ property.offer_type === 1 ? 'Sale' : 'Rent' }}</b></li>
+                  <li>Property type: <b>{{ propertyType() }}</b></li>
+                  <li>Total Price: ₱ <b>{{ formatNumber(property.price) }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
+                  <li>Bedrooms: <b>{{ property.property_detail.bedrooms != 0 ? property.property_detail.bedrooms : 'Studio Type' }}</b></li>
+                  <li>Bathrooms: <b>{{ property.property_detail.bathrooms != 0 ? property.property_detail.bathrooms : 'None' }}</b></li>
+                </ul>
+              </el-col>
+              <el-col :span="12">
+                <ul class="detail_list">
+                  <li>Property id: <b>{{ property.property_no }}</b></li>
+                  <li>Parking: <b>{{ property.property_detail.parking != 0? property.property_detail.parking :'None'  }}</b></li>
+                  <li>Floor Area: <b>{{ property.property_detail.floor_area }} sqm</b></li>
+                  <li>Lot Area: <b>{{ property.property_detail.lot_area }} sqm</b></li>
+                  <li>Balcony: <b>{{ property.property_detail.balcony ? 'Yes' : 'No' }}</b></li>
+                </ul>
+              </el-col>
+            </el-row>
+            <el-row v-if="property.property_detail.amenities">
+              <h4>Amenities</h4>
+              <el-col :span="12" v-for="amenity in property.property_detail.amenities.split(',')" :key="0">
+                <ul class="amenity_list">
+                  <li><span class="fa fa-check txt-pl-green" style="font-size:10px"></span> {{ amenity }}</li>
+                </ul>
+              </el-col>
+            </el-row>
+            <h4>Location</h4>
+            <p>{{ property.property_location.formatted_address }}</p>
+            <gmap-map style="width: 100%; height: 300px;z-index:1" :zoom="zoom" :options="{styles:style}" :center="marker">
+              <gmap-marker
+                :draggable="false"
+                :clickable="false"
+                :icon="'/static/Philland_Place_Icon-10x10.png'"
+                :position="marker"
+                ></gmap-marker>
+              <gmap-circle
+                :center="marker"
+                :radius="20"
+                :draggable="false"
+                :clickable="false"
+                :options="{fillColor:'#56BA50',strokeWeight:'0', fillOpacity: '0.40'}"
+                style="border:1px">
+              </gmap-circle>
+            </gmap-map>
+            <div class="extra-div" style="height:500px">
+            </div>
+          </el-col>
+          <el-col :xs="24" :span="10" class="form-container" style="height:480px;margin-top:-52px;">
+            <div style="background-color:#56BA50; color:#ffffff; padding:10px 20px">
+              	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span><span v-if="property.offer_type === 2">/mo.</span>
+                <div class="pull-right">
+                  <el-tooltip placement="top">
+                    <div slot="content">Share this property<br/>on Facebook</div>
+                    <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none">
+                      <span class="fa fa-facebook"></span>
+                    </el-button>
+                  </el-tooltip>
+                  <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
+                    <div slot="content">Add this property<br/>to your Wish List</div>
+                    <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleAddWishList">
+                      <span class="fa fa-heart-o"></span>
+                    </el-button>
+                  </el-tooltip>
+                  <el-tooltip placement="top" v-if="wishlist.includes(property.property_no)">
+                    <div slot="content">Remove this property<br/>from your Wish List</div>
+                    <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none" @click="handleRemoveWishList">
+                      <span class="fa fa-heart"></span>
+                    </el-button>
+                  </el-tooltip>
+                </div>
+            </div>
+            <div style="background:#F0F0F0; padding:5px 20px 10px 20px"  v-loading="loadingContact">
+              <p class="form-title text-center">Ask about the property</p>
+              <el-form :model="inquireForm" :rules="inquireRules" ref="inquireForm">
+                <el-form-item label="" prop="message">
+                  <el-input type="textarea" v-model="inquireForm.message" placeholder="Message Inquiry" :rows="3"></el-input>
+                </el-form-item>
+                <el-row :gutter="10">
+                  <el-col :span="12">
+                    <el-form-item label="" prop="first_name">
+                      <el-input v-model="inquireForm.first_name" placeholder="First Name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="" prop="last_name">
+                      <el-input v-model="inquireForm.last_name" placeholder="Last Name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-form-item label="" prop="contact">
+                  <el-input type="number" v-model="inquireForm.contact" placeholder="Contact Number"></el-input>
+                </el-form-item>
+                <el-form-item label="" prop="email">
+                  <el-input v-model="inquireForm.email" placeholder="Email" :rows="5"></el-input>
+                </el-form-item>
+                <p>I would Like to:</p>
+                <el-radio-group v-model="inquireForm.inquery">
+                  <el-radio :label="1">Know more information</el-radio><br>
+                  <el-radio :label="2">Schedule an appointment</el-radio>
+                </el-radio-group>
+                <el-form-item>
+                  <el-button type="success" class="btn-pl-green" style="width:100%" @click="handleInquiry('inquireForm')">Contact Seller</el-button>
+                </el-form-item>
+              </el-form>
+              <a href="#" style="display:block; margin-top:-10px" class="text-center"><span class="fa fa-flag-o"></span> Report this listing</a>
+            </div>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
+    <bottom-navigation></bottom-navigation>
+  </div>
 </template>
 
 <script>
@@ -141,6 +144,7 @@ import MapStyle from '../../static/json/map-detailed.json'
 //api
 import { baseUrl, getProperty, addtoWishlist, getWishList } from '../assets/utils/properties-api.js'
 import { getIdToken, getAccess } from '../assets/utils/auth.js'
+import BottomNavigation from './BottomNavigation.vue'
 
 export default {
   name:'view-property',
@@ -318,7 +322,8 @@ export default {
       //this.$router.push({name:'sale', params:{offer_type:2, property_type:value.property_type, location:value.location }})
       //this.getSales(value.property_type, value.location)
     }
-  }
+  },
+  components:{ BottomNavigation }
 }
 </script>
 

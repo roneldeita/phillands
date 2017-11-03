@@ -1,13 +1,13 @@
 <template>
   <el-row>
     <h4 class="pull-left txt-pl-green" style="margin-bottom:15px">Property Images</h4>
-    <el-col :span="24" class="input">
+    <el-col :span="24" class="input" v-loading="loadingPrimary">
       <el-upload
         class="primary-uploader"
         action=""
         :auto-upload="false"
         :show-file-list="false"
-        :on-change="handleChange">
+        :on-change="handleChangePrimary">
         <img v-if="primartyImg" v-lazy="primartyImg" class="primary-img">
         <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
       </el-upload>
@@ -45,6 +45,7 @@ export default {
   name:'edit-media',
   data(){
     return{
+      loadingPrimary:false,
       imgLoading:false,
       token_access:getIdToken(),
       propertyId:'',
@@ -78,6 +79,38 @@ export default {
       console.log(event);
       console.log(file);
       console.log(fileList)
+    },
+    handleChangePrimary(file, fileList) {
+      this.loadingPrimary = true;
+      const self = this;
+      const formData = new FormData();
+      axios.defaults.headers.common['token'] = getIdToken();
+      formData.append('property_id', this.propertyId);
+      formData.append('image', file.raw);
+
+      axios.post(baseUrl()+'/broker/property/media/updatePrimary', formData)
+      .then(function(response){
+        self.getProperty(self.$route.params.property_no);
+        //console.log(response);
+        // var userInfo = JSON.stringify(response.data.user);
+        // localStorage.setItem('user', userInfo);
+      //
+        self.$message({
+          message: 'The Primary image was successfully changed',
+          type: 'success'
+        });
+        //self.profile = JSON.parse(getProfile());
+        self.loadingPrimary = false;
+      })
+      .catch( function(error){
+        self.getProperty(self.$route.params.property_no);
+        self.loadingAvatar = false;
+        // self.getProperty(self.$route.params.property_no);
+        // self.$message({
+        //   message: 'Unable to upload image',
+        //   type: 'warning'
+        // });
+      });
     },
     handleChange:function(file, fileList){
       this.imgLoading = true;

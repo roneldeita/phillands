@@ -1,18 +1,36 @@
 <template>
   <div class="card text-left" style="width: 350px;">
     <div class="card-block">
-      <h4 class="card-title"><span style="font-size:2em" class="fa fa-lightbulb-o txt-pl-green"></span> Tooltips Lorem Ipsum</h4>
-      <p class="card-text">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <h5 class="card-title"><span style="font-size:2em" class="pe-7s-light txt-pl-green"></span></h5>
+      <p class="card-text" v-html="tip"></p>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { baseUrl } from '../../assets/utils/properties-api.js'
 export default {
-  name:'screen-tip-three'
+  name:'screen-tip-three',
+  data(){
+    return{
+      tip:''
+    }
+  },
+  methods:{
+    loadContent:function(){
+      const self = this;
+      axios.get(baseUrl()+'/content/content/publish_property_3')
+      .then(function(response){
+        self.tip = response.data[0].content;
+      }).catch(function(error){
+        console.log(error);
+      });
+    }
+  },
+  mounted(){
+    this.loadContent()
+  }
 }
 </script>
 

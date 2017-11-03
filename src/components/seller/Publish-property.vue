@@ -293,7 +293,7 @@ export default {
         }
       });
 
-      axios.defaults.headers.common['token'] = AUTH_TOKEN;
+      axios.defaults.headers.common['token'] = getIdToken();
 
       self.finishButton = true;
 

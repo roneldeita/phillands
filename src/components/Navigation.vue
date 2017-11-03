@@ -53,6 +53,7 @@
                 <i class="el-icon-caret-bottom el-icon--right"></i>
               </span>
               <el-dropdown-menu class="dropdown" slot="dropdown">
+                <el-dropdown-item v-if="userAccess.role === 2" command="admin-dashboard">Admin Dashboard</el-dropdown-item>
                 <el-dropdown-item command="profile">Profile</el-dropdown-item>
                 <el-dropdown-item command="listings">Listings</el-dropdown-item>
                 <el-dropdown-item command="logout">Log out</el-dropdown-item>
@@ -64,6 +65,7 @@
               <img v-if="profile" :src="profile.avatar" class="img-circle" :alt="profile.first_name" width="35" height="35">
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" v-if="userAccess.role === 2" href="javascript:void(0)" @click="handleNavCommand('admin-dashboard')">Admin Dashboard</a>
               <a class="dropdown-item" href="javascript:void(0)" @click="handleNavCommand('profile')">Profile</a>
               <a class="dropdown-item" href="javascript:void(0)" @click="handleNavCommand('listings')">Listings</a>
               <a class="dropdown-item" href="javascript:void(0)" @click="handleNavCommand('logout')">Log out</a>
@@ -77,6 +79,33 @@
       <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
       <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
       <el-tab-pane label="Foreclosure" name="foreclosure"></el-tab-pane>
+      <!-- <div>
+        <el-popover
+          ref="price"
+          placement="bottom"
+          width="300"
+          trigger="click">
+            <h6 class="text-muted">₱520 - ₱50000+</h6>
+            <el-slider
+              v-model="priceRange"
+              range
+              :step="100"
+              show-stops
+              :max="50000">
+            </el-slider>
+            <el-button type="success" class="pl-btn-green pull-left" size="mini">Apply</el-button>
+          </el-popover>
+          <el-popover
+            ref="bed"
+            placement="bottom"
+            width="300"
+            trigger="click">
+              <p>beedroom option</p>
+              <el-button type="success" class="pl-btn-green pull-left" size="mini">Apply</el-button>
+            </el-popover>
+        <el-button type="text" v-popover:price>Price</el-button>
+        <el-button type="text" v-popover:bed>Beedrooms</el-button>
+      </div> -->
     </el-tabs>
     <el-tabs v-model="activeNav" v-if="allowedSellertRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="Profile" name="profile"></el-tab-pane>
@@ -85,23 +114,25 @@
     <el-tabs v-model="activeNav" v-if="allowedAdminRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="Dashboard" name="admin-dashboard"></el-tab-pane>
       <el-tab-pane label="Listings" name="admin-listings"></el-tab-pane>
+      <el-tab-pane label="Contents" name="admin-cms"></el-tab-pane>
       <el-tab-pane label="Users" name="admin-users"></el-tab-pane>
       <el-tab-pane label="Advertisements" name="admin-ads"></el-tab-pane>
-      <el-tab-pane label="Contents" name="admin-cms"></el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 import { getLocality } from '../assets/utils/properties-api.js'
-import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
+import { isLoggedIn, login, logout, getProfile, getAccess } from '../assets/utils/auth.js';
 
 export default {
     name: "navigation",
     data(){
       return{
+        userAccess:{},
         activeNav:'',
         searchLocation:'',
+        priceRange: [520, 50000],
         propertyType:'1',
         links:[],
         publishPropertyBtn:[
@@ -148,6 +179,12 @@ export default {
       }
     },
     methods:{
+      handleUserAccess(){
+        const self = this;
+        getAccess().then(function(response){
+          self.userAccess = response;
+        });
+      },
       LoginWasClicked:function(){
         this.$emit('login');
       },
@@ -254,8 +291,8 @@ export default {
       }
       //console.log(this.$route.params.property_type);
       this.searchLocation = this.$route.params.location;
+      this.handleUserAccess();
       this.loadLocality();
-
       this.handleSearch();
     }
 }

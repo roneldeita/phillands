@@ -1,26 +1,26 @@
 <template>
   <div>
-    <el-row :gutter="0">
+    <el-row :gutter="0" style="min-height:700px">
       <el-col :xs="24" :offset="2" :span="5" class="navmenu-container">
         <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleMenu">
           <el-menu-item index="published">Published Listings <el-badge :value="publishCount" :max="99" class="item"></el-badge></el-menu-item>
           <el-menu-item index="for-approval">For Approval <el-badge :value="forApprovalCount" :max="99" class="item"></el-badge></el-menu-item>
           <el-menu-item index="archives">Archives</el-menu-item>
-          <el-menu-item index="wishlist">Wish List <el-badge :value="wishlistCount" :max="99" class="item"></el-badge></el-menu-item>
+          <el-menu-item index="wishlist">Wish List<el-badge :value="wishlistCount" :max="99" class="item"></el-badge></el-menu-item>
         </el-menu>
         <br>
         <el-button style="width:100%; padding-top:15px; padding-bottom:15px"  @click="goToPublishListing"><span class="fa fa-add"></span> New Listing</el-button>
       </el-col>
       <el-col :xs="24" :span="14" class="property-container">
         <div v-if="activeMenu === 'published'">
-          <property-box v-if="published.length" v-for="property in published" :key="property.id" :info="property"></property-box>
+          <property-box v-if="published" v-for="property in published" :key="property.id" :info="property"></property-box>
           <div class="jumbotron" v-if="published.length === 0">
             <h4>You have no published listings yet</h4>
             <a href="javascript:void(0)" @click="goToPublishListing"> <span class="fa fa-plus"></span> Add Listing</a>
           </div>
         </div>
         <div v-if="activeMenu === 'for-approval'">
-          <property-box v-if="forApproval.length" v-for="property in forApproval" :key="property.id" :info="property"></property-box>
+          <property-box v-if="forApproval" v-for="property in forApproval" :key="property.id" :info="property"></property-box>
           <div class="jumbotron" v-else="forApproval.length === 0">
             <h4><a href="javascript:void(0)" @click="goToPublishListing"> <span class="fa fa-plus"></span> Add Listing</a></h4>
           </div>
@@ -29,21 +29,24 @@
           <property-box v-for="n in 0" :key="n" :info="archives"></property-box>
         </div>
         <div v-if="activeMenu === 'wishlist'">
-          <property-box v-if="wishlist.length" v-for="item in wishlist" :key="item.id" :info="item"></property-box>
-          <div class="jumbotron" v-else="wishlist.length === 0">
-            <h4><a href="javascript:void(0)" @click="goToPublishListing"> <span class="fa fa-plus"></span> Add Listing</a></h4>
+          <property-box v-if="wishlist" v-for="item in wishlist" :key="item.id" :info="item"></property-box>
+          <div class="jumbotron" v-if="wishlist.length === 0">
+            <h4>Your wishlist is currently empty</h4>
+            <h5><a href="javascript:void(0)" @click="goToSearchProperty"> <span class="fa fa-search"></span> Search property</a></h5>
           </div>
         </div>
       </el-col>
     </el-row>
+    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { baseUrl, getWishList } from '../../assets/utils/properties-api.js';
-import { getIdToken } from '../../assets/utils/auth.js';
+import { baseUrl, getWishList } from '../../assets/utils/properties-api.js'
+import { getIdToken } from '../../assets/utils/auth.js'
 import PropertyBox from './Property-box.vue'
+import BottomNavigation from '../BottomNavigation.vue'
 
 export default {
   name:'listings',
@@ -76,6 +79,9 @@ export default {
         this.getWishList();
       }
     },
+    goToSearchProperty(){
+      this.$router.push({name:'sale', params:{property_type:1}});
+    },
     goToPublishListing(){
       this.$router.push({name:'publish-property'});
     },
@@ -84,7 +90,7 @@ export default {
       axios.defaults.headers.common['token'] = getIdToken();
       axios.get(baseUrl()+'/property',{ params:{ status: 1}})
       .then(function (response) {
-          self.published = response.data.properties;
+          self.published = response.data.properties.reverse();
           self.publishCount = response.data.properties.length;
       })
       .catch(function (error) {
@@ -96,7 +102,7 @@ export default {
       axios.defaults.headers.common['token'] = getIdToken();
       axios.get(baseUrl()+'/property',{ params:{status: 0}})
       .then(function (response) {
-        self.forApproval = response.data.properties;
+        self.forApproval = response.data.properties.reverse();
         self.forApprovalCount = response.data.properties.length;
       })
       .catch(function (error) {
@@ -107,9 +113,11 @@ export default {
       getWishList().then((wishlist)=>{
         var arr = [];
         for(var wish in wishlist){
-          arr.push(wishlist[wish].property)
+          //arr.push(wishlist[wish].property)
+          arr.push(wishlist[wish].property);
+          arr[wish]['wishlist_id'] = wishlist[wish].id;
         }
-        this.wishlist = arr;
+        this.wishlist = arr.reverse();
         this.wishlistCount = arr.length;
       });
     }
@@ -124,7 +132,7 @@ export default {
     this.getApproval();
     this.getWishList();
   },
-  components:{ PropertyBox }
+  components:{ PropertyBox, BottomNavigation}
 }
 </script>
 

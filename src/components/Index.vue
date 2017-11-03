@@ -17,6 +17,7 @@
             <i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu class="dropdown" slot="dropdown">
+            <el-dropdown-item v-if="userAccess.role === 2" command="admin-dashboard">Admin Dashboard</el-dropdown-item>
             <el-dropdown-item command="profile">Profile</el-dropdown-item>
             <el-dropdown-item command="listings">Listing</el-dropdown-item>
             <el-dropdown-item command="logout">Log out</el-dropdown-item>
@@ -64,11 +65,11 @@
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg" justify="left">
-      <el-col :xs="22" :offset="2" :sm="14" :md="14">
+      <el-col :xs="24" :offset="2" :sm="14" :md="14" class="property-container">
         <featured-sale v-show="activeNav ==='sale'"></featured-sale>
         <featured-rent v-show="activeNav ==='rent'"></featured-rent>
       </el-col>
-      <el-col :span="6">
+      <el-col :xs="0" :sm="6" :md="6" class="ads-container">
         <el-row :gutter="20">
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
             <advertisement :img="add.img" style="padding:0px 0 20px 20px"></advertisement>
@@ -76,23 +77,25 @@
         </el-row>
       </el-col>
     </el-row>
+    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
 <script>
 import Slogan from './content/Slogan.vue'
 import { getLocality } from '../assets/utils/properties-api.js'
-import { isLoggedIn, login, logout, getProfile } from '../assets/utils/auth.js';
+import { isLoggedIn, login, logout, getProfile, getAccess } from '../assets/utils/auth.js';
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
 import Advertisement from './Advertisement.vue'
+import BottomNavigation from './BottomNavigation.vue'
 
 export default {
   name: 'index',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      userAccess:{},
       inputSearch:'',
       selectSearch:'1',
       activeNav:'sale',
@@ -105,6 +108,12 @@ export default {
     }
   },
   methods:{
+    handleUserAccess(){
+      const self = this;
+      getAccess().then(function(response){
+        self.userAccess = response;
+      });
+    },
     LoginWasClicked:function(){
       this.$emit('login');
     },
@@ -156,8 +165,9 @@ export default {
       console.log(tab.name)
     }
   },
-  components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement },
+  components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement, BottomNavigation },
   mounted(){
+    this.handleUserAccess();
     this.loadLocality();
     //console.log(getProfile());
   }
@@ -194,5 +204,14 @@ export default {
     margin-top: 10px;
     margin-right: 15px;
     width: 180px;
+  }
+  @media (max-width : 769px){
+    .property-container{
+      margin: 0;
+      padding: 0 15px 15px 15px;
+    }
+    .ads-container{
+      display: none
+    }
   }
 </style>

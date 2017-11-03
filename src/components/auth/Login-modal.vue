@@ -16,10 +16,10 @@
           <el-tabs v-show="!forgetPassword" v-model="activeAuthTab">
             <el-tab-pane label="Login" name="login">
               <div class="" style="padding:5px 0 10px 0">
-                <el-button type="default" @click="authenticate('google')" style="width:100%"><span class="fa fa-google"></span> Login with google</el-button>
+                <el-button type="default" @click="authenticate('google')" style="width:100%" disabled><span class="fa fa-google"></span> Login with google</el-button>
               </div>
               <div class="" style="padding:5px 0 10px 0">
-                <el-button type="info" @click="authenticate('facebook')" style="width:100%"><span class="fa fa-facebook-official"></span> Login with facebook</el-button>
+                <el-button type="info" @click="authenticate('facebook')" style="width:100%" disabled><span class="fa fa-facebook-official"></span> Login with facebook</el-button>
               </div>
               <p>or</p>
               <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0">
@@ -72,7 +72,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button class="pull-left" type="text" @click="forgetPassword = false"><span class="el-icon-arrow-left"></span> Back to Login</el-button>
-                  <el-button class="pull-right" type="primary">Send Resend Link</el-button>
+                  <el-button class="pull-right" type="primary" @click="handleResendPassword('resetPasswordForm')">Send Reset Link</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -145,7 +145,12 @@ export default {
           { required: true, message: 'Please input password', trigger: 'blur' }
         ]
       },
-      resetPasswordRules:{}
+      resetPasswordRules:{
+        email: [
+          { required: true, message: 'Please input email', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods:{
@@ -222,6 +227,24 @@ export default {
     },
     resetPasswordWasClick:function(){
       this.$emit('resetpassword');
+    },
+    handleResendPassword:function(formName){
+      const self = this;
+      this.$refs[formName].validate((valid) => {
+
+        if(valid){
+          axios.post(baseUrl()+'/forgot_password/request_key', this.resetPasswordForm)
+          .then(function(response) {
+            self.$message.success('We have sent you an email with reset instruction.');
+            self.resetPasswordForm.email = '';
+          }).catch(function(error) {
+            self.$message.error(error.response.data.message)
+          });
+        }else{
+
+        }
+
+      });
     },
     handleViewPassword: function(){
       if(this.password.type === 'password'){

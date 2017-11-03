@@ -1,9 +1,11 @@
 <template>
     <el-row class="text-left">
       <h2>Location</h2><br>
-      <h5>Address</h5>
-      <gmap-autocomplete class="form-control" @place_changed="setLocation"></gmap-autocomplete><br>
-      <div class="alert alert-info"><span class="el-icon-warning"></span> Drag the Map Marker and point it to the exact location of the property</div>
+      <!-- <button class="btn btn-sm btn-success" style="border-radius:50%; margin-bottom:5px; padding:5px 10px">1</button> -->
+      <h6><b>1</b>. Address</h6>
+      <gmap-autocomplete class="form-control" @place_changed="setLocation" placeholder="Enter the location"></gmap-autocomplete><br>
+      <!-- <button class="btn btn-sm btn-success" style="border-radius:50%; margin-bottom:5px; padding:5px 10px">2</button> -->
+      <h6><b>2</b>. Drag the Map Marker and point it to the exact location of the property.</h6>
       <gmap-map :class="mapStyle" ref="gmap" :zoom="zoom" :center="center" :options="{styles:style}"  @center_changed="centerChange">
         <gmap-marker
           :draggable="true"
@@ -38,6 +40,7 @@ export default {
     return{
       zoom:7,
       center: {lat: 14.5677961, lng: 121.0206435},
+      displayMap:true,
       marker: {lat: 0, lng: 0},
       style: [],
       mapStyle:'map-style'
@@ -57,6 +60,7 @@ export default {
       this.$emit('back')
     },
     setLocation: function(place){
+      this.displayMap = false;
       this.$refs.gmap.resize();
       var address_components = [];
 
@@ -66,6 +70,7 @@ export default {
       }
       this.updateCenter();
       this.$emit('formatedaddress', place);
+
     },
     setMarker: function(place){
       this.marker = {
@@ -91,7 +96,6 @@ export default {
     }
   },
   mounted(){
-    //this.style = MapStyle;
   }
 
 }

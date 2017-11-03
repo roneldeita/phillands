@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen.lock="fullScreenLoading" element-loading-text="Uploading your files, Please wait...">
+  <div v-loading.fullscreen="fullScreenLoading" element-loading-text="Uploading your files, Please wait...">
     <el-form :model="contact" :rules="contactRules" ref="contact">
       <el-row class="text-left">
         <h2>Contacts</h2><br>

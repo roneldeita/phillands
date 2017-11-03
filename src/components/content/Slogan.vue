@@ -1,12 +1,33 @@
 <template>
-  <div>
-    <p class="slogan">The best way to find home and settle your future.</p>
+  <div class="text-left">
+    <p class="slogan" v-html="slogan"></p>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { baseUrl } from '../../assets/utils/properties-api.js'
 export default {
-  name:'slogan'
+  name:'slogan',
+  data(){
+    return{
+      slogan:''
+    }
+  },
+  methods:{
+    loadContent:function(){
+      const self = this;
+      axios.get(baseUrl()+'/content/content/index_slogan')
+      .then(function(response){
+        self.slogan = response.data[0].content;
+      }).catch(function(error){
+        console.log(error);
+      });
+    }
+  },
+  mounted(){
+    this.loadContent()
+  }
 }
 </script>
 

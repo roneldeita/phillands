@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Administrative Area</h1>
-    <p>{{ profile.role}}</p>
+    <h1>Administrative Dashboard</h1>
+    <h5><li class="fa fa-wrench"></li> Ongoing development</h5>
   </div>
 </template>
 
