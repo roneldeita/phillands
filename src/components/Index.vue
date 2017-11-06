@@ -109,10 +109,7 @@ export default {
   },
   methods:{
     handleUserAccess(){
-      const self = this;
-      getAccess().then(function(response){
-        self.userAccess = response;
-      });
+      getAccess().then( response => this.userAccess = response );
     },
     LoginWasClicked:function(){
       this.$emit('login');
@@ -167,9 +164,10 @@ export default {
   },
   components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement, BottomNavigation },
   mounted(){
-    this.handleUserAccess();
     this.loadLocality();
-    //console.log(getProfile());
+    if(this.isLoggedIn()){
+      this.handleUserAccess();
+    }
   }
 }
 </script>

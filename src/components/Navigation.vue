@@ -180,10 +180,7 @@ export default {
     },
     methods:{
       handleUserAccess(){
-        const self = this;
-        getAccess().then(function(response){
-          self.userAccess = response;
-        });
+        getAccess().then(response => this.userAccess = response );
       },
       LoginWasClicked:function(){
         this.$emit('login');
@@ -260,10 +257,9 @@ export default {
         this.$router.replace({ name: tab.name, params:{property_type:this.propertyType, location:this.searchLocation }});
       },
       handleBack:function(){
-        var self = this;
         this.$router.go(-1);
-        setTimeout(function(){
-          self.handleSearch();
+        setTimeout(() => {
+          this.handleSearch();
         }, 300);
       }
     },
@@ -291,9 +287,11 @@ export default {
       }
       //console.log(this.$route.params.property_type);
       this.searchLocation = this.$route.params.location;
-      this.handleUserAccess();
       this.loadLocality();
       this.handleSearch();
+      if(this.isLoggedIn()){
+        this.handleUserAccess();
+      }
     }
 }
 </script>

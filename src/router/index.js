@@ -4,7 +4,6 @@ import Router from 'vue-router'
 //components
 import Index from '@/components/Index'
 import NotFound from '@/components/Not-found'
-import Callback from '@/components/auth/Callback'
 import Rent from '@/components/Rent'
 import Sale from '@/components/Sale'
 import PreSelling from '@/components/Pre-selling'
@@ -35,7 +34,6 @@ export default new Router({
   routes: [
         { path: '*', component: NotFound },
         { path: '/', name: 'index', component: Index },
-        { path: '/callback', name: 'callback', component: Callback },
         { path: '/rent', name: 'rent', component: Rent, props: true },
         { path: '/sale', name: 'sale', component: Sale, props: true },
         { path: '/property/:property_no', name: 'view-property', component: viewProperty},

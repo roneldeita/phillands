@@ -86,26 +86,24 @@ export default {
       this.$router.push({name:'publish-property'});
     },
     getPublished:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
       axios.get(baseUrl()+'/property',{ params:{ status: 1}})
-      .then(function (response) {
-          self.published = response.data.properties.reverse();
-          self.publishCount = response.data.properties.length;
+      .then(response =>{
+          this.published = response.data.properties.reverse();
+          this.publishCount = response.data.properties.length;
       })
-      .catch(function (error) {
+      .catch( error => {
         //console.log(error);
       });
     },
     getApproval:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
       axios.get(baseUrl()+'/property',{ params:{status: 0}})
-      .then(function (response) {
-        self.forApproval = response.data.properties.reverse();
-        self.forApprovalCount = response.data.properties.length;
+      .then(response => {
+        this.forApproval = response.data.properties.reverse();
+        this.forApprovalCount = response.data.properties.length;
       })
-      .catch(function (error) {
+      .catch(error => {
         //console.log(error);
       });
     },

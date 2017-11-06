@@ -106,16 +106,15 @@ export default {
       this.$router.push({name:'edit-property', params:{property_no:propertyNo}})
     },
     handleRemoveWishList:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
       return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.info.wishlist_id}).
-      then(function(response){
-        self.$message({
+      then(response =>{
+        this.$message({
           message: 'This property was removed from your wish list',
           type: 'success'
         });
-        setTimeout(function(){
-          self.$router.go({name:'wishlist'});
+        setTimeout(() =>{
+          this.$router.go({name:'wishlist'});
         },800);
       });
     },
@@ -137,13 +136,12 @@ export default {
 
     },
     getInquiries:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
       axios.get(baseUrl()+'/broker/inquiry/property/'+this.info.id)
-      .then(function(response){
-        self.inquirySource = response.data.reverse();
-        self.loadInquiries(0, self.inquiry_limit);
-        self.inquiriesCount = response.data.length;
+      .then(response =>{
+        this.inquirySource = response.data.reverse();
+        this.loadInquiries(0, this.inquiry_limit);
+        this.inquiriesCount = response.data.length;
       }).catch(function(error){
         //console.log(error.data)
       });

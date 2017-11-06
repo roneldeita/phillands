@@ -34,29 +34,27 @@ export default {
       }
     },
     loadContent:function(){
-      const self = this;
       axios.get(baseUrl()+'/content/content/index_slogan')
-      .then(function(response){
-        self.slogan = response.data[0];
-        self.sloganContent = response.data[0].content;
-      }).catch(function(error){
+      .then(response =>{
+        this.slogan = response.data[0];
+        this.sloganContent = response.data[0].content;
+      }).catch(error =>{
         console.log(error);
       });
     },
     saveSlogan:function(){
-      const self = this;
       var content = {
         content_id:this.slogan.id,
         content:this.sloganContent
       }
       axios.post(baseUrl()+'/content/page/edit', content)
-      .then(function(response){
-        self.$notify({
+      .then(response =>{
+        this.$notify({
           title: 'Success',
           message: 'The contant was updated',
           type: 'success'
         });
-        self.editSlogan = false;
+        this.editSlogan = false;
       }).catch(function(error){
         console.log(error)
       })

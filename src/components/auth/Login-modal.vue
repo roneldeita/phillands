@@ -24,10 +24,10 @@
               <p>or</p>
               <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0">
                 <el-form-item label="" prop="email">
-                  <el-input v-model="loginForm.email" placeholder="Email"></el-input>
+                  <el-input v-model="loginForm.email" placeholder="Email" @keyup.enter.native="handleLogin('loginForm')"></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="password" style="margin-top:25px">
-                  <el-input :type="password.type" v-model="loginForm.password" placeholder="Password" :on-icon-click="handleViewPassword">
+                  <el-input :type="password.type" v-model="loginForm.password" placeholder="Password" :on-icon-click="handleViewPassword" @keyup.enter.native="handleLogin('loginForm')">
                   </el-input>
                   <span :class="password.class" id="show-password" @click="handleViewPassword"></span>
                 </el-form-item>
@@ -182,14 +182,12 @@ export default {
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-          const self = this;
-
           axios.post(baseUrl()+'/register', this.registerForm)
-          .then(function(response) {
-            self.doLogin({email:self.registerForm.email, password:self.registerForm.password});
+          .then(response => {
+            this.doLogin({email:this.registerForm.email, password:this.registerForm.password});
           })
-          .catch(function(error) {
-            self.$message.error(error.response.data.message)
+          .catch(error => {
+            this.$message.error(error.response.data.message)
           });
 
         }else{
@@ -200,10 +198,8 @@ export default {
 
     },
     doLogin:function(formData){
-      const self = this;
-
       axios.post(baseUrl()+'/login',formData)
-      .then(function(response) {
+      .then(response => {
         localStorage.setItem('access_token', response.data.token);
         var userInfo = JSON.stringify(response.data.user);
         localStorage.setItem('user', userInfo);
@@ -212,8 +208,8 @@ export default {
           if(response.role === 2){
             window.location  = '/admin'
           }else{
-            if(self.$route.query.redirect !=''){
-              self.$router.replace({path:self.$route.query.redirect});
+            if(this.$route.query.redirect !=''){
+              this.$router.replace({path:this.$route.query.redirect});
               location.reload();
             }else{
               location.reload();
@@ -221,24 +217,23 @@ export default {
           }
         });
       })
-      .catch(function(error) {
-        self.$message.error('Email or Password is incorrect')
+      .catch(error => {
+        this.$message.error('Email or Password is incorrect')
       });
     },
     resetPasswordWasClick:function(){
       this.$emit('resetpassword');
     },
     handleResendPassword:function(formName){
-      const self = this;
       this.$refs[formName].validate((valid) => {
 
         if(valid){
           axios.post(baseUrl()+'/forgot_password/request_key', this.resetPasswordForm)
-          .then(function(response) {
-            self.$message.success('We have sent you an email with reset instruction.');
-            self.resetPasswordForm.email = '';
-          }).catch(function(error) {
-            self.$message.error(error.response.data.message)
+          .then(response => {
+            this.$message.success('We have sent you an email with reset instruction.');
+            this.resetPasswordForm.email = '';
+          }).catch(error => {
+            this.$message.error(error.response.data.message)
           });
         }else{
 
@@ -263,7 +258,10 @@ export default {
   },
   mounted(){
     //this.dialogVisible = this.modal
-  }
+  },
+  created: function () {
+    window.addEventListener('keyup', console.log('test'))
+  },
 }
 </script>
 

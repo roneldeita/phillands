@@ -222,23 +222,23 @@ export default {
       //then populate
       this.property.formatted_address = place.formatted_address;
 
-      var self = this.property;
+      var thisProperty = this.property;
 
       place.address_components.forEach(function(index, value){
         if(index.types[0] === 'street_number'){
-          self.street_number = index.long_name;
+          thisProperty.street_number = index.long_name;
         }else if(index.types[0] === 'route'){
-          self.route = index.long_name;
+          thisProperty.route = index.long_name;
         }else if(index.types[0] === 'locality'){
-          self.locality = index.long_name;
+          thisProperty.locality = index.long_name;
         }else if(index.types[0] === 'administrative_area_level_2'){
-          self.administrative_area_level_2 = index.long_name;
+          thisProperty.administrative_area_level_2 = index.long_name;
         }else if(index.types[0] === 'administrative_area_level_1'){
-          self.administrative_area_level_1 = index.long_name;
+          thisProperty.administrative_area_level_1 = index.long_name;
         }else if(index.types[0] === 'country'){
-          self.country = index.long_name;
+          thisProperty.country = index.long_name;
         }else if(index.types[0] === 'postal_code'){
-          self.postal_code = index.long_name;
+          thisProperty.postal_code = index.long_name;
         }
       });
     },
@@ -247,16 +247,10 @@ export default {
       this.property.lng = latlong.lng;
     },
     handleChange:function(file){
-      //console.log(file[0]['raw']);
-      //this.property.images = file[0]['raw'];
       this.property.images = [];
-      const self = this.property.images;
-      file.forEach(function(raw){
-        self.push(raw['raw']);
+      file.forEach(raw => {
+        this.property.images.push(raw['raw']);
       });
-
-      //console.log(this.property.images);
-
     },
     changeYoutubeUrl:function(url){
       this.property.youtube_url = url;
@@ -281,27 +275,26 @@ export default {
     },
     handlePublish:function(){
       const formData = new FormData();
-      const self = this;
 
-      Object.keys(this.property).forEach(function(key){
+      Object.keys(this.property).forEach( key => {
         if(key === 'images'){
-          self.property[key].forEach(function(file){
+          this.property[key].forEach( file => {
             formData.append('images', file)
           })
         }else{
-          formData.append(key, self.property[key]);
+          formData.append(key, this.property[key]);
         }
       });
 
       axios.defaults.headers.common['token'] = getIdToken();
 
-      self.finishButton = true;
+      this.finishButton = true;
 
       axios.post(baseUrl()+'/broker/property/create', formData)
-      .then(function(response){
+      .then(response => {
 
         if(response.data.message === "success"){
-          self.$router.push({name:'publish-completed'});
+          this.$router.push({name:'publish-completed'});
         }
 
       })

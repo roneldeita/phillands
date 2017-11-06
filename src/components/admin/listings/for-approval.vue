@@ -88,19 +88,19 @@ export default {
   },
   methods:{
     handleApprove:function(propertyId){
-      const self = this;
       var property ={
         property_id:propertyId,
          status:1
       }
       axios.defaults.headers.common['token'] = getIdToken();
-      axios.post(baseUrl()+'/admin/property/update', property).then(function(response){
-        self.$notify({
+      axios.post(baseUrl()+'/admin/property/update', property)
+      .then(response =>{
+        this.$notify({
           title: 'Success',
           message: 'You have approved the property',
           type: 'success'
         }),
-        self.getPublished();
+        this.getPublished();
       });
     },
     handlePreview: function(propertyNo){
@@ -124,18 +124,17 @@ export default {
       this.current_page = page;
     },
     getPublished:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = null;
       axios.get(baseUrl()+'/property',{ params:{ status: 0}})
-      .then(function (response) {
-        self.property_source = response.data.properties.reverse()
-        if(self.property_source.length > 0){
-          self.loadPublished(0, self.item_per_page,);//load the properties
-          self.total_properties = Object.keys(self.property_source).length ;//get the total numbers of properties
-          self.loading = false;
+      .then(response => {
+        this.property_source = response.data.properties.reverse()
+        if(this.property_source.length > 0){
+          this.loadPublished(0, this.item_per_page,);//load the properties
+          this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
+          this.loading = false;
         }
-        if(self.current_page !=0){
-          self.switchToPage(self.current_page);
+        if(this.current_page !=0){
+          this.switchToPage(this.current_page);
         }
       })
       .catch(function (error) {

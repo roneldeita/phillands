@@ -19,11 +19,10 @@ export default {
   },
   methods:{
     loadContent:function(){
-      const self = this;
       axios.get(baseUrl()+'/content/content/publish_property_3')
-      .then(function(response){
-        self.tip = response.data[0].content;
-      }).catch(function(error){
+      .then(response => {
+        this.tip = response.data[0].content;
+      }).catch(error => {
         console.log(error);
       });
     }

@@ -16,11 +16,10 @@ export default {
   },
   methods:{
     loadContent:function(){
-      const self = this;
       axios.get(baseUrl()+'/content/content/index_slogan')
-      .then(function(response){
-        self.slogan = response.data[0].content;
-      }).catch(function(error){
+      .then(response => {
+        this.slogan = response.data[0].content;
+      }).catch(error => {
         console.log(error);
       });
     }

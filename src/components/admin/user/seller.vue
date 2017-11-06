@@ -103,20 +103,19 @@ export default {
       this.loadPublished(start, end);
     },
     getPublished:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = null;
       axios.get(baseUrl()+'/property',{ params:{ status: 1}})
-      .then(function (response) {
-        // self.property_source = response.data.properties
-        // if(self.property_source.length > 0){
-        //   self.loadPublished(0, self.item_per_page);//load the properties
-        //   self.total_properties = Object.keys(self.property_source).length ;//get the total numbers of properties
-          self.loading = false;
+      .then(response =>{
+        // this.property_source = response.data.properties
+        // if(this.property_source.length > 0){
+        //   this.loadPublished(0, this.item_per_page);//load the properties
+        //   this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
         //}
+        this.loading = false;
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error);
-        self.loading = false;
+        this.loading = false;
       });
     }
   },

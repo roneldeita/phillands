@@ -69,31 +69,23 @@ export default {
   methods:{
     handleChange(file, fileList) {
       this.loadingAvatar = true;
-      const self = this;
       const formData = new FormData();
       axios.defaults.headers.common['token'] = getIdToken();
       formData.append('image', file.raw);
 
       axios.post(baseUrl()+'/client/profile/update/avatar', formData)
-      .then(function(response){
-        //console.log(response);
+      .then( response => {
         var userInfo = JSON.stringify(response.data.user);
         localStorage.setItem('user', userInfo);
-      //
-        self.$message({
+        this.$message({
           message: 'Your avatar was successfully updated',
           type: 'success'
         });
-        self.profile = JSON.parse(getProfile());
-        self.loadingAvatar = false;
+        this.profile = JSON.parse(getProfile());
+        this.loadingAvatar = false;
       })
-      .catch( function(error){
-        self.loadingAvatar = false;
-        // self.getProperty(self.$route.params.property_no);
-        // self.$message({
-        //   message: 'Unable to upload image',
-        //   type: 'warning'
-        // });
+      .catch( error =>{
+        this.loadingAvatar = false;
       });
     },
     checkFileBeforeAttach(file, fileList){

@@ -40,30 +40,28 @@ export default {
       }
     },
     loadContent:function(){
-      const self = this;
       axios.get(baseUrl()+'/content/content/publish_property_5')
-      .then(function(response){
-        self.tip = response.data[0];
-        self.tipContent = response.data[0].content;
+      .then(response =>{
+        this.tip = response.data[0];
+        this.tipContent = response.data[0].content;
       }).catch(function(error){
         console.log(error);
       });
     },
     saveTip:function(){
-      const self = this;
       var content = {
         content_id:this.tip.id,
         content:this.tipContent
       }
       axios.post(baseUrl()+'/content/page/edit', content)
-      .then(function(response){
-        self.$notify({
+      .then(response =>{
+        this.$notify({
           title: 'Success',
           message: 'The contant was updated',
           type: 'success'
         });
-        self.editTip = false;
-      }).catch(function(error){
+        this.editTip = false;
+      }).catch(error =>{
         console.log(error)
       })
     }
