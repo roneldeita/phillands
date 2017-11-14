@@ -68,25 +68,31 @@ export default {
   },
   methods:{
     handleChange(file, fileList) {
-      this.loadingAvatar = true;
-      const formData = new FormData();
-      axios.defaults.headers.common['token'] = getIdToken();
-      formData.append('image', file.raw);
+      const fileValidation = this.checkFileBeforeAttach(file, fileList);
+      if(fileValidation.approve === false){
+        this.loadingAvatar = false;
+        this.$message.error(fileValidation.msg);
+      }else{
+        this.loadingAvatar = true;
+        const formData = new FormData();
+        axios.defaults.headers.common['token'] = getIdToken();
+        formData.append('image', file.raw);
 
-      axios.post(baseUrl()+'/client/profile/update/avatar', formData)
-      .then( response => {
-        var userInfo = JSON.stringify(response.data.user);
-        localStorage.setItem('user', userInfo);
-        this.$message({
-          message: 'Your avatar was successfully updated',
-          type: 'success'
+        axios.post(baseUrl()+'/client/profile/update/avatar', formData)
+        .then( response => {
+          var userInfo = JSON.stringify(response.data.user);
+          localStorage.setItem('user', userInfo);
+          this.$message({
+            message: 'Your avatar was successfully updated',
+            type: 'success'
+          });
+          this.profile = JSON.parse(getProfile());
+          this.loadingAvatar = false;
+        })
+        .catch( error =>{
+          this.loadingAvatar = false;
         });
-        this.profile = JSON.parse(getProfile());
-        this.loadingAvatar = false;
-      })
-      .catch( error =>{
-        this.loadingAvatar = false;
-      });
+      }
     },
     checkFileBeforeAttach(file, fileList){
 
@@ -96,6 +102,7 @@ export default {
       const validSize = file.raw.size / 1024 / 1024 < 2;
 
       if(validImage.includes(file.raw.type)){//valid type
+        console.log(file.raw.type);
         if(!validSize){
           result =  { approve:false, msg:'Image size can not exceed 2MB'}
           fileList.splice(-1);

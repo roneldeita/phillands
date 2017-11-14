@@ -89,8 +89,8 @@ export default {
       axios.defaults.headers.common['token'] = getIdToken();
       axios.get(baseUrl()+'/property',{ params:{ status: 1}})
       .then(response =>{
-          this.published = response.data.properties.reverse();
-          this.publishCount = response.data.properties.length;
+        this.published = response.data.properties.reverse();
+        this.publishCount = response.data.properties.length;
       })
       .catch( error => {
         //console.log(error);

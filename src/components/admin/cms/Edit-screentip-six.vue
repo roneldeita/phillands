@@ -9,11 +9,11 @@
       </div>
     </div>
     <screentip-six v-if="!editTip"></screentip-six>
-    <div v-if="editTip" class="card text-left" style="width: 350px;">
+    <div v-if="editTip" class="card text-left">
       <div class="card-block">
         <h5 class="card-title"><span style="font-size:2em" class="pe-7s-light txt-pl-green"></span></h5>
         <p class="card-text">
-          <textarea  class="form-control" v-model="tipContent" rows="12"></textarea>
+          <textarea  class="form-control" v-model="tipContent" rows="6"></textarea>
         </p>
       </div>
     </div>

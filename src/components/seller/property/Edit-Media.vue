@@ -81,36 +81,42 @@ export default {
       console.log(fileList)
     },
     handleChangePrimary(file, fileList) {
-      this.loadingPrimary = true;
-      const self = this;
-      const formData = new FormData();
-      axios.defaults.headers.common['token'] = getIdToken();
-      formData.append('property_id', this.propertyId);
-      formData.append('image', file.raw);
+      const fileValidation = this.checkFileBeforeAttach(file, fileList);
+      if(fileValidation.approve === false){
+        this.loadingPrimary = false;
+        this.$message.error(fileValidation.msg);
+      }else{
+        this.loadingPrimary = true;
+        const self = this;
+        const formData = new FormData();
+        axios.defaults.headers.common['token'] = getIdToken();
+        formData.append('property_id', this.propertyId);
+        formData.append('image', file.raw);
 
-      axios.post(baseUrl()+'/broker/property/media/updatePrimary', formData)
-      .then(function(response){
-        self.getProperty(self.$route.params.property_no);
-        //console.log(response);
-        // var userInfo = JSON.stringify(response.data.user);
-        // localStorage.setItem('user', userInfo);
-      //
-        self.$message({
-          message: 'The Primary image was successfully changed',
-          type: 'success'
+        axios.post(baseUrl()+'/broker/property/media/updatePrimary', formData)
+        .then(function(response){
+          self.getProperty(self.$route.params.property_no);
+          //console.log(response);
+          // var userInfo = JSON.stringify(response.data.user);
+          // localStorage.setItem('user', userInfo);
+        //
+          self.$message({
+            message: 'The Primary image was successfully changed',
+            type: 'success'
+          });
+          //self.profile = JSON.parse(getProfile());
+          self.loadingPrimary = false;
+        })
+        .catch( function(error){
+          self.getProperty(self.$route.params.property_no);
+          self.loadingAvatar = false;
+          // self.getProperty(self.$route.params.property_no);
+          // self.$message({
+          //   message: 'Unable to upload image',
+          //   type: 'warning'
+          // });
         });
-        //self.profile = JSON.parse(getProfile());
-        self.loadingPrimary = false;
-      })
-      .catch( function(error){
-        self.getProperty(self.$route.params.property_no);
-        self.loadingAvatar = false;
-        // self.getProperty(self.$route.params.property_no);
-        // self.$message({
-        //   message: 'Unable to upload image',
-        //   type: 'warning'
-        // });
-      });
+      }
     },
     handleChange:function(file, fileList){
       this.imgLoading = true;

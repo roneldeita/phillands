@@ -42,9 +42,7 @@
               ></step-three>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
-            <div class="card text-left" style="width: 350px;">
               <screen-tip-three></screen-tip-three>
-            </div>
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 3">
@@ -56,9 +54,7 @@
              @back="previousStep"></step-four>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
-            <div class="card text-left" style="width: 350px;">
               <screen-tip-four></screen-tip-four>
-            </div>
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 4">
@@ -72,9 +68,7 @@
               @back="previousStep"></step-five>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
-            <div class="card text-left" style="width: 350px;">
               <screen-tip-five></screen-tip-five>
-            </div>
           </el-col>
         </el-row>
         <el-row v-show="activeStep === 5">
@@ -90,9 +84,7 @@
               @back="previousStep"></step-six>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
-            <div class="card text-left" style="width: 350px;">
               <screen-tip-six></screen-tip-six>
-            </div>
           </el-col>
         </el-row>
       </el-col>

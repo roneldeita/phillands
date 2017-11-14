@@ -22,6 +22,9 @@ export default {
     handleBtn:function(){
       window.location.href = 'listings/for-approval';
     }
+  },
+  mounted(){
+    document.documentElement.scrollTop = 0;
   }
 }
 </script>

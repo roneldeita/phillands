@@ -15,8 +15,22 @@
             </el-input>
           </el-form-item><br><br>
           <h5>Contact Numbers</h5>
+          <el-form-item label="" prop="radio">
+            <el-radio-group v-model="contact.radio" @change="changeRadio" style="margin-bottom:-30px">
+              <el-radio label="mobile"></el-radio>
+              <el-radio label="home"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item prop="number">
+            <el-input class="mobile" type="number" placeholder="e.g. 9435949248" v-model="contact.number" @change="changeNumber">
+              <el-select v-model="contact.provider" slot="prepend">
+                <el-option label="+63" value="+63"></el-option>
+              </el-select>
+            </el-input>
+          </el-form-item>
+          <br />
           <!-- <el-form :inline="true" label-width="55px"> -->
-            <el-form-item label="" prop="radio">
+            <!-- <el-form-item label="" prop="radio">
               <el-radio-group v-model="contact.radio">
                 <div style="margin-bottom:10px">
                   <el-radio label="mobile" style="width:80px"></el-radio>
@@ -35,7 +49,7 @@
                   </el-input>
                 </div>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
         </el-col>
         <el-col :span="24" class="input">
           <el-button type="btn-pl-green" size="large" @click="backToPreviousStep">Back</el-button>
@@ -56,7 +70,9 @@ export default {
       contact:{
         fullName:'',
         email:'',
-        radio:'',
+        radio:'mobile',
+        provider:'+63',
+        number:'',
         mobile:'',
         home:'',
       },
@@ -69,7 +85,10 @@ export default {
           { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
         ],
         radio:[
-          { required: true, message: 'Please provide your contact number', trigger: 'change' }
+          { required: true, message: 'Select one', trigger: 'change' }
+        ],
+        number:[
+          { required: true, message: 'Your contact number is required', trigger: 'blur' },
         ]
       },
       mobileProvider:'+63',
@@ -99,18 +118,34 @@ export default {
     changeEmail:function(email){
       this.$emit('email', email);
     },
-    changeMobileProvider:function(provider){
-      this.$emit('mobileprovider', provider);
+    changeRadio:function(type){
+      if(type === 'mobile'){
+        this.$emit('home', '');
+        this.$emit('mobile', this.contact.number);
+      }else{
+        this.$emit('mobile', '');
+        this.$emit('home', this.contact.number);
+      }
     },
-    changeMobile:function(number){
-      this.$emit('mobile', number);
+    changeNumber:function(number){
+      if(this.contact.radio === 'mobile'){
+        this.$emit('mobile', number);
+      }else{
+        this.$emit('home', number);
+      }
     },
-    changeHomeProvider:function(provider){
-      this.$emit('homeprovider', provider);
-    },
-    changeHome:function(number){
-      this.$emit('home', number);
-    },
+    // changeMobileProvider:function(provider){
+    //   this.$emit('mobileprovider', provider);
+    // },
+    // changeMobile:function(number){
+    //   this.$emit('mobile', number);
+    // },
+    // changeHomeProvider:function(provider){
+    //   this.$emit('homeprovider', provider);
+    // },
+    // changeHome:function(number){
+    //   this.$emit('home', number);
+    // },
   }
 }
 </script>

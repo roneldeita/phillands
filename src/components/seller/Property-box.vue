@@ -156,6 +156,7 @@ export default {
     }
   },
   mounted(){
+    document.documentElement.scrollTop = 0;
     this.getInquiries();
     //console.log(this.$route.name)
   }
