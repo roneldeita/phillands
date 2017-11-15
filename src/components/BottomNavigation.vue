@@ -6,7 +6,7 @@
         <br>
         <p><b>Queries</b></p>
         <p>Contact Numbers: 0936 457 7814 / 0923 535 7157</p>
-        <p>Email Address: info@phillands.com</p>
+        <p>Email Address: joann.sequitin@phillands.com</p>
         <br>
         <p><b>Advertise with Us:</b></p>
         <p>Contact Numbers: 0936 457 7814 / 0923 535 7157</p>
