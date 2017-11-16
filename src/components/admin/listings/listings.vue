@@ -4,6 +4,7 @@
       <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleMenu">
         <el-menu-item index="for-approval">For Approval</el-menu-item>
         <el-menu-item index="published">Published</el-menu-item>
+        <el-menu-item index="forclosures">Forclosures</el-menu-item>
         <el-menu-item index="wishlist">Reported</el-menu-item>
       </el-menu>
     </el-col>
@@ -13,12 +14,16 @@
     <el-col :span="19" class="data-container" v-if="activeMenu === 'published'">
       <published></published>
     </el-col>
+    <el-col :span="19" class="data-container" v-if="activeMenu === 'forclosures'">
+      <fore-closures></fore-closures>
+    </el-col>
   </el-row>
 </template>
 
 <script>
-import published from './published.vue';
-import forApproval from './for-approval.vue';
+import published from './Published.vue';
+import forApproval from './For-approval.vue';
+import foreClosures from './Foreclosures.vue';
 
 export default {
   name:'admin-listings',
@@ -34,7 +39,7 @@ export default {
   },
   mounted(){
   },
-  components:{ published, forApproval }
+  components:{ published, forApproval, foreClosures }
 }
 </script>
 

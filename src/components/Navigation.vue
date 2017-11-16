@@ -192,6 +192,7 @@ export default {
         return isLoggedIn();
       },
       GoHome:function(){
+        document.documentElement.scrollTop = 0;
         this.$router.push({name:'index'});
       },
       cancelPublish() {
@@ -210,12 +211,14 @@ export default {
         });
       },
       goToPath(path){
+        document.documentElement.scrollTop = 0;
         if(path === 'listings'){
           this.activeNav = 'listings';
         }
         this.$router.replace({ name: path});
       },
       handleNavCommand:function(command){
+        document.documentElement.scrollTop = 0;
         //console.log(command)
         if(command === "logout"){
           this.handleLogout();
@@ -246,6 +249,7 @@ export default {
         });
       },
       handleSearch:function(){
+        document.documentElement.scrollTop = 0;
         //console.log(this.propertyType);
         // console.log('offer_type: ' + this.activeNav);
         // console.log('location: ' + this.searchLocation);

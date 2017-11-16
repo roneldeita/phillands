@@ -123,9 +123,11 @@ export default {
       logout();
     },
     goToPath(path){
+      document.documentElement.scrollTop = 0;
       this.$router.push('/'+path);
     },
     handleNavCommand:function(command){
+      document.documentElement.scrollTop = 0;
       if(command === "logout"){
         this.handleLogout();
       }else{
@@ -159,7 +161,7 @@ export default {
       this.$router.push({name:this.activeNav, params:{property_type:this.selectSearch, location:this.inputSearch }})
     },
     handleClick:function(tab, event){
-      console.log(tab.name)
+    //  console.log(tab.name)
     }
   },
   components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement, BottomNavigation },
