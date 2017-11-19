@@ -18,7 +18,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :xs="24" :sm="8" :md="5" class="avatar-container">
+          <el-col :xs="24" :sm="8" :md="6" class="avatar-container">
             <el-upload
               v-loading="loadingAvatar"
               class="avatar-uploader"
@@ -30,7 +30,7 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-col>
-          <el-col :xs="24" :sm="14" :md="19">
+          <el-col :xs="24" :sm="14" :md="18">
             <el-card class="box-card" style="border-color:#F7BA2A;color:#F7BA2A">
               <span class="fa fa-exclamation-circle pull-left" style="font-size:40px; margin-top:-7px"></span>
               <h5 style="margin:0px;">
@@ -191,7 +191,7 @@ export default {
   .avatar {
     width: 200px;
     height: 200px;
-    display: block;
+    object-fit: cover;
   }
   .el-card{
     box-shadow: 0px 0px 0px 0px !important;

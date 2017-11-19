@@ -306,6 +306,7 @@ export default {
   }
   .img-circle{
     border-radius: 50%;
+    object-fit: cover;
   }
   .navbar-brand img{
      width:130px;
