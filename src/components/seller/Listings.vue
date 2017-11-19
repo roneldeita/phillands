@@ -5,7 +5,7 @@
         <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleMenu">
           <el-menu-item index="published">Published Listings <el-badge :value="publishCount" :max="99" class="item"></el-badge></el-menu-item>
           <el-menu-item index="for-approval">For Approval <el-badge :value="forApprovalCount" :max="99" class="item"></el-badge></el-menu-item>
-          <el-menu-item index="archives">Archives</el-menu-item>
+          <!-- <el-menu-item index="archives">Archives</el-menu-item> -->
           <el-menu-item index="wishlist">Wish List<el-badge :value="wishlistCount" :max="99" class="item"></el-badge></el-menu-item>
         </el-menu>
         <br>
@@ -21,7 +21,7 @@
         </div>
         <div v-if="activeMenu === 'for-approval'">
           <property-box v-if="forApproval" v-for="property in forApproval" :key="property.id" :info="property"></property-box>
-          <div class="jumbotron" v-else="forApproval.length === 0">
+          <div class="jumbotron" v-if="forApproval.length === 0">
             <h4><a href="javascript:void(0)" @click="goToPublishListing"> <span class="fa fa-plus"></span> Add Listing</a></h4>
           </div>
         </div>

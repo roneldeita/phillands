@@ -136,6 +136,7 @@ export default {
         if(this.current_page !=0){
           this.switchToPage(this.current_page);
         }
+        this.loading = false;
       })
       .catch(function (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 <template>
-  <h1>Forclosure</h1>
+  <p>0 properties found</p>
 </template>
 
 <script>

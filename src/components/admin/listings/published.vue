@@ -80,7 +80,7 @@ export default {
       item_per_page: 10,
       total_properties:0,
       property_source:'',
-      properties:[{}],
+      properties:[],
       searchType:'property_no',
       search:'',
       current_page:0
@@ -134,6 +134,7 @@ export default {
         if(this.current_page !=0){
           this.switchToPage(this.current_page);
         }
+        this.loading = false;
       })
       .catch(function (error) {
         console.log(error);

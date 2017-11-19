@@ -18,8 +18,8 @@
       <el-col :md="9" class="text-left">
         <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
         <br>
-        <p>Stay up to date about Real State in the Philippines. Unsubscribe anytime.</p>
-        <el-input placeholder="Enter your email address">
+        <p>Stay up to date about Real Estate in the Philippines. Unsubscribe anytime.</p>
+        <el-input placeholder="Enter your email address" style="margin-top:10px">
           <el-button type="success" slot="append">SUBSCRIBE</el-button>
         </el-input>
         <br><br>

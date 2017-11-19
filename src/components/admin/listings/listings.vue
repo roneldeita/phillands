@@ -5,6 +5,7 @@
         <el-menu-item index="for-approval">For Approval</el-menu-item>
         <el-menu-item index="published">Published</el-menu-item>
         <el-menu-item index="forclosures">Forclosures</el-menu-item>
+        <el-menu-item index="pre-selling">Pre-Selling</el-menu-item>
         <el-menu-item index="wishlist">Reported</el-menu-item>
       </el-menu>
     </el-col>
@@ -13,6 +14,9 @@
     </el-col>
     <el-col :span="19" class="data-container" v-if="activeMenu === 'published'">
       <published></published>
+    </el-col>
+    <el-col :span="19" class="data-container" v-if="activeMenu === 'pre-selling'">
+      <pre-selling></pre-selling>
     </el-col>
     <el-col :span="19" class="data-container" v-if="activeMenu === 'forclosures'">
       <fore-closures></fore-closures>
@@ -23,6 +27,7 @@
 <script>
 import published from './Published.vue';
 import forApproval from './For-approval.vue';
+import preSelling from './Pre-selling.vue';
 import foreClosures from './Foreclosures.vue';
 
 export default {
@@ -39,7 +44,7 @@ export default {
   },
   mounted(){
   },
-  components:{ published, forApproval, foreClosures }
+  components:{ published, forApproval, preSelling, foreClosures }
 }
 </script>
 

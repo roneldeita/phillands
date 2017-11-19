@@ -3,6 +3,21 @@
     <el-row style="min-height:700px">
       <el-col :offset="2" :span="20">
         <el-row>
+          <el-col :xs="24" :sm="8" :md="5">
+            <!-- <div class="center">
+              <vue-core-image-upload
+                class="btn btn-primary"
+                crop-ratio="1:1"
+                :crop="true"
+                @imageuploaded="imageuploaded"
+                :data="data"
+                :max-file-size="5242880"
+                url="http://101.198.151.190/api/upload.php" >
+              </vue-core-image-upload>
+            </div> -->
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :xs="24" :sm="8" :md="5" class="avatar-container">
             <el-upload
               v-loading="loadingAvatar"
@@ -50,6 +65,7 @@
 
 <script>
 import axios from 'axios';
+import VueCoreImageUpload from 'vue-core-image-upload'
 
 import { getProfile, getIdToken } from '../../../assets/utils/auth.js';
 import { baseUrl } from '../../../assets/utils/properties-api.js';
@@ -63,10 +79,16 @@ export default {
       loadingAvatar:false,
       profile: JSON.parse(getProfile()),
       tokenAccess: getIdToken(),
-      img:''
+      img:'',
+      data:{},
+      src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
     }
   },
   methods:{
+    imageuploaded(e){
+      console.log(e)
+
+    },
     handleChange(file, fileList) {
       const fileValidation = this.checkFileBeforeAttach(file, fileList);
       if(fileValidation.approve === false){
@@ -120,7 +142,7 @@ export default {
   },
   mounted(){
   },
-  components:{ BottomNavigation }
+  components:{ BottomNavigation, VueCoreImageUpload }
 }
 </script>
 

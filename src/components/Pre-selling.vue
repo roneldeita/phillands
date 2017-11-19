@@ -1,5 +1,5 @@
 <template>
-  <p>Pre-selling page</p>
+  <p>0 properties found</p>
 </template>
 
 <script>
