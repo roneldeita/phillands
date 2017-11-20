@@ -3,6 +3,7 @@
       <navigation v-if="$route.name != 'index'" @login="LoginWasClicked" @search="searchWasClicked"></navigation>
 
       <router-view class="router-view" @login="LoginWasClicked" :search="search"></router-view>
+      <bottom-navigation></bottom-navigation>
       <!-- <bottom-navigation class="footer"></bottom-navigation> -->
       <!-- <users></users> -->
       <login-modal :loginmodal="loginVisible" @loginmodalclose="closeLoginDialog"> </login-modal>
@@ -13,9 +14,9 @@
 import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
 
 import Index from './components/Index.vue';
-import Navigation from './components/Navigation.vue';
+import Navigation from './components/template/Navigation.vue';
 import LoginModal from './components/auth/Login-modal.vue';
-import BottomNavigation from './components/BottomNavigation.vue';
+import BottomNavigation from './components/template/BottomNavigation.vue';
 import Users from './components/Users.vue';
 import User from './components/User.vue';
 

@@ -89,7 +89,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
     <!-- {{ property }} -->
   </div>
 </template>
@@ -97,7 +96,6 @@
 <script>
 import { getIdToken, getProfile } from '../../assets/utils/auth.js';
 import { baseUrl } from '../../assets/utils/properties-api.js';
-import BottomNavigation from './../BottomNavigation.vue'
 
 import axios from 'axios'
 
@@ -156,7 +154,7 @@ export default {
       }
     }
   },
-  components:{ stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix, ScreenTipOne, ScreenTipTwo, ScreenTipThree, ScreenTipFour, ScreenTipFive, ScreenTipSix, BottomNavigation },
+  components:{ stepOne, stepTwo, stepThree, stepFour, stepFive, stepSix, ScreenTipOne, ScreenTipTwo, ScreenTipThree, ScreenTipFour, ScreenTipFive, ScreenTipSix },
   methods:{
     continueStep:function(step){
       document.documentElement.scrollTop = 0;

@@ -37,7 +37,6 @@
         </div>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
@@ -46,7 +45,6 @@ import axios from 'axios'
 import { baseUrl, getWishList } from '../../assets/utils/properties-api.js'
 import { getIdToken } from '../../assets/utils/auth.js'
 import PropertyBox from './Property-box.vue'
-import BottomNavigation from '../BottomNavigation.vue'
 
 export default {
   name:'listings',
@@ -130,7 +128,7 @@ export default {
     this.getApproval();
     this.getWishList();
   },
-  components:{ PropertyBox, BottomNavigation}
+  components:{ PropertyBox }
 }
 </script>
 

@@ -31,13 +31,13 @@
             </el-upload>
           </el-col>
           <el-col :xs="24" :sm="14" :md="18">
-            <el-card class="box-card" style="border-color:#F7BA2A;color:#F7BA2A">
+            <!-- <el-card class="box-card" style="border-color:#F7BA2A;color:#F7BA2A">
               <span class="fa fa-exclamation-circle pull-left" style="font-size:40px; margin-top:-7px"></span>
               <h5 style="margin:0px;">
                  Verify your email address
                 <el-button type="text" style="text-decoration:underline" size="small">Verify Email Address</el-button>
               </h5>
-            </el-card>
+            </el-card> -->
             <el-card class="box-card text-left">
               <div slot="header">
                 <h5>Account Details</h5>
@@ -49,17 +49,26 @@
                     <p class="label">Last Name</p>
                     <p>{{ profile.last_name }}</p>
                     <p class="label">Mobile Name</p>
-                    <p>+63 0943 594 6758</p>
+                    <p>N/A</p>
                     <p class="label">Email Address</p>
                     <p>{{ profile.email }}</p>
                   </el-col>
                 </el-row>
             </el-card>
+            <!-- <el-card class="box-card text-left">
+              <div slot="header">
+                <h5>Change Password</h5>
+              </div>
+                <el-row :gutter="10">
+                  <el-col :xs="24" :span="8">
+
+                  </el-col>
+                </el-row>
+            </el-card> -->
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
@@ -69,8 +78,6 @@ import VueCoreImageUpload from 'vue-core-image-upload'
 
 import { getProfile, getIdToken } from '../../../assets/utils/auth.js';
 import { baseUrl } from '../../../assets/utils/properties-api.js';
-
-import BottomNavigation from '../../BottomNavigation.vue'
 
 export default {
   name:'profile',
@@ -142,7 +149,7 @@ export default {
   },
   mounted(){
   },
-  components:{ BottomNavigation, VueCoreImageUpload }
+  components:{ VueCoreImageUpload }
 }
 </script>
 

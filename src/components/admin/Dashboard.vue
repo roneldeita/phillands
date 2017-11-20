@@ -8,7 +8,7 @@
 <script>
 import { getProfile } from '../../assets/utils/auth.js';
 //components
-import navigation from '../Navigation.vue'
+import navigation from '../template/Navigation.vue'
 
 export default {
   name:'admin-dashboard',

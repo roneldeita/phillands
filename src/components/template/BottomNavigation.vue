@@ -5,11 +5,11 @@
         <h4>CONTACT US</h4>
         <br>
         <p><b>Queries</b></p>
-        <p>Contact Numbers: 0936 457 7814 / 0923 535 7157 / 426 3051</p>
+        <p>Contact Numbers: 0936 457 7814 / 0923 535 7157 / 426-3051</p>
         <p>Email Address: joann.sequitin@phillands.com</p>
         <br>
         <p><b>Advertise with Us:</b></p>
-        <p>Contact Numbers: 0936 457 7814 / 0923 535 7157 / 426 3051</p>
+        <p>Contact Numbers: 0939 113 9867 / 0905 284 6076 / 0933 669 4007 / 984-9864</p>
         <p>Email Address: marketing@phillands.com</p>
         <br>
         <p>Unit 218 pacific Century Tower, 1472-146 Quezon Ave. Brgy. South Triangle Quezon City</p><br>
@@ -24,6 +24,10 @@
         </el-input>
         <br><br>
         <h4>CONNECT WITH PHILLANDS</h4>
+        <img src="../../assets/social/fb.png" class="social-icon" alt="">
+        <img src="../../assets/social/twitter.png" class="social-icon" alt="">
+        <img src="../../assets/social/linkedin.png" class="social-icon" alt="">
+        <img src="../../assets/social/google_plus.png" class="social-icon" alt="">
       </el-col>
     </el-row>
     <el-row class="lower-footer">
@@ -45,6 +49,10 @@ export default {
     margin-top: 150px;
     padding: 100px 0;
     background-color: #e6e6e6;
+  }
+  .social-icon{
+    margin-right:5px;
+    width: 35px;
   }
   .lower-footer{
     padding:10px 0 5px 0;

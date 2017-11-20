@@ -68,11 +68,13 @@
       <el-col :xs="24" :offset="2" :sm="14" :md="14" class="property-container">
         <featured-sale v-show="activeNav ==='sale'"></featured-sale>
         <featured-rent v-show="activeNav ==='rent'"></featured-rent>
+        <div v-show="activeNav ==='pre-selling'" class="text-left">0 Properties found</div>
+        <div v-show="activeNav ==='foreclosure'" class="text-left">0 Properties found</div>
       </el-col>
       <el-col :xs="0" :sm="6" :md="6" class="ads-container">
         <el-row :gutter="20">
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
-            <advertisement :img="add.img" style="padding:0px 0 20px 20px"></advertisement>
+            <a :href="add.link" target="_blank"><advertisement :img="add.img" style="padding:0px 0 20px 20px"></advertisement></a>
           </el-col>
         </el-row>
       </el-col>
@@ -89,7 +91,6 @@ import { isLoggedIn, login, logout, getProfile, getAccess } from '../assets/util
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
 import Advertisement from './Advertisement.vue'
-import BottomNavigation from './BottomNavigation.vue'
 
 export default {
   name: 'index',
@@ -101,9 +102,9 @@ export default {
       activeNav:'sale',
       profile:JSON.parse(getProfile()),
       adds:[
-        { id:1, img:'/static/adds/Ads1.jpg' },
-        { id:2, img:'/static/adds/Ads2.jpg' },
-        { id:3, img:'/static/adds/Ads3.jpg' },
+        { id:1, img:'/static/adds/Ads1.jpg', link:'https://iremitglobal.com/' },
+        { id:2, img:'/static/adds/Ads2.jpg', link:'https://www.upsexpress.com.ph/' },
+        { id:3, img:'/static/adds/Ads3.jpg', link:'https://www.upsexpress.com.ph/' },
       ]
     }
   },
@@ -164,7 +165,7 @@ export default {
     //  console.log(tab.name)
     }
   },
-  components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement, BottomNavigation },
+  components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement },
   mounted(){
     this.loadLocality();
     if(this.isLoggedIn()){

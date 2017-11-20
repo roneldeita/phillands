@@ -72,7 +72,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button class="pull-left" type="text" @click="forgetPassword = false"><span class="el-icon-arrow-left"></span> Back to Login</el-button>
-                  <el-button class="pull-right" type="primary" @click="handleResendPassword('resetPasswordForm')">Send Reset Link</el-button>
+                  <el-button class="pull-right" type="primary" @click="handleResendPassword('resetPasswordForm')" disabled>Send Reset Link</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>

@@ -12,12 +12,10 @@
         <el-button type="success" class="btn-pl-green"  size="large" @click="handleBtn">View your listing</el-button>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
 <script>
-import BottomNavigation from './../BottomNavigation.vue'
 export default {
   name:'publish-completed',
   methods:{
@@ -27,8 +25,7 @@ export default {
   },
   mounted(){
     document.documentElement.scrollTop = 0;
-  },
-  components: { BottomNavigation }
+  }
 }
 </script>
 

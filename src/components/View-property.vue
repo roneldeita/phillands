@@ -133,7 +133,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
@@ -144,7 +143,6 @@ import MapStyle from '../../static/json/map-detailed.json'
 //api
 import { baseUrl, getProperty, addtoWishlist, getWishList } from '../assets/utils/properties-api.js'
 import { getIdToken, getAccess } from '../assets/utils/auth.js'
-import BottomNavigation from './BottomNavigation.vue'
 
 export default {
   name:'view-property',
@@ -323,7 +321,7 @@ export default {
       //this.getSales(value.property_type, value.location)
     }
   },
-  components:{ BottomNavigation }
+  components:{ }
 }
 </script>
 

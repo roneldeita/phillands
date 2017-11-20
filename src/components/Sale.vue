@@ -35,12 +35,11 @@
       <el-col :xs="24" :sm="6" :md="6">
         <el-row>
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
-            <advertisement :img="add.img"></advertisement>
+            <a :href="add.link" target="_blank"><advertisement :img="add.img"></advertisement></a>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 <script>
@@ -51,7 +50,6 @@ import Advertisement from './Advertisement.vue'
 //import Properties from '../../static/json/properties.json'
 //api
 import { getProperties } from '../assets/utils/properties-api.js'
-import BottomNavigation from './BottomNavigation.vue'
 
 export default {
   name: "sale",
@@ -64,11 +62,11 @@ export default {
       page_count:0,
       item_per_page: 6,
       adds:[
-        { id:1, img:'/static/adds/Ads1.jpg' },
-        { id:2, img:'/static/adds/Ads2.jpg' },
-        { id:3, img:'/static/adds/Ads3.jpg' },
-        { id:4, img:'/static/adds/Ads4.jpg' },
-        { id:5, img:'/static/adds/Ads5.jpg' }
+        { id:1, img:'/static/adds/Ads1.jpg', link:'https://iremitglobal.com/' },
+        { id:2, img:'/static/adds/Ads2.jpg', link:'https://www.upsexpress.com.ph/' },
+        { id:3, img:'/static/adds/Ads3.jpg', link:'https://www.upsexpress.com.ph/' },
+        { id:4, img:'/static/adds/Ads4.jpg', link:'https://www.upsexpress.com.ph/' },
+        { id:5, img:'/static/adds/Ads5.jpg', link:'https://www.upsexpress.com.ph/' }
       ]
     }
   },
@@ -101,7 +99,7 @@ export default {
     document.documentElement.scrollTop = 0;
     this.getSales(this.$route.params.property_type, this.$route.params.location);
   },
-  components:{ PropertyCard, Advertisement, BottomNavigation },
+  components:{ PropertyCard, Advertisement },
   watch:{
     'search':function(value){
       this.getSales(value.property_type, value.location)
