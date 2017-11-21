@@ -14,7 +14,7 @@
               <template slot="prepend">Email</template>
             </el-input>
           </el-form-item><br><br>
-          <h5>Contact Numbers</h5>
+          <h5>Contact Number</h5>
           <el-form-item label="" prop="radio">
             <el-radio-group v-model="contact.radio" @change="changeRadio" style="margin-bottom:-30px">
               <el-radio label="mobile"></el-radio>

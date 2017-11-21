@@ -355,14 +355,6 @@ export default {
       left: 20px;
       z-index: 5;
   }
-
-  .price,
-  .title,
-  .location{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
   .title{
     letter-spacing: 1px;
     font-size: 32px;

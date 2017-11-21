@@ -242,7 +242,7 @@ export default {
     color: #999999;
     font-size: 14px;
     padding-top: 0px;
-    margin-bottom: 5px;;
+    margin-bottom: 5px;
   }
   .required{
     color:#ff4949;

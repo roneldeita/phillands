@@ -79,7 +79,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 

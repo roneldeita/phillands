@@ -45,7 +45,7 @@ export default {
     },
     getRents() {
       getProperties(2).then((property) => {
-        this.property_source = property.properties;
+        this.property_source = property.properties.reverse();
         this.loadProperties();
       });
     }

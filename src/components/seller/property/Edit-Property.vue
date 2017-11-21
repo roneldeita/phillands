@@ -18,6 +18,9 @@
         <edit-basic></edit-basic>
       </el-card>
       <el-card class="box-card">
+        <edit-contact></edit-contact>
+      </el-card>
+      <el-card class="box-card">
         <edit-keyinfo></edit-keyinfo>
       </el-card>
       <el-card class="box-card">
@@ -42,6 +45,7 @@ import { getIdToken } from '../../../assets/utils/auth.js'
 //child components
 import EditBasic from './Edit-basic.vue'
 import EditKeyinfo from './Edit-keyinfo'
+import EditContact from './Edit-contact'
 import EditUnitdetail from './Edit-unitdetail'
 import EditAmenities from './Edit-amenities'
 import EditLocation from './Edit-location'
@@ -72,7 +76,7 @@ export default {
       this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     }
   },
-  components:{ EditBasic, EditKeyinfo, EditUnitdetail, EditAmenities, EditLocation, EditMedia },
+  components:{ EditBasic, EditKeyinfo, EditContact, EditUnitdetail, EditAmenities, EditLocation, EditMedia },
   mounted(){
     document.documentElement.scrollTop = 0;//scroll top
     this.imgUrl = baseUrl() + '/images/';

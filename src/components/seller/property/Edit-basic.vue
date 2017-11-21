@@ -60,7 +60,6 @@ export default {
       });
     },
     saveBasic:function(){
-      const self = this;
       var basic = {
         id : this.property_id,
         edit: 'details',
@@ -71,16 +70,16 @@ export default {
         if(valid){
           axios.defaults.headers.common['token'] = getIdToken();
           return axios.post(baseUrl()+'/broker/property/update', basic)
-          .then(function(response){
+          .then(response => {
             if(response.data.message === "Success"){
-              self.basicEdit = false;
-              self.$message({
+              this.basicEdit = false;
+              this.$message({
                 message: 'The information was successfully updated',
                 type: 'success'
               });
             };
-          }).catch(function(error){
-            //console.log(error)
+          }).catch(error => {
+            console.log(error)
           });
         }
       });

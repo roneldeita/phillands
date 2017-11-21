@@ -3,7 +3,7 @@
     <div class="text-right">
       <h4 class="pull-left txt-pl-green">Key Information</h4>
       <el-button v-if="!keyInfoEdit" @click="keyInfoEdit = true" icon="edit">Edit</el-button>
-      <el-button type="success" class="btn-pl-green" v-if="keyInfoEdit"  @click="saveKeyInfo">Save</el-button>
+      <el-button type="success" class="btn-pl-green" v-if="keyInfoEdit" @click="saveKeyInfo">Save</el-button>
       <el-button v-if="keyInfoEdit" @click="keyInfoEdit = false; cancelkeyInfoEdit()">Cancel</el-button>
     </div>
     <el-row v-if="!keyInfoEdit">
@@ -43,7 +43,7 @@
       <el-col :sm="12" :md="8" :lg="24">
         <el-form-item style="display:inline-block;" prop="price" class="">
           <p class="label"><span class="required">*</span>{{ keyInfoForm.offer_type ==="2" ? 'Rental Fee' : 'Selling Price'}}</p>
-          <el-input type="number" class="amount" placeholder="Enter the amount" v-model="keyInfoForm.price">
+          <el-input type="number" placeholder="Enter the amount" v-model="keyInfoForm.price">
             <template slot="prepend">₱</template>
             <template v-if="keyInfoForm.offer_type === '2'" slot="append">Monthly</template>
           </el-input>
