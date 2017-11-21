@@ -164,8 +164,8 @@ export default {
         result =  { approve:false, msg:'You need to upload an images of the property'}
       }else if (Object.keys(this.list).length < 3) {
         result  = { approve:false, msg:'You need to upload at least 3 images'}
-      }else if (Object.keys(this.list).length > 8) {
-        result  = { approve:false, msg:'You cannot upload more than 8 images'}
+      }else if (Object.keys(this.list).length > 12) {
+        result  = { approve:false, msg:'You cannot upload more than 12 images'}
       }
 
       return result;

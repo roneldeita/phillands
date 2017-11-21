@@ -31,13 +31,13 @@
             </el-upload>
           </el-col>
           <el-col :xs="24" :sm="14" :md="18">
-            <!-- <el-card class="box-card" style="border-color:#F7BA2A;color:#F7BA2A">
+            <el-card v-if="profile.verified === 0" class="box-card" style="border-color:#F7BA2A;color:#F7BA2A">
               <span class="fa fa-exclamation-circle pull-left" style="font-size:40px; margin-top:-7px"></span>
               <h5 style="margin:0px;">
-                 Verify your email address
-                <el-button type="text" style="text-decoration:underline" size="small">Verify Email Address</el-button>
+                Verify your email address
+                <el-button type="text" style="text-decoration:underline" size="small" @click="handleVerification">Verify Email Address</el-button>
               </h5>
-            </el-card> -->
+            </el-card>
             <el-card class="box-card text-left">
               <div slot="header">
                 <h5>Account Details</h5>
@@ -96,6 +96,22 @@ export default {
       console.log(e)
 
     },
+    handleVerification(){
+      axios.defaults.headers.common['token'] = getIdToken();
+      axios.get(baseUrl()+'/client/verification/send').then(response =>{
+        if(response.data.message === "success"){
+          this.$message({
+            showClose: true,
+            duration: 10000,
+            message: 'A verification link was sent to your email',
+            type: 'success'
+          });
+        }
+      }).catch(error =>{
+        console.log(error)
+      });
+      client/verification/send
+    },
     handleChange(file, fileList) {
       const fileValidation = this.checkFileBeforeAttach(file, fileList);
       if(fileValidation.approve === false){
@@ -112,6 +128,8 @@ export default {
           var userInfo = JSON.stringify(response.data.user);
           localStorage.setItem('user', userInfo);
           this.$message({
+            showClose: true,
+            duration: 10000,
             message: 'Your avatar was successfully updated',
             type: 'success'
           });

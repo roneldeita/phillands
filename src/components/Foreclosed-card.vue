@@ -1,8 +1,14 @@
 <template>
   <div id="foreclose-card">
     <el-card class="box-card">
-      <div class="img-container">
-        <img src="../assets/camera.png" alt="">
+      <div style="display:flex">
+        <div class="img-container border" style="order:0">
+          <img src="../assets/camera.png" alt="">
+        </div>
+        <div class="border" style="order:0;flex-grow:1 ">
+          <p class="price">₱ 5,000,000.00 </p>
+          <p class="location">Santa Maria, Bulacan, Philippines</p>
+        </div>
       </div>
     </el-card>
   </div>

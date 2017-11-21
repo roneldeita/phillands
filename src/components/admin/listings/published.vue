@@ -36,6 +36,16 @@
           <span style="margin-left: 10px">{{ scope.row.createdAt | moment("from") }}</span>
         </template>
       </el-table-column>
+      <!-- <el-table-column
+        label="Date Updated"
+        prop="updatedAt"
+        align="left"
+        sortable>
+        <template scope="scope">
+          <el-icon name="time"></el-icon>
+          <span style="margin-left: 10px">{{ scope.row.updatedAt | moment("from") }}</span>
+        </template>
+      </el-table-column> -->
       <el-table-column
         label="Title"
         prop="property_detail.title"
@@ -113,7 +123,7 @@ export default {
       }
       var items = arr.slice(start, end);
       this.properties = items;
-      // console.log(this.published);
+       console.log(this.properties);
     },
     switchToPage(page){
       var end = this.item_per_page * page;

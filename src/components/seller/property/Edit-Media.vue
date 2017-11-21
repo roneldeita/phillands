@@ -160,7 +160,7 @@ export default {
 
       const validImage = [ 'image/jpeg', 'image/png' ];
       const validSize = file.raw.size / 1024 / 1024 < 2;
-      const maxUpload = 7;
+      const maxUpload = 14;
       if(Object.keys(fileList).length === maxUpload){
         result =  { approve:false, msg:'You cannot upload more than 8 images'}
         fileList.splice(-1);

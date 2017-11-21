@@ -36,7 +36,7 @@
             <span class="fa fa-bath" style="margin-left:25px"></span> <span>{{ property.property_detail.bathrooms }}</span>
             <span class="fa fa-home" style="margin-left:25px"></span> <span>{{ property.property_detail.lot_area }} Sqm</span>
             <hr>
-            <p style="white-space: pre-wrap">{{ property.property_detail.description }}</p>
+            <p style="white-space: pre-wrap" class="description">{{ property.property_detail.description }}</p>
             <hr>
               <el-row>
                 <el-col :xs="24" :sm="24" :md="5" :lg="4" class="">
@@ -219,5 +219,11 @@ export default {
   }
   .info-container .location{
     font-size: 18px;
+  }
+  .description{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
   }
 </style>

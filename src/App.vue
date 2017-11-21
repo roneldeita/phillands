@@ -72,11 +72,11 @@ body{
   text-align: center;
   color: #636363 !important;
   padding-top: 150px;
-  min-height:550px;
+  min-height:400px;
 }
 
 .router-view{
-  min-height:550px;
+  min-height:400px;
   height:auto;
 }
 

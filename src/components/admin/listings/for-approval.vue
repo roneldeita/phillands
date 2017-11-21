@@ -36,6 +36,16 @@
           <span style="margin-left: 10px">{{ scope.row.createdAt | moment("from") }}</span>
         </template>
       </el-table-column>
+      <!-- <el-table-column
+        label="Date Updated"
+        prop="updatedAt"
+        align="left"
+        sortable>
+        <template scope="scope">
+          <el-icon name="time"></el-icon>
+          <span style="margin-left: 10px">{{ scope.row.updatedAt | moment("from") }}</span>
+        </template>
+      </el-table-column> -->
       <el-table-column
         label="Title"
         prop="property_detail.title"

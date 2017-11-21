@@ -19,7 +19,7 @@
           <el-col :xs="24" :span="14" style="padding:20px 30px 0 0" class="info-container">
             <p class="title">{{ property.property_detail.title }}</p>
             <p class="location" >{{ property.property_location.formatted_address }}</p>
-            <p class="description">{{ property.property_detail.description }}</p>
+            <p style="white-space: pre-wrap" class="description">{{ property.property_detail.description }}</p>
             <h4>Details</h4>
             <el-row class="">
               <el-col :span="12">

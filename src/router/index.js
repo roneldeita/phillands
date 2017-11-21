@@ -10,6 +10,7 @@ import PreSelling from '@/components/Pre-selling'
 import Foreclosure from '@/components/Foreclosure'
 import viewProperty from '@/components/View-property'
 import Profile from '@/components/seller/profile/Profile'
+import EmailVerification from '@/components/seller/profile/Email-verification'
 import Listings from '@/components/seller/Listings'
 import PublishProperty from '@/components/seller/Publish-property'
 import PublishCompleted from '@/components/seller/Publish-completed'
@@ -40,6 +41,7 @@ export default new Router({
         { path: '/pre-selling', name: 'pre-selling', component: PreSelling, props: true },
         { path: '/foreclosure', name: 'foreclosure', component:Foreclosure, props: true },
         { path: '/profile', name:'profile', beforeEnter:requireAuth, component: Profile },
+        { path: '/email/verification', name:'email-verification', component:EmailVerification, props: true},
         { path: '/listings', name:'listings', beforeEnter:requireAuth, component: Listings },
         { path: '/listings/for-approval', name:'for-approval', beforeEnter:requireAuth, component: Listings },
         { path: '/listings/archives', name:'archives', beforeEnter:requireAuth, component: Listings },

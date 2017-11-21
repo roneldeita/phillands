@@ -8,13 +8,13 @@
       <el-col :xs="24" :sm="6" :md="6">
         <el-row>
           <el-col :span="24">
-
+            <el-alert>left search section</el-alert>
           </el-col>
         </el-row>
       </el-col>
       <el-col :xs="24" :sm="12" :md="12">
         <el-row :gutter="20">
-          <el-col :span="24" v-for="n in 10" v-bind:key="n">
+          <el-col :span="24" v-for="n in 5" v-bind:key="n">
             <foreclosed-card></foreclosed-card>
           </el-col>
         </el-row>
