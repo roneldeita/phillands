@@ -213,7 +213,7 @@ export default {
     background-color: #f2f2f2;
   }
   .inquiry-card:hover #profileImage{
-    background-color: #56BA50;
+    background-color: #13ce66;
     color: #ffffff
   }
   .inquiry-msg{

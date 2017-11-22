@@ -181,10 +181,10 @@ export default {
     text-align: center;
     content: "Change Avatar";
     color: #ffffff;
-    background-color: #56BA50;
+    background-color: #13ce66;
   }
   .avatar-uploader .el-upload {
-    border: 1px dashed #56BA50;
+    border: 1px dashed #13ce66;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
@@ -202,7 +202,7 @@ export default {
   }
   .avatar-uploader-icon {
    font-size: 28px;
-   color: #56BA50;
+   color: #13ce66;
    width: 200px;
    height: 200px;
    line-height: 200px;

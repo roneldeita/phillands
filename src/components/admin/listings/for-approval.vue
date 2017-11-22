@@ -5,7 +5,7 @@
         <el-select v-model="searchType" slot="prepend" placeholder="Select" style="width:120px">
           <el-option label="Property ID" value="property_no"></el-option>
         </el-select>
-        <el-button slot="append" icon="search"></el-button>
+        <el-button class="btn-pl-green" slot="append" icon="search"></el-button>
       </el-input>
     </div>
     <el-table

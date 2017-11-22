@@ -4,21 +4,21 @@
       <h2>Unit Details</h2><br>
       <h5>Bedrooms</h5>
       <el-col :span="24" class="input">
-        <el-radio-group v-model="bedrooms" @change="changeBedrooms" fill="#56BA50">
+        <el-radio-group v-model="bedrooms" @change="changeBedrooms" fill="#13ce66">
           <el-radio-button label="Studio"></el-radio-button>
           <el-radio-button v-for="n in 10" :label="n" :key="n"></el-radio-button>
         </el-radio-group>
       </el-col>
       <h5>Bathrooms</h5>
       <el-col :span="24" class="input">
-        <el-radio-group v-model="bathrooms" @change="changeBathrooms" fill="#56BA50">
+        <el-radio-group v-model="bathrooms" @change="changeBathrooms" fill="#13ce66">
           <el-radio-button label="None"></el-radio-button>
           <el-radio-button v-for="n in 10" :label="n" :key="n"></el-radio-button>
         </el-radio-group>
       </el-col>
       <h5>Parking</h5>
       <el-col :span="24" class="input">
-        <el-radio-group v-model="parking" @change="changeParking" fill="#56BA50">
+        <el-radio-group v-model="parking" @change="changeParking" fill="#13ce66">
           <el-radio-button label="None"></el-radio-button>
           <el-radio-button v-for="n in 10" :label="n" :key="n"></el-radio-button>
         </el-radio-group>
@@ -35,13 +35,13 @@
       <el-col :span="24" class="input">
         <el-form-item prop="lotArea" class="">
           <el-input type="number" class="amount" placeholder="" v-model="unitDetails.lotArea" @change="changeLotArea">
-            <template slot="append">sqm</template>
+            <template slot="append" class="bg-pl-green">sqm</template>
           </el-input>
         </el-form-item>
       </el-col>
       <h5>Balcony</h5>
       <el-col :span="24" class="input">
-        <el-radio-group v-model="balcony" fill="#56BA50" @change="changeBalcony">
+        <el-radio-group v-model="balcony" fill="#13ce66" @change="changeBalcony">
           <el-radio-button label="Yes"></el-radio-button>
           <el-radio-button label="No"></el-radio-button>
         </el-radio-group>
@@ -112,7 +112,13 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style>
+.amount .el-input-group__append{
+  background-color: #13ce66 !important;
+}
+</style>
+
+<style scoped>
 .input{
   margin-bottom: 10px;
 }

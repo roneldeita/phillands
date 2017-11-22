@@ -181,7 +181,7 @@ export default {
     text-align: center;
     content: "Primary Photo";
     color: #ffffff;
-    background-color: #56BA50;
+    background-color: #13ce66;
   }
 </style>
 

@@ -22,7 +22,7 @@
         <br>
         <p>Stay up to date about Real Estate in the Philippines. Unsubscribe anytime.</p>
         <el-input placeholder="Enter your email address" style="margin-top:10px">
-          <el-button type="success" slot="append">SUBSCRIBE</el-button>
+          <el-button type="success" class="btn-pl-green" slot="append">SUBSCRIBE</el-button>
         </el-input>
         <br><br>
         <h4>CONNECT WITH PHILLANDS</h4>

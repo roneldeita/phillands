@@ -48,7 +48,7 @@ export default {
   }
   .is-active {
     color: #ffffff !important;
-    background: #56BA50 !important;
+    background: #13ce66 !important;
   }
   @media (max-width : 769px){
     .navmenu-container,

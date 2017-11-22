@@ -57,7 +57,7 @@ export default {
 
 <style>
   .el-tag--primary{
-    background-color: #56BA50 !important;
+    background-color: #13ce66 !important;
   }
   .el-select__tags-text{
     color: #ffffff !important;

@@ -19,7 +19,7 @@
           :radius="20"
           :draggable="false"
           :clickable="false"
-          :options="{fillColor:'#56BA50',strokeWeight:'0', fillOpacity: '0.40'}"
+          :options="{fillColor:'#13ce66',strokeWeight:'0', fillOpacity: '0.40'}"
          style="border:1px">
         </gmap-circle>
       </gmap-map>

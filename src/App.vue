@@ -97,12 +97,15 @@ input[type=number]::-webkit-outer-spin-button {
 .btn-pl-green,
 .btn-pl-green:hover,
 .btn-pl-green:focus{
-  background-color: #56BA50 !important;
+  background-color: #13ce66 !important;
   outline: 0 !important;
-  border-color:  #56BA50 !important;
+  border-color:  #13ce66 !important;
+}
+.bg-pl-green{
+  background-color: #13ce66 !important;
 }
 .txt-pl-green{
-  color: #56BA50
+  color: #13ce66
 }
 
 .el-dialog__header{

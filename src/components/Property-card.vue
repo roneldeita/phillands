@@ -118,8 +118,8 @@ export default {
   .card:hover + .btn-view,
   .btn-view:hover{
     visibility: visible;
-    background-color: #56BA50;
-    border: 1px solid #56BA50;
+    background-color: #13ce66;
+    border: 1px solid #13ce66;
   }
 
   .card img{

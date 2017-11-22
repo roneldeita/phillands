@@ -32,7 +32,7 @@
                   <span :class="password.class" id="show-password" @click="handleViewPassword"></span>
                 </el-form-item>
                 <el-form-item class="text-left" style="margin-top:25px">
-                  <el-button type="primary" @click="handleLogin('loginForm')">Login</el-button>
+                  <el-button type="success" class="btn-pl-green" @click="handleLogin('loginForm')">Login</el-button>
                 </el-form-item>
                 <el-button type="text" @click="forgetPassword = true"> Forgot your password?</el-button>
               </el-form>
@@ -56,7 +56,7 @@
                   <el-input type="password" v-model="registerForm.password" placeholder="Password"></el-input>
                 </el-form-item>
                 <el-form-item class="text-left">
-                  <el-button type="primary" @click="handleRegistration('registerForm')">Register</el-button>
+                  <el-button type="success" class="btn-pl-green" @click="handleRegistration('registerForm')">Register</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -72,7 +72,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button class="pull-left" type="text" @click="forgetPassword = false"><span class="el-icon-arrow-left"></span> Back to Login</el-button>
-                  <el-button class="pull-right" type="primary" @click="handleResendPassword('resetPasswordForm')">Send Reset Link</el-button>
+                  <el-button type="success" class="btn-pl-green pull-right" @click="handleResendPassword('resetPasswordForm')">Send Reset Link</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>

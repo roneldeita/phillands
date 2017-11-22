@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xs="24" :offset="3" :span="9" class="form-container">
         <div class="main-nav fixed-top" style="margin-top:66px">
-          <el-progress :show-text="false" :stroke-width="10" :percentage="100"></el-progress>
+          <el-progress status="success" :show-text="false" :stroke-width="10" :percentage="100"></el-progress>
         </div>
         <h1><span class="fa fa-check-circle txt-pl-green"></span></h1>
         <h2>Your listing was successfully saved!</h2>

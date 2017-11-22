@@ -299,6 +299,9 @@ export default {
 </script>
 
 <style>
+.el-progress.is-success .el-progress-bar__inner{
+  background-color: #13ce66 !important
+}
 .force-left{
   margin-left: 0px !important;
 }

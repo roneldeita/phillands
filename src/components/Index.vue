@@ -8,7 +8,7 @@
         <a class="nav-link" href="javascript:void(0)" @click="LoginWasClicked()" style="margin-top:0px">Login/Register</a>
       </li>
       <li class="nav-item" v-show="isLoggedIn()">
-        <button type="button" class="btn btn-success" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</button>
+        <el-button type="success" class="btn-pl-green" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</el-button>
       </li>
       <li class="nav-item" v-if="isLoggedIn()">
         <el-dropdown trigger="click" style="padding:0px 25px" @command="handleNavCommand">

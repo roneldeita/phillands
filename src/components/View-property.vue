@@ -71,7 +71,7 @@
             </div>
           </el-col>
           <el-col :xs="24" :span="10" class="form-container" style="height:480px;margin-top:-52px;">
-            <div style="background-color:#56BA50; color:#ffffff; padding:10px 20px">
+            <div style="background-color:#13ce66; color:#ffffff; padding:10px 20px">
               	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span><span v-if="property.offer_type === 2">/mo.</span>
                 <div class="pull-right">
                   <el-tooltip placement="top">
