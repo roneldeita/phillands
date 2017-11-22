@@ -34,7 +34,7 @@ export default {
   name:'step-one',
   data(){
     return{
-      amenities:['Parking'],
+      amenities:[],
       amenitiesOptions: []
     }
   },

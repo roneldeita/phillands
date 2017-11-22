@@ -299,6 +299,12 @@ export default {
         case 3:
           property_type = 'Townhouse'
           break;
+        case 4:
+          property_type = 'Commercial Lot'
+          break;
+        case 5:
+          property_type = 'Vacant Lot'
+          break;
         default:
           property_type = 'Property'
       }
@@ -344,14 +350,14 @@ export default {
   }
   .primary-img{
     width: 100%;
-    height: 400px;
+    height: 500px;
     object-fit: cover;
   }
   .view-photos{
       padding-left: 30px;
       padding-right: 30px;
       position: absolute;
-      top: 340px;
+      top: 440px;
       left: 20px;
       z-index: 5;
   }

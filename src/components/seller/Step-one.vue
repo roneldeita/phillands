@@ -8,13 +8,19 @@
           <el-select v-model="keyInfo.offerType" placeholder="Select" size="large" @change="changeOfferType">
             <el-option label="For Sale" value="1"></el-option>
             <el-option label="For Rent" value="2"></el-option>
+            <el-option label="Foreclosure" value="4"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item style="display:inline-block" prop="propertyType" class="">
           <h5>Property type</h5>
           <el-select v-model="keyInfo.propertyType" placeholder="Select" size="large" @change="changePropertyType">
-            <el-option
+            <el-option v-if="keyInfo.offerType != '4'"
               v-for="type in keyInfo.propertyTypes"
+              :key="type.id"
+              :label="type.label"
+              :value="type.value"></el-option>
+            <el-option v-if="keyInfo.offerType === '4'"
+              v-for="type in keyInfo.ForeclosurePropertyTypes"
               :key="type.id"
               :label="type.label"
               :value="type.value"></el-option>
@@ -53,8 +59,28 @@ export default {
             id:3,
             value: 3,
             label: 'Townhouse'
-        }]
-
+          }],
+        ForeclosurePropertyTypes: [{
+            id:1,
+            value: 1,
+            label: 'Condominium'
+          },{
+            id:2,
+            value: 2,
+            label: 'House and Lot'
+          },{
+            id:3,
+            value: 3,
+            label: 'Townhouse'
+          },{
+            id:4,
+            value: 4,
+            label: 'Commercial Lot'
+          },{
+            id:5,
+            value: 5,
+            label: 'Vacant Lot'
+          }]
       },
       keyInfoRules:{
         sellingPrice:[

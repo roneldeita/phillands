@@ -12,6 +12,7 @@
       <h5>Bathrooms</h5>
       <el-col :span="24" class="input">
         <el-radio-group v-model="bathrooms" @change="changeBathrooms" fill="#56BA50">
+          <el-radio-button label="None"></el-radio-button>
           <el-radio-button v-for="n in 10" :label="n" :key="n"></el-radio-button>
         </el-radio-group>
       </el-col>
@@ -71,7 +72,7 @@ export default {
         ]
       },
       bedrooms:'Studio',
-      bathrooms:1,
+      bathrooms:'None',
       parking:'None',
       balcony:'Yes'
     }

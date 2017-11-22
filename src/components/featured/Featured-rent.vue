@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="">
     <el-row :gutter="20">
-      <el-col :xs="24" :sm="12" :md="12" :lg="6" class=" property-block" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+      <el-col :xs="24" :sm="12" :md="12" :lg="8" class=" property-block" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
         <property-card
           :property="property">
         </property-card>

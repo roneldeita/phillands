@@ -46,10 +46,17 @@ export default {
       const self = this;
       setTimeout(function(){
         axios.get(baseUrl()+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
-          console.log(response);
+          //set local storage
+          if(accountVerified){
+            const accountVerified = JSON.parse(localStorage.getItem('user'));
+            accountVerified['verified'] = 0;
+            localStorage.setItem('user', JSON.stringify(accountVerified))
+          }
+          //show success
           self.showSuccess =true;
           self.verifyLoading = false;
         }).catch(error => {
+
           self.showError =true;
           self.verifyLoading = false;
         });

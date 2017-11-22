@@ -26,6 +26,8 @@
                     <el-option label="Condominium" value="1"></el-option>
                     <el-option label="House and Lot" value="2"></el-option>
                     <el-option label="Townhouse" value="3"></el-option>
+                    <el-option label="Commercial Lot" value="4"></el-option>
+                    <el-option label="Vacant Lot" value="5"></el-option>
                   </el-select>
               </el-autocomplete>
             </el-col>

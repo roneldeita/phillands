@@ -113,7 +113,7 @@ export default {
     saveContact:function(){
       var contacts = {
         id : this.property_id,
-        edit: 'contact',
+        edit: 'contacts',
         full_name: this.contactForm.full_name,
         email: this.contactForm.email,
         home_ccc: this.contactForm.home_ccc,
