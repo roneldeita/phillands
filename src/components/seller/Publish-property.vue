@@ -130,7 +130,7 @@ export default {
         floor_area:0,//int
         lot_area:0,//int
         balcony:1,//int
-        amenities:['Parking'],//text
+        amenities:[],//text
         title:'',//varchar
         description:'',//text
         formatted_address:'',//varchar

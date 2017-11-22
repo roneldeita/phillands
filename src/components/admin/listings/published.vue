@@ -36,6 +36,15 @@
           <span style="margin-left: 10px">{{ scope.row.createdAt | moment("from") }}</span>
         </template>
       </el-table-column>
+      <el-table-column class="border"
+        label="Offer Type"
+        prop="offer_type"
+        align="left"
+        sortable>
+        <template scope="scope">
+          <span style="margin-left: 10px">{{ offerType(scope.row.offer_type) }}</span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column
         label="Date Updated"
         prop="updatedAt"
@@ -123,13 +132,32 @@ export default {
       }
       var items = arr.slice(start, end);
       this.properties = items;
-       console.log(this.properties);
     },
     switchToPage(page){
       var end = this.item_per_page * page;
       var start = end - this.item_per_page;
       this.loadPublished(start, end);
       this.current_page = page;
+    },
+    offerType:function(type){
+      let offer_type=type;
+      switch(offer_type){
+        case 1:
+          offer_type = 'For Rent'
+          break;
+        case 2:
+          offer_type = 'For Sale'
+          break;
+        case 3:
+          offer_type = 'Pre-Selling'
+          break;
+        case 4:
+          offer_type = 'Foreclosure'
+          break;
+        default:
+          offer_type = 'Property'
+      }
+      return offer_type;
     },
     getPublished:function(){
       axios.defaults.headers.common['token'] = null;

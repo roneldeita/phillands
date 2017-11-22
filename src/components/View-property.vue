@@ -24,7 +24,7 @@
             <el-row class="">
               <el-col :span="12">
                 <ul class="detail_list">
-                  <li>Offer type: <b>For {{ property.offer_type === 1 ? 'Sale' : 'Rent' }}</b></li>
+                  <li>Offer type: <b>{{ offerType() }}</b></li>
                   <li>Property type: <b>{{ propertyType() }}</b></li>
                   <li>Total Price: ₱ <b>{{ formatNumber(property.price) }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
                   <li>Bedrooms: <b>{{ property.property_detail.bedrooms != 0 ? property.property_detail.bedrooms : 'Studio Type' }}</b></li>
@@ -286,6 +286,26 @@ export default {
           type: 'info'
         });
       });
+    },
+    offerType:function(){
+      var offer_type='';
+      switch(this.property.offer_type){
+        case 1:
+          offer_type = 'For Rent'
+          break;
+        case 2:
+          offer_type = 'For Sale'
+          break;
+        case 3:
+          offer_type = 'Pre-Selling'
+          break;
+        case 4:
+          offer_type = 'Foreclosure'
+          break;
+        default:
+          offer_type = 'Property'
+      }
+      return offer_type;
     },
     propertyType:function(){
       var property_type='';

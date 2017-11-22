@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h1>Forclosures</h1>
+    <p>Deleted Properties</p>
   </div>
 </template>
 <script>
 export default {
-  name:'Foreclosure',
+  name:'Deleted',
   data: () => ({
 
   })
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 </style>

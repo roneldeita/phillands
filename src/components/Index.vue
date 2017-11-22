@@ -71,7 +71,7 @@
         <featured-sale v-show="activeNav ==='sale'"></featured-sale>
         <featured-rent v-show="activeNav ==='rent'"></featured-rent>
         <div v-show="activeNav ==='pre-selling'" class="text-left">0 Properties found</div>
-        <div v-show="activeNav ==='foreclosure'" class="text-left">0 Properties found</div>
+        <featured-foreclosure v-show="activeNav ==='foreclosure'"></featured-foreclosure>
       </el-col>
       <el-col :xs="0" :sm="6" :md="6" class="ads-container">
         <el-row :gutter="20">
@@ -91,6 +91,7 @@ import { isLoggedIn, login, logout, getProfile, getAccess } from '../assets/util
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
+import FeaturedForeclosure from './featured/Featured-foreclosure.vue'
 import Advertisement from './Advertisement.vue'
 
 export default {
@@ -166,7 +167,7 @@ export default {
     //  console.log(tab.name)
     }
   },
-  components:{ Slogan, FeaturedSale, FeaturedRent, Advertisement },
+  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedForeclosure,  Advertisement },
   mounted(){
     this.loadLocality();
     if(this.isLoggedIn()){

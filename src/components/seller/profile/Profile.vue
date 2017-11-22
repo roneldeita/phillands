@@ -110,7 +110,6 @@ export default {
       }).catch(error =>{
         console.log(error)
       });
-      client/verification/send
     },
     handleChange(file, fileList) {
       const fileValidation = this.checkFileBeforeAttach(file, fileList);

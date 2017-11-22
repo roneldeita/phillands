@@ -3,7 +3,7 @@
     <div class="text-right">
       <h4 class="pull-left txt-pl-green">Contact Details</h4>
       <el-button v-if="!contactEdit" @click="contactEdit = true" icon="edit">Edit</el-button>
-      <el-button type="success" class="btn-pl-green" v-if="contactEdit"  @click="saveContact" disabled>Save</el-button>
+      <el-button type="success" class="btn-pl-green" v-if="contactEdit"  @click="saveContact">Save</el-button>
       <el-button v-if="contactEdit" @click="contactEdit = false; cancelContactEdit(property_no)">Cancel</el-button>
     </div>
     <el-row v-if="!contactEdit">
@@ -28,13 +28,13 @@
       <el-col :sm="12" :md="8" :lg="6">
         <el-form-item style="display:inline-block" label="" prop="full_name">
           <p class="label"><span class="required">*</span>Full name</p>
-          <el-input v-model="contactForm.full_name" class="input"></el-input>
+          <el-input v-model="contactForm.full_name" class="inputContact"></el-input>
         </el-form-item>
       </el-col>
       <el-col :sm="12" :md="8" :lg="18">
         <el-form-item style="display:inline-block" label="" prop="mobile">
           <p class="label"><span class="required">*</span>Mobile Number</p>
-          <el-input class="mobile" type="number" v-model="contactForm.mobile">
+          <el-input class="inputContact" type="number" v-model="contactForm.mobile">
             <el-select v-model="contactForm.mobile_ccc" slot="prepend" style="width:70px">
               <el-option label="+63" value="+63"></el-option>
             </el-select>
@@ -44,13 +44,13 @@
       <el-col :sm="12" :md="8" :lg="6">
         <el-form-item style="display:inline-block" label="" prop="email">
           <p class="label"><span class="required">*</span>Email</p>
-          <el-input v-model="contactForm.email" class="input"></el-input>
+          <el-input v-model="contactForm.email" class="inputContact"></el-input>
         </el-form-item>
       </el-col>
       <el-col :sm="12" :md="8" :lg="18">
         <el-form-item style="display:inline-block" label="" prop="home">
           <p class="label"><span class="required">*</span>Home Number</p>
-          <el-input class="mobile" type="number" v-model="contactForm.home">
+          <el-input class="inputContact" type="number" v-model="contactForm.home">
             <el-select v-model="contactForm.home_ccc" slot="prepend" style="width:70px">
               <el-option label="+63" value="+63"></el-option>
             </el-select>
@@ -128,7 +128,7 @@ export default {
           return axios.post(baseUrl()+'/broker/property/update', contacts)
           .then(response => {
             if(response.data.message === "Success"){
-              this.basicEdit = false;
+              this.contactEdit = false;
               this.$message({
                 message: 'The information was successfully updated',
                 type: 'success'
@@ -168,7 +168,10 @@ export default {
     color:#ff4949;
     margin-right:4px
   }
-  .input{
-    width: 220px;
+  .inputContact{
+    width: 220px !important;
+  }
+  .inputNumber{
+    width:120px !important;
   }
 </style>
