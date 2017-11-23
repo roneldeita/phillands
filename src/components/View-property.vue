@@ -26,9 +26,13 @@
                 <ul class="detail_list">
                   <li>Offer type: <b>{{ offerType() }}</b></li>
                   <li>Property type: <b>{{ propertyType() }}</b></li>
-                  <li>Total Price: ₱ <b>{{ formatNumber(property.price) }}</b><span v-if="property.offer_type === 2">/mo.</span></li>
-                  <li>Bedrooms: <b>{{ property.property_detail.bedrooms != 0 ? property.property_detail.bedrooms : 'Studio Type' }}</b></li>
-                  <li>Bathrooms: <b>{{ property.property_detail.bathrooms != 0 ? property.property_detail.bathrooms : 'None' }}</b></li>
+                  <li>Total Price: ₱
+                    <b>{{ formatNumber(property.price) }}</b>
+                    <span v-show="property.offer_type === 2 &&  property.price_option === 1">/mo.</span>
+                    <span v-show="property.offer_type === 2 &&  property.price_option === 4">/day</span>
+                  </li>
+                  <li v-show="property.offer_type != 4">Bedrooms: <b>{{ property.property_detail.bedrooms != 0 ? property.property_detail.bedrooms : 'Studio Type' }}</b></li>
+                  <li v-show="property.offer_type != 4">Bathrooms: <b>{{ property.property_detail.bathrooms != 0 ? property.property_detail.bathrooms : 'None' }}</b></li>
                 </ul>
               </el-col>
               <el-col :span="12">
@@ -37,7 +41,7 @@
                   <li>Parking: <b>{{ property.property_detail.parking != 0? property.property_detail.parking :'None'  }}</b></li>
                   <li>Floor Area: <b>{{ property.property_detail.floor_area }} sqm</b></li>
                   <li>Lot Area: <b>{{ property.property_detail.lot_area }} sqm</b></li>
-                  <li>Balcony: <b>{{ property.property_detail.balcony ? 'Yes' : 'No' }}</b></li>
+                  <li v-show="property.offer_type != 4">Balcony: <b>{{ property.property_detail.balcony ? 'Yes' : 'No' }}</b></li>
                 </ul>
               </el-col>
             </el-row>
@@ -72,7 +76,9 @@
           </el-col>
           <el-col :xs="24" :span="10" class="form-container" style="height:480px;margin-top:-52px;">
             <div style="background-color:#13ce66; color:#ffffff; padding:10px 20px">
-              	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span><span v-if="property.offer_type === 2">/mo.</span>
+              	<span style="font-size:22px">₱ <b>{{ formatNumber(property.price) }}</b></span>
+                <span v-show="property.offer_type === 2 && property.price_option === 1 ">/mo.</span>
+                <span v-show="property.offer_type === 2 && property.price_option === 4 ">/day</span>
                 <div class="pull-right">
                   <el-tooltip placement="top">
                     <div slot="content">Share this property<br/>on Facebook</div>
@@ -291,10 +297,10 @@ export default {
       var offer_type='';
       switch(this.property.offer_type){
         case 1:
-          offer_type = 'For Rent'
+          offer_type = 'For Sale'
           break;
         case 2:
-          offer_type = 'For Sale'
+          offer_type = 'For Rent'
           break;
         case 3:
           offer_type = 'Pre-Selling'

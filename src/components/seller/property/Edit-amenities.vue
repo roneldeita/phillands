@@ -11,7 +11,7 @@
         <el-button class="amenities" v-for="amenity in amenitiesForm.amenities" :key="0" size="small" style="width:auto"><span class="fa fa-check txt-pl-green"></span> {{ amenity }}</el-button>
       </el-col>
     </el-row>
-    <el-form v-if="amenitiesEdit" :model="amenitiesForm" label-width="0" class="form">
+    <el-form v-if="amenitiesEdit" :model="amenitiesForm" label-width="0" class="amenities-form">
       <el-row>
         <el-col :sm="18" :md="10">
           <p>Choose the amenities from the options or manually type if not available.</p>
@@ -126,20 +126,20 @@ export default {
 </script>
 
 <style>
-.el-tag--primary{
-  background-color: #56BA50 !important;
-}
-.el-select__tags-text{
-  color: #ffffff !important;
-  font-size: 14px !important;
-}
-.el-tag__close{
-  color: #ffffff !important;
-}
-.el-tag__close:hover{
-  background-color: #f2f2f2 !important;
-  color: #999999 !important;
-}
+  .amenities-form .el-tag--primary{
+    background-color: #13ce66 !important;
+  }
+  .amenities-form .el-select__tags-text{
+    color: #ffffff !important;
+    font-size: 14px !important;
+  }
+  .amenities-form .el-tag__close{
+    color: #ffffff !important;
+  }
+  .amenities-form .el-tag__close:hover{
+    background-color: #f2f2f2 !important;
+    color: #999999 !important;
+  }
 </style>
 <style scoped>
   .amenities{

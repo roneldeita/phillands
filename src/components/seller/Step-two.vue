@@ -114,7 +114,8 @@ export default {
 
 <style>
 .amount .el-input-group__append{
-  background-color: #13ce66 !important;
+  /*background-color: #13ce66 !important;
+  color: #ffffff;*/
 }
 </style>
 

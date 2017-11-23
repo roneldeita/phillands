@@ -28,7 +28,7 @@
     <br><br><br>
     <el-row type="flex" class="row-bg text-left" justify="center">
       <el-col :xs="22" :sm="20" :md="20">
-        <a href="/"><img class="logo " src="../assets/PL_Logo_250px.png" alt=""></a>
+        <a href="/"><img class="logo " src="../assets/PL_Logo_500px.png" alt=""></a>
         <slogan></slogan>
       </el-col>
     </el-row>

@@ -56,17 +56,17 @@ export default {
 </script>
 
 <style>
-  .el-tag--primary{
+  .input .el-tag--primary{
     background-color: #13ce66 !important;
   }
-  .el-select__tags-text{
+  .input .el-select__tags-text{
     color: #ffffff !important;
     font-size: 14px !important;
   }
-  .el-tag__close{
+  .input .el-tag__close{
     color: #ffffff !important;
   }
-  .el-tag__close:hover{
+  .input .el-tag__close:hover{
     background-color: #f2f2f2 !important;
     color: #999999 !important;
   }

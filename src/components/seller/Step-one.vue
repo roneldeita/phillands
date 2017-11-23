@@ -28,9 +28,13 @@
         </el-form-item>
         <el-form-item style="display:inline-block;" prop="sellingPrice" class="">
           <h5>{{ keyInfo.offerType ==="2" ? 'Rental Fee' : 'Selling Price'}}</h5>
-          <el-input type="number" class="amount" placeholder="Enter the amount" size="large" v-model="keyInfo.sellingPrice" @change="changeSellingPrice">
+          <el-input type="number" placeholder="Enter the amount" size="large" v-model="keyInfo.sellingPrice" @change="changeSellingPrice">
             <template slot="prepend">₱</template>
-            <template v-if="keyInfo.offerType === '2'" slot="append">Monthly</template>
+            <!-- <template v-if="keyInfo.offerType === '2'" slot="append">Monthly</template> -->
+            <el-select v-if="keyInfo.offerType === '2'" v-model="keyInfo.priceOption" @change="changePriceOption" slot="append" placeholder="Select" style="width:105px">
+              <el-option label="Monthly" value="1"></el-option>
+              <el-option label="Daily" value="4"></el-option>
+            </el-select>
           </el-input>
         </el-form-item>
       </el-form><br>
@@ -47,6 +51,7 @@ export default {
         offerType:'1',
         propertyType:'Condominium',
         sellingPrice:0,
+        priceOption:'1',
         propertyTypes: [{
             id:1,
             value: 1,
@@ -92,12 +97,22 @@ export default {
   methods:{
     changeOfferType:function(type){
       this.$emit('offertype', type);
+      //change the price option
+      if(parseInt(type) === 2){
+        this.$emit('priceoption', 1)
+      }else{
+        this.$emit('priceoption', 0)
+      }
+
     },
     changePropertyType:function(type){
       this.$emit('propertytype', type)
     },
     changeSellingPrice:function(amount){
       this.$emit('sellingprice', amount)
+    },
+    changePriceOption:function(option){
+      this.$emit('priceoption', option)
     },
     handleStep:function(formName){
 
@@ -114,7 +129,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
   .input{
     margin-bottom: 20px;

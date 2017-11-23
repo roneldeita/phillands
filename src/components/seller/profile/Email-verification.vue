@@ -1,8 +1,9 @@
 <template lang="html">
-  <div class="text-center" v-loading.fullscreen.lock="verifyLoading">
+  <div class="text-center" v-loading.fullscreen.lock="verifyLoading" style="margin-top:-15px;">
     <el-row v-if="showSuccess">
       <el-col :xs="24" :offset="3" :span="18" class="form-container">
         <div class="main-nav fixed-top" style="margin-top:50px">&nbsp;</div>
+        <!-- <img src="/static/success_Icon.png" style="width:100px" /> -->
         <h1><span class="pe-7s-check txt-pl-green"></span></h1>
         <h1>Account Verified</h1>
         <h5>Your acount has been confirmed. Thanks!</h5><br><br>
@@ -97,7 +98,7 @@ export default {
 
   @media (max-width: 769px) {
     .form-container{
-      margin-top: -75px;
+      margin-top: -60px;
       margin-left: 0px;
       padding: 50px 15px;
     }

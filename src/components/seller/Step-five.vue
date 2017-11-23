@@ -139,11 +139,11 @@ export default {
       var result = '';
 
       const validImage = [ 'image/jpeg', 'image/png' ];
-      const validSize = file.raw.size / 1024 / 1024 < 2;
+      const validSize = file.raw.size / 1024 / 1024 < 3;
 
       if(validImage.includes(file.raw.type)){//valid type
         if(!validSize){
-          result =  { approve:false, msg:'Image size can not exceed 2MB'}
+          result =  { approve:false, msg:'Image size can not exceed 3MB'}
           fileList.splice(-1);
         }else{
           result =  { approve:true, msg:''}
@@ -181,7 +181,7 @@ export default {
     text-align: center;
     content: "Primary Photo";
     color: #ffffff;
-    background-color: #13ce66;
+    background-color: #13ce66 !important;
   }
 </style>
 

@@ -35,7 +35,7 @@
             <div v-if="this.$route.name != 'wishlist'">
               <el-button @click="handleEditProperty(info.property_no)">Edit Listing</el-button>
               <el-button type="success" class="btn-pl-green" v-if="info.status === 0" @click="previewProperty">Preview</el-button>
-              <el-button type="success" class="btn-pl-green" v-if="info.status === 1" @click="unpublishListing" disabled>Unpublish</el-button>
+              <!-- <el-button type="success" class="btn-pl-green" v-if="info.status === 1" @click="unpublishListing" disabled>Unpublish</el-button> -->
             </div>
             <div v-if="this.$route.name === 'wishlist'">
               <el-button type="success" class="btn-pl-green" @click="previewProperty">Preview</el-button>

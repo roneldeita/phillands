@@ -100,6 +100,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #13ce66 !important;
   outline: 0 !important;
   border-color:  #13ce66 !important;
+  color: #ffffff !important;
 }
 .bg-pl-green{
   background-color: #13ce66 !important;
@@ -119,6 +120,12 @@ input[type=number]::-webkit-outer-spin-button {
   right: 0 !important;
   padding: 8px 10px !important;
   z-index: 999999!important;
+}
+.el-tabs__item.is-active{
+  color:#0275d8 !important
+}
+.el-tabs__active-bar{
+  background-color:#0275d8 !important
 }
 
 </style>

@@ -5,7 +5,10 @@
     </el-card>
     <button type="button" class="btn btn-success btn-view" @click="dialogVisible = true">VIEW LISTING</button>
     <div class="card-info-container">
-      <p class="card-price">₱ {{ formatNumber(property.price) }} <span v-if="property.offer_type === 2">/ mo.</span></p>
+      <p class="card-price">₱ {{ formatNumber(property.price) }}
+        <span v-if="property.offer_type === 2 && property.price_option === 1">/ mo.</span>
+        <span v-if="property.offer_type === 2 && property.price_option === 4 ">/day</span>
+      </p>
       <p class="card-title text-left">{{ property.property_detail.title }}</p>
       <p class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.formatted_address }}</p>
       <p class="card-other text-right">
@@ -28,19 +31,24 @@
           <div class="info-container text-left">
           	<br><br>
             <p class="view-property-link pull-right txt-pl-green" @click="handleCard(property.property_no)">View full details</p>
-            <p class="price">₱ {{ formatNumber(property.price) }} <span v-if="property.offer_type === 2">/ mo.</span></p>
+            <p class="price">₱ {{ formatNumber(property.price) }}
+              <span v-if="property.offer_type === 2 && property.price_option === 1">/ mo.</span>
+              <span v-if="property.offer_type === 2 && property.price_option === 4 ">/day</span>
+            </p>
             <p class="title">{{ property.property_detail.title }}</p>
-            <p class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.formatted_address }}</p>
-            <hr>
-            <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
-            <span class="fa fa-bath" style="margin-left:25px"></span> <span>{{ property.property_detail.bathrooms }}</span>
-            <span class="fa fa-home" style="margin-left:25px"></span> <span>{{ property.property_detail.lot_area }} Sqm</span>
+            <span v-show="property.offer_type != 4">
+              <p  class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.formatted_address }}</p>
+              <hr>
+              <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
+              <span class="fa fa-bath" style="margin-left:25px"></span> <span>{{ property.property_detail.bathrooms }}</span>
+              <span class="fa fa-home" style="margin-left:25px"></span> <span>{{ property.property_detail.lot_area }} Sqm</span>
+            </span>
             <hr>
             <p style="white-space: pre-wrap" class="description">{{ property.property_detail.description }}</p>
             <hr>
               <el-row>
                 <el-col :xs="24" :sm="24" :md="5" :lg="4" class="">
-                  <img src="static/person-icon-8.png" class="img-circle" alt="" style="width:75px">
+                  <img src="/static/person-icon-8.png" class="img-circle" alt="" style="width:75px">
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="19" :lg="20" class="">
                   <p style="line-height:12px">Posted By</p>
@@ -177,7 +185,6 @@ export default {
   .card-price{
     font-size: 18px;
   }
-
   .card-title{
     font-size: 14px;
   }
@@ -209,6 +216,10 @@ export default {
     font-size: 40px;
     line-height: 40px;
     font-weight:900;
+  }
+  .info-container .price span{
+    font-size: 28px;
+    color: #999999;
   }
   .info-container .title{
     position: relative;

@@ -265,15 +265,6 @@ export default {
 </script>
 
 <style>
-  .el-input-group__append{
-    background-color: #56BA50 !important;
-    outline: 0 !important;
-    border-color:  #56BA50 !important;
-    color: #ffffff !important
-  }
-</style>
-
-<style>
   #show-password{
     position: absolute !important;
     top:10px !important;

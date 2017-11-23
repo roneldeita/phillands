@@ -21,7 +21,7 @@
         <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
         <br>
         <p>Stay up to date about Real Estate in the Philippines. Unsubscribe anytime.</p>
-        <el-input placeholder="Enter your email address" style="margin-top:10px">
+        <el-input class="subscribe-btn" placeholder="Enter your email address" style="margin-top:10px">
           <el-button type="success" class="btn-pl-green" slot="append">SUBSCRIBE</el-button>
         </el-input>
         <br><br>
@@ -45,6 +45,14 @@ export default {
   name:'bottom-navigation'
 }
 </script>
+<style>
+.subscribe-btn .el-input-group__append{
+  background-color: #56BA50 !important;
+  outline: 0 !important;
+  border-color:  #56BA50 !important;
+  color: #ffffff !important
+}
+</style>
 
 <style scoped>
   .upper-footer{

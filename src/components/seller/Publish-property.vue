@@ -11,6 +11,7 @@
               @offertype="changeOfferType"
               @propertytype="changePropertyType"
               @sellingprice="changeSellingPrice"
+              @priceoption="changePriceOption"
               @continue="continueStep"></step-one>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
@@ -124,6 +125,7 @@ export default {
         offer_type:1,//int
         property_type:1,//int
         price:0,//int
+        price_option:0,//int
         bedrooms:0,//int
         bathrooms:1,//int
         parking:0,//int
@@ -172,6 +174,9 @@ export default {
     },
     changeSellingPrice:function(amount){
       this.property.price = parseInt(amount);
+    },
+    changePriceOption:function(option){
+      this.property.price_option = parseInt(option);
     },
     changeBedrooms:function(bedrooms){
       this.property.bedrooms = parseInt(bedrooms);
