@@ -8,8 +8,12 @@
     </div>
     <el-row>
       <el-col v-if="!locationEdit" :sm="18" :md="12">
-        <p class="label">Address</p>
-        <p>{{ locationForm.formatted_address }}</p>
+        <span v-if="offer_type === 4">
+          <p class="label">Exact Address</p>
+          <p><span class="fa fa-map-marker txt-pl-light"></span> {{ locationForm.exact_address }}</p>
+        </span>
+        <p class="label">Google Map</p>
+        <p><span class="fa fa-map-marker txt-pl-light"></span> {{ locationForm.formatted_address }}</p>
         <gmap-map ref="gmap" style="width: 100%; height: 300px;" :zoom="18" :center="{lat: locationForm.lat, lng: locationForm.lng}" :drag="false" @center_changed="">
           <gmap-marker
             :draggable="false"
@@ -28,7 +32,12 @@
         </gmap-map>
       </el-col>
       <el-col v-if="locationEdit" :sm="18" :md="12">
-        <p class="label"><span class="required">*</span>Address</p>
+        <span v-if="offer_type === 4">
+          <p class="label">Exact Address</p>
+          <el-input type="textarea" :rows="3" v-model="locationForm.exact_address"></el-input>
+          <br><br>
+        </span>
+        <p class="label"><span class="required">*</span>Google Map</p>
         <gmap-autocomplete class="form-control" v-model="locationForm.formatted_address" @place_changed="setLocation"></gmap-autocomplete><br>
         <gmap-map style="width: 100%; height: 300px;" ref="gmap" :zoom="18" :center="{lat: locationForm.lat, lng: locationForm.lng}" @center_changed="dragMap">
           <gmap-marker
@@ -63,8 +72,10 @@ export default {
   name:'edit-location',
   data(){
     return{
+      offer_type:'',
       locationEdit:false,
       locationForm:{
+        exact_address:'',
         formatted_address:'',
         street_number:'',
         route:'',
@@ -84,7 +95,9 @@ export default {
       getProperty(property_no).then((property) =>{
           this.property_id = property.id;
           this.property_no = property.property_no;
+          this.offer_type = property.offer_type;
           //location
+          this.locationForm.exact_address = property.property_location.exact_address;
           this.locationForm.formatted_address = property.property_location.formatted_address;
           this.locationForm.lat = Number(property.property_location.lat);
           this.locationForm.lng = Number(property.property_location.lng);
@@ -99,6 +112,7 @@ export default {
         var location = {
           id : this.property_id,
           edit: 'location',
+          exact_address:this.locationForm.exact_address,
           formatted_address:this.locationForm.formatted_address,
           lat:this.locationForm.lat,
           lng:this.locationForm.lng,//varchar
@@ -178,6 +192,7 @@ export default {
     cancelLocationEdit:function(){
       this.clearLocation();
       getProperty(this.property_no).then((property) =>{
+        this.locationForm.exact_address = property.property_location.exact_address;
         this.locationForm.formatted_address = property.property_location.formatted_address;
         this.locationForm.street_number = property.property_location.street_number;
         this.locationForm.route = property.property_location.route;

@@ -10,7 +10,8 @@
         <span v-if="property.offer_type === 2 && property.price_option === 4 ">/day</span>
       </p>
       <p class="card-title text-left">{{ property.property_detail.title }}</p>
-      <p class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.formatted_address }}</p>
+      <p v-if="property.offer_type === 4" class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.exact_address }}</p>
+      <p v-else class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.formatted_address }}</p>
       <p class="card-other text-right">
         <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
         <span class="fa fa-bath" style="margin-left:20px"></span> <span>{{ property.property_detail.bathrooms }}</span>
@@ -36,8 +37,9 @@
               <span v-if="property.offer_type === 2 && property.price_option === 4 ">/day</span>
             </p>
             <p class="title">{{ property.property_detail.title }}</p>
+            <p v-if="property.offer_type === 4"  class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.exact_address }}</p>
+            <p v-else  class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.formatted_address }}</p>
             <span v-show="property.offer_type != 4">
-              <p  class="location"><span class="fa fa-map-marker"></span> {{ property.property_location.formatted_address }}</p>
               <hr>
               <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
               <span class="fa fa-bath" style="margin-left:25px"></span> <span>{{ property.property_detail.bathrooms }}</span>

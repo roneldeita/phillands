@@ -9,6 +9,7 @@
     <el-row v-if="!amenitiesEdit" class="">
       <el-col :sm="12" :md="10">
         <el-button class="amenities" v-for="amenity in amenitiesForm.amenities" :key="0" size="small" style="width:auto"><span class="fa fa-check txt-pl-green"></span> {{ amenity }}</el-button>
+        <p v-if="amenitiesForm.amenities ===''" class="pull-left txt-pl-light">None</p>
       </el-col>
     </el-row>
     <el-form v-if="amenitiesEdit" :model="amenitiesForm" label-width="0" class="amenities-form">
@@ -63,7 +64,9 @@ export default {
           this.property_id = property.id;
           this.property_no = property.property_no;
           //amenities
-          this.amenitiesForm.amenities = property.property_detail.amenities.split(",");
+          if(property.property_detail.amenities != ''){
+            this.amenitiesForm.amenities = property.property_detail.amenities.split(",");
+          }
       });
     },
     saveBasic:function(){
@@ -93,7 +96,9 @@ export default {
     },
     cancelAmenitiesEdit:function(){
       getProperty(this.property_no).then((property) =>{
-        this.amenitiesForm.amenities = property.property_detail.amenities.split(",");
+        if(property.property_detail.amenities != ''){
+          this.amenitiesForm.amenities = property.property_detail.amenities.split(",");
+        }
       });
     },
     saveAmenities:function(){

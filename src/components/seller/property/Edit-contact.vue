@@ -98,7 +98,6 @@ export default {
   methods:{
     getProperty:function(property_no){
       getProperty(property_no).then((property) =>{
-          console.log(property)
           this.property_id = property.id;
           this.property_no = property.property_no;
           //contact info

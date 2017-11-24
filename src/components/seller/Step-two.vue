@@ -42,8 +42,8 @@
       <h5>Balcony</h5>
       <el-col :span="24" class="input">
         <el-radio-group v-model="balcony" fill="#13ce66" @change="changeBalcony">
-          <el-radio-button label="Yes"></el-radio-button>
           <el-radio-button label="No"></el-radio-button>
+          <el-radio-button label="Yes"></el-radio-button>
         </el-radio-group>
       </el-col>
       <el-col :span="24" class="input">
@@ -74,7 +74,7 @@ export default {
       bedrooms:'Studio',
       bathrooms:'None',
       parking:'None',
-      balcony:'Yes'
+      balcony:'No'
     }
   },
   methods:{

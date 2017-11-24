@@ -18,7 +18,8 @@
         <el-row>
           <el-col :xs="24" :span="14" style="padding:20px 30px 0 0" class="info-container">
             <p class="title">{{ property.property_detail.title }}</p>
-            <p class="location" >{{ property.property_location.formatted_address }}</p>
+            <p class="location" v-if="property.offer_type === 4">{{ property.property_location.exact_address }}</p>
+            <p class="location" v-else>{{ property.property_location.formatted_address }}</p>
             <p style="white-space: pre-wrap" class="description">{{ property.property_detail.description }}</p>
             <h4>Details</h4>
             <el-row class="">
@@ -54,7 +55,8 @@
               </el-col>
             </el-row>
             <h4>Location</h4>
-            <p>{{ property.property_location.formatted_address }}</p>
+            <p v-if="property.offer_type === 4">{{ property.property_location.exact_address }}</p>
+            <p v-else>{{ property.property_location.formatted_address }}</p>
             <gmap-map style="width: 100%; height: 300px;z-index:1" :zoom="zoom" :options="{styles:style}" :center="marker">
               <gmap-marker
                 :draggable="false"

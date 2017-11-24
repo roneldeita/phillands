@@ -2,7 +2,14 @@
     <el-row class="text-left">
       <h2>Location</h2><br>
       <!-- <button class="btn btn-sm btn-success" style="border-radius:50%; margin-bottom:5px; padding:5px 10px">1</button> -->
-      <h6><b>1</b>. Address</h6>
+      <span v-if="offertype === 4">
+        <h5 class="txt-pl-green">Exact Address</h5>
+        <el-input type="textarea"  @change="changeExactAddress" :rows="3"></el-input>
+        <br>
+        <br>
+      </span>
+      <h5 v-if="offertype === 4" class="txt-pl-green">Google Map</h5>
+      <h6><b>1</b>. Type the address</h6>
       <gmap-autocomplete class="form-control" @place_changed="setLocation" placeholder="Enter the location"></gmap-autocomplete><br>
       <!-- <button class="btn btn-sm btn-success" style="border-radius:50%; margin-bottom:5px; padding:5px 10px">2</button> -->
       <h6><b>2</b>. Drag the Map Marker and point it to the exact location of the property.</h6>
@@ -36,6 +43,7 @@ import MapStyle from '../../../static/json/map-detailed.json'
 
 export default {
   name:'step-four',
+  props:['offertype'],
   data(){
     return{
       zoom:7,
@@ -49,6 +57,7 @@ export default {
   components:{ MapStyle },
   methods:{
     handleStep:function(){
+      console.log(this.marker);
       var autocomplete = $('.form-control').val();
       if(!autocomplete){
         this.$message.error('Address is required');
@@ -58,6 +67,10 @@ export default {
     },
     backToPreviousStep:function(){
       this.$emit('back')
+    },
+    changeExactAddress:function(address){
+      console.log('asdsad');
+      this.$emit('exactaddress', address)
     },
     setLocation: function(place){
       this.displayMap = false;

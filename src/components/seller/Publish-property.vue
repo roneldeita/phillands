@@ -52,7 +52,10 @@
              @formatedaddress="setLocation"
              @dragmarker="setMarker"
              @continue="continueStep"
-             @back="previousStep"></step-four>
+             @back="previousStep"
+             @exactaddress="changeExactAddress"
+             :offertype="property.offer_type"
+             ></step-four>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
               <screen-tip-four></screen-tip-four>
@@ -90,7 +93,6 @@
         </el-row>
       </el-col>
     </el-row>
-    <!-- {{ property }} -->
   </div>
 </template>
 
@@ -135,6 +137,7 @@ export default {
         amenities:[],//text
         title:'',//varchar
         description:'',//text
+        exact_address:'',//varchar
         formatted_address:'',//varchar
         lat:'',//varchar
         lng:'',//varchar
@@ -204,6 +207,9 @@ export default {
     },
     changeDescription:function(desc){
       this.property.description = desc;
+    },
+    changeExactAddress:function(address){
+      this.property.exact_address = address;
     },
     setLocation:function(place){
       //clear everything first

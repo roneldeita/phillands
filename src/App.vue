@@ -108,6 +108,9 @@ input[type=number]::-webkit-outer-spin-button {
 .txt-pl-green{
   color: #13ce66
 }
+.txt-pl-light{
+  color: #c0ccda
+}
 
 .el-dialog__header{
   padding: 0px !important;
