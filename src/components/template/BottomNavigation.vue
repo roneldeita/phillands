@@ -16,6 +16,10 @@
         <br>
         <p>Unit 218 pacific Century Tower, 1472-146 Quezon Ave. Brgy. South Triangle Quezon City</p><br>
         <p>Office Hours: Monday - Friday 8:30am - 6:30pm</p>
+        <br><br>
+        <h4>FEEDBACK & SUPPORT</h4>
+        <p style="margin-bottom:20px">Help us in making Phillands Realty better by sending us suggestion and feedbacks.</p>
+        <el-button class="btn-email-us btn-pl-green" @click="FeedbackWasClicked()">Email Us</el-button>
       </el-col>
       <el-col :md="9" class="text-left">
         <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
@@ -42,7 +46,13 @@
 
 <script>
 export default {
-  name:'bottom-navigation'
+  name:'bottom-navigation',
+  methods: {
+    FeedbackWasClicked:function(){
+      //console.log('test');
+      this.$emit('feedback');
+    },
+  }
 }
 </script>
 <style>
@@ -81,4 +91,8 @@ export default {
     }
   }
 
+  .btn-email-us{
+    padding-left: 30px;
+    padding-right: 30px;
+  }
 </style>

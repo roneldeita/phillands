@@ -143,10 +143,10 @@ export default {
       let offer_type=type;
       switch(offer_type){
         case 1:
-          offer_type = 'For Rent'
+          offer_type = 'For Sale'
           break;
         case 2:
-          offer_type = 'For Sale'
+          offer_type = 'For Rent'
           break;
         case 3:
           offer_type = 'Pre-Selling'

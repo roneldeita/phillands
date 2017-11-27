@@ -265,6 +265,9 @@ export default {
 </script>
 
 <style>
+  .login-modal .el-dialog .el-dialog__header .el-dialog__headerbtn{
+    outline: none !important;
+  }
   #show-password{
     position: absolute !important;
     top:10px !important;
