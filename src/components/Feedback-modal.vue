@@ -7,11 +7,25 @@
       @close="dialogClose"
       class="feedback-container"
       >
-      <el-form>
-        <el-form-item label="" prop="full_name" style="margin-bottom:22px">
-          <el-input placeholder="Your Full name"></el-input>
-        </el-form-item>
-      </el-form>
+      <div class="feedback-form-container">
+        <el-form :model="feedbackForm" :rules="feedbackRules" ref="feedbackForm">
+          <el-form-item label="" prop="full_name">
+            <el-input placeholder="Full name" v-model="feedbackForm.full_name"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="email">
+            <el-input placeholder="Email" v-model="feedbackForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="" prop="message">
+            <el-input type="textarea" placeholder="Message" :rows="5" v-model="feedbackForm.message"></el-input>
+          </el-form-item>
+          <el-form-item style="margin-bottom:5px">
+            <el-button type="success" class="btn-pl-green" @click="handleFeedback('feedbackForm')">Submit</el-button>
+          </el-form-item style="margin-bottom:5px">
+          <el-form-item>
+            <el-button @click="dialogClose">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -22,11 +36,37 @@ export default {
   data(){
     return{
       feedbackVisible: this.feedbackmodal,
+      feedbackForm:{
+        full_name:'',
+        email:'',
+        message:''
+      },
+      feedbackRules:{
+        full_name: [
+          { required: true, message: 'Please input your full name', trigger: 'blur' },
+        ],
+        email: [
+          { required: true, message: 'Please input email', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+        ],
+        message: [
+          { required: true, message: 'Please input your full name', trigger: 'blur' },
+        ],
+      }
     }
   },
   methods: {
-    dialogVisible() {
+    handleFeedback:function(formName){
+      this.$refs[formName].validate((valid) => {
 
+        if(valid){
+
+          //this.doLogin(this.loginForm);
+
+        }else{
+          //console.log(valid)
+        }
+      });
     },
     dialogClose(){
       this.$emit('feedbackmodalclose', this.feedbackVisible);
@@ -57,4 +97,16 @@ export default {
 .feedback-container .el-dialog .el-dialog__header .el-dialog__headerbtn .el-icon{
   color:#ffffff !important
 }
+</style>
+
+<style scoped>
+  .feedback-form-container{
+    padding: 25px 25px 15px 25px;
+    background-color: #f2f2f2
+  }
+
+  .feedback-form-container .el-button{
+    width: 100%
+  }
+
 </style>

@@ -1,4 +1,4 @@
-# vue
+# Phillands
 
 > A Vue.js project
 
