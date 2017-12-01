@@ -120,6 +120,8 @@ export default {
   name:'publish-property',
   data(){
     return{
+      profile: JSON.parse(getProfile()),
+      RequiredVerification: false,
       activeStep:0,
       finishButton:false,
       //progressStep:0,
@@ -304,7 +306,49 @@ export default {
       .catch( function(error){
         console.log(error);
       })
+    },
+    verificationRequired: function(){
+      if(this.profile.verified === 0){
+        const h = this.$createElement;
+        this.$msgbox({
+          title: 'Account Verification Required',
+          message: h('p', null, [
+            h('div', { class: 'el-message-box__status el-icon-warning' }, null),
+            h('div', { style :'margin-left:50px'}, ' You need to verify your email address before you can publish a property ')
+          ]),
+          closeOnClickModal:false,
+          showCancelButton: true,
+          confirmButtonText: 'Verify Now',
+          confirmButtonClass: 'btn-pl-green',
+          cancelButtonText: 'Cancel',
+          beforeClose: (action, instance, done) => {
+            if(action === 'cancel'){
+              this.$router.push({name:'index'});
+              done();
+            }else if(action === 'confirm'){
+              axios.defaults.headers.common['token'] = getIdToken();
+              axios.get(baseUrl()+'/client/verification/send').then(response =>{
+                if(response.data.message === "success"){
+                  this.$message({
+                    showClose: true,
+                    duration: 10000,
+                    message: 'A verification link was sent to your email',
+                    type: 'success'
+                  });
+                }
+              }).catch(error =>{
+                console.log(error)
+              });
+              this.$router.push({name:'index'});
+              done();
+            }
+          }
+        });
+      }
     }
+  },
+  created(){
+    this.verificationRequired()
   }
 }
 </script>

@@ -7,7 +7,7 @@
         <h1><span class="pe-7s-check txt-pl-green"></span></h1>
         <h1>Account Verified</h1>
         <h5>Your acount has been confirmed. Thanks!</h5><br><br>
-        <el-button type="success" class="btn-pl-green"  size="large" @click="handleBtn">Continue</el-button>
+        <el-button type="success" class="btn-pl-green" size="large" @click="handleBtn">Continue</el-button>
       </el-col>
     </el-row>
     <el-row v-if="showError">

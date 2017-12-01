@@ -30,6 +30,8 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
+import { baseUrl } from '../assets/utils/properties-api.js';
 export default {
   name: 'feedback-modal',
   props: ['feedbackmodal'],
@@ -60,8 +62,19 @@ export default {
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-
-          //this.doLogin(this.loginForm);
+          axios.post(baseUrl()+'/feedback', this.feedbackForm)
+          .then( response => {
+            if(response.data.message === 'Success'){
+              this.$alert('Your comment has been successfully submitted', 'Feedback Sent', {
+                confirmButtonText: 'OK',
+                type:'success'
+              });
+              this.clearInputs();
+              this.dialogClose();
+            }
+          }).catch( error =>{
+            console.log(error)
+          })
 
         }else{
           //console.log(valid)
@@ -70,6 +83,12 @@ export default {
     },
     dialogClose(){
       this.$emit('feedbackmodalclose', this.feedbackVisible);
+      this.clearInputs();
+    },
+    clearInputs(){
+      this.feedbackForm.full_name ='';
+      this.feedbackForm.email = '';
+      this.feedbackForm.message ='';
     }
   },
   watch:{

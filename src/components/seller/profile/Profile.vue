@@ -43,7 +43,7 @@
                 <h5>Account Details</h5>
               </div>
                 <el-row :gutter="10">
-                  <el-col :xs="24" :span="8" class="">
+                  <el-col :xs="24" :span="24" class="">
                     <p class="label">First Name</p>
                     <p>{{ profile.first_name }}</p>
                     <p class="label">Last Name</p>
@@ -51,7 +51,12 @@
                     <p class="label">Mobile Name</p>
                     <p>N/A</p>
                     <p class="label">Email Address</p>
-                    <p>{{ profile.email }}</p>
+                    <p>
+                      <el-tooltip class="item" content="Email is verified" placement="bottom-start">
+                        <span v-if="profile.verified === 1" class="fa fa-check-circle txt-pl-green"></span>
+                      </el-tooltip>
+                      {{ profile.email }}
+                    </p>
                   </el-col>
                 </el-row>
             </el-card>
