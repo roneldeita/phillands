@@ -70,7 +70,7 @@
       <el-col :xs="24" :offset="2" :sm="14" :md="14" class="property-container">
         <featured-sale v-show="activeNav ==='sale'"></featured-sale>
         <featured-rent v-show="activeNav ==='rent'"></featured-rent>
-        <div v-show="activeNav ==='pre-selling'" class="text-left">0 Properties found</div>
+        <featured-preselling v-show="activeNav ==='pre-selling'"></featured-preselling>
         <featured-foreclosure v-show="activeNav ==='foreclosure'"></featured-foreclosure>
       </el-col>
       <el-col :xs="0" :sm="6" :md="6" class="ads-container">
@@ -91,6 +91,7 @@ import { isLoggedIn, login, logout, getProfile, getAccess } from '../assets/util
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
+import FeaturedPreselling from './featured/Featured-preselling.vue'
 import FeaturedForeclosure from './featured/Featured-foreclosure.vue'
 import Advertisement from './Advertisement.vue'
 
@@ -167,7 +168,7 @@ export default {
     //  console.log(tab.name)
     }
   },
-  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedForeclosure,  Advertisement },
+  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedPreselling, FeaturedForeclosure,  Advertisement },
   mounted(){
     this.loadLocality();
     if(this.isLoggedIn()){
@@ -207,6 +208,9 @@ export default {
     margin-top: 10px;
     margin-right: 15px;
     width: 180px;
+  }
+  .ads-container{
+    margin-top: 15px;
   }
   @media (max-width : 769px){
     .property-container{

@@ -8,6 +8,7 @@
           <el-select v-model="keyInfo.offerType" placeholder="Select" size="large" @change="changeOfferType">
             <el-option label="For Sale" value="1"></el-option>
             <el-option label="For Rent" value="2"></el-option>
+            <el-option label="Pre-selling" value="3"></el-option>
             <el-option label="Foreclosure" value="4"></el-option>
           </el-select>
         </el-form-item>

@@ -24,7 +24,7 @@ import PropertyCard from '.././Property-card.vue'
 import { getProperties } from '../../assets/utils/properties-api.js'
 
 export default {
-  name:'featured-sale',
+  name:'pre-selling',
   data(){
     return{
       property_source:'',
@@ -41,10 +41,10 @@ export default {
       this.properties = JSON.parse(JSON.stringify(items));
     },
     ViewAll(){
-        this.$router.push({name:'foreclosure', params:{property_type:'1', location:''}})
+      this.$router.push({name:'pre-selling', params:{property_type:'1', location:''}})
     },
-    getRents() {
-      getProperties(4).then((property) => {
+    getSales() {
+      getProperties(3).then((property) => {
         this.property_source = property.properties.reverse();
         this.loadProperties();
       });
@@ -53,7 +53,7 @@ export default {
   components:{PropertyCard },
   mounted(){
     //this.loadProperties()
-    this.getRents();
+    this.getSales();
   }
 }
 </script>
