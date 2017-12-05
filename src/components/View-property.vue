@@ -17,6 +17,7 @@
       <el-col :offset="3" :xs="24" :span="18" class="body-container">
         <el-row>
           <el-col :xs="24" :span="14" style="padding:20px 30px 0 0" class="info-container">
+            <!-- <p>  {{ wishlist }}</p> -->
             <p class="title">{{ property.property_detail.title }}</p>
             <p class="location" v-if="property.offer_type === 4">{{ property.property_location.exact_address }}</p>
             <p class="location" v-else>{{ property.property_location.formatted_address }}</p>
@@ -150,7 +151,7 @@ import axios from 'axios';
 import MapStyle from '../../static/json/map-detailed.json'
 //api
 import { baseUrl, getProperty, addtoWishlist, getWishList } from '../assets/utils/properties-api.js'
-import { getIdToken, getAccess } from '../assets/utils/auth.js'
+import { getIdToken, isLoggedIn } from '../assets/utils/auth.js'
 
 export default {
   name:'view-property',
@@ -259,18 +260,17 @@ export default {
       }
     },
     handleAddWishList:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
       return axios.post(baseUrl()+'/client/wishlist/add', { property_id : this.property.id}).
-      then(function(response){
-        self.$message({
+      then( response => {
+        this.$message({
           message: 'This property was added to your wish list',
           type: 'success'
         });
-        self.getWishlist();
+        this.getWishlist();
       })
-      .catch(function(error){
-        self.$emit('login');
+      .catch( error => {
+        this.$emit('login');
         // self.$message({
         //   message: 'You need to sign in',
         //   type: 'info'
@@ -278,21 +278,23 @@ export default {
       });
     },
     handleRemoveWishList:function(){
-      const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
       return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
-      then(function(response){
-        self.$message({
+      then(response => {
+        this.$message({
           message: 'This property was removed from your wish list',
           type: 'success'
         });
-        self.getWishlist();
+        this.getWishlist();
       })
-      .catch(function(error){
-        self.$message({
-          message: 'You need to sign in',
-          type: 'info'
+      .catch( error => {
+        this.$message({
+          message: 'There was an error removing this property from your wishlist, Please try again.',
+          type: 'warning'
         });
+        setTimeout(() =>{
+          location.reload();
+        },2500);
       });
     },
     offerType:function(){
@@ -344,9 +346,10 @@ export default {
   },
   mounted(){
     this.getProperty(this.$route.params.property_no);
-    this.getWishlist();
     this.imgUrl = baseUrl() + '/images/';
-    //this.style = MapStyle;
+    if(isLoggedIn()){
+      this.getWishlist();
+    }
   },
   watch:{
     'search':function(value){

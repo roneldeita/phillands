@@ -1,20 +1,39 @@
 <template>
   <div class="">
     <el-card :body-style="{ padding: '0px' }" class="card">
+      <!-- <el-tooltip placement="top">
+        <div slot="content">Add this property<br/>to your Wish List</div>
+        <el-button type="text" style="position:absolute; right:12px; font-size:18px; color:#ffffff; outline-style:none">
+          <span class="fa fa-heart-o"></span>
+        </el-button>
+      </el-tooltip> -->
+      <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
+        <div slot="content">Add this property<br/>to your Wish List</div>
+        <el-button type="text" style="position:absolute;right:12px;font-size:18px;color:#ffffff;outline-style:none" @click="handleAddWishList">
+          <span class="fa fa-heart-o"></span>
+        </el-button>
+      </el-tooltip>
+      <el-tooltip placement="top" v-if="wishlist.includes(property.property_no)">
+        <div slot="content">Remove this property<br/>from your Wish List</div>
+        <el-button type="text" style="position:absolute;right:12px;font-size:18px;color:#ffffff;outline-style:none" @click="handleRemoveWishList">
+          <span class="fa fa-heart"></span>
+        </el-button>
+      </el-tooltip>
       <img v-lazy="imgUrl+property.property_media[0].uploaded_filename" @click="dialogVisible = true">
     </el-card>
-    <button type="button" class="btn btn-success btn-view" @click="dialogVisible = true">VIEW LISTING</button>
+    <!-- <button type="button" class="btn btn-success btn-view" @click="dialogVisible = true">VIEW LISTING</button> -->
     <div class="card-info-container">
+      <p class="card-offer-type">{{ offerType() }}</p>
+      <p class="card-title text-left">{{ property.property_detail.title }}</p>
       <p class="card-price">₱ {{ formatNumber(property.price) }}
         <span v-if="property.offer_type === 2 && property.price_option === 1">/ mo.</span>
         <span v-if="property.offer_type === 2 && property.price_option === 4 ">/day</span>
       </p>
-      <p class="card-title text-left">{{ property.property_detail.title }}</p>
       <p v-if="property.offer_type === 4" class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.exact_address }}</p>
-      <p v-else class="card-location"><span class="pe-7s-map-marker"></span>{{ property.property_location.formatted_address }}</p>
+      <p v-else class="card-location"><span class="pe-7s-map-marker"></span> {{ property.property_location.formatted_address }}</p>
       <p class="card-other text-right">
-        <span class="fa fa-bed"></span> <span>{{ property.property_detail.bedrooms }}</span>
-        <span class="fa fa-bath" style="margin-left:20px"></span> <span>{{ property.property_detail.bathrooms }}</span>
+        <span class="fa fa-bed"></span> <span><b>{{ property.property_detail.bedrooms }}</b></span>
+        <span class="fa fa-bath" style="margin-left:20px"></span> <span><b>{{ property.property_detail.bathrooms }}</b></span>
       </p>
     </div>
     <el-dialog title=""  :visible.sync="dialogVisible" size="large">
@@ -78,14 +97,18 @@
 </template>
 
 <script>
-import { baseUrl } from '../assets/utils/properties-api.js';
+import axios from 'axios';
+import { baseUrl, getWishList } from '../assets/utils/properties-api.js';
+import { getIdToken, isLoggedIn } from '../assets/utils/auth.js'
 export default {
   name:"property-card",
   props:['property'],
   data(){
     return{
       imgUrl:'',
-      dialogVisible:false
+      dialogVisible:false,
+      wishlist:[],
+      wishlistId:''
     }
   },
   methods:{
@@ -94,9 +117,82 @@ export default {
   	},
     handleCard: function(propertyNo){
       this.$router.push({name:'view-property', params:{property_no:propertyNo}})
+    },
+    getWishlist:function(){
+      getWishList().then((wishlist)=>{
+
+        var arr = [];
+        for(var wish in wishlist){
+          arr.push(wishlist[wish].property.property_no)
+          if(wishlist[wish].property.property_no === this.property.property_no){
+            this.wishlistId = wishlist[wish].id
+          }
+        }
+        this.wishlist = arr;
+      });
+    },
+    handleAddWishList:function(){
+      axios.defaults.headers.common['token'] = getIdToken();
+      axios.post(baseUrl()+'/client/wishlist/add', { property_id : this.property.id}).
+      then( response => {
+        this.$message({
+          message: 'This property was added to your wish list',
+          type: 'success'
+        });
+        this.getWishlist();
+      })
+      .catch( error => {
+        // //console.log('test')
+        // this.$emit('login');
+        this.$message({
+          message: 'You need to sign in',
+          type: 'info'
+        });
+      });
+    },
+    handleRemoveWishList:function(){
+      const self = this;
+      axios.defaults.headers.common['token'] = getIdToken();
+      return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
+      then(function(response){
+        self.$message({
+          message: 'This property was removed from your wish list',
+          type: 'success'
+        });
+        self.getWishlist();
+      })
+      .catch(function(error){
+        self.$message({
+          message: 'You need to sign in',
+          type: 'info'
+        });
+      });
+    },
+    offerType:function(){
+      var offer_type='';
+      switch(this.property.offer_type){
+        case 1:
+          offer_type = 'FOR SALE'
+          break;
+        case 2:
+          offer_type = 'FOR RENT'
+          break;
+        case 3:
+          offer_type = 'PRE-SELLING'
+          break;
+        case 4:
+          offer_type = 'FORECLOSURE'
+          break;
+        default:
+          offer_type = 'PROPERTY'
+      }
+      return offer_type;
     }
   },
   created(){
+    if(isLoggedIn()){
+      this.getWishlist();
+    }
     this.imgUrl = baseUrl() + '/images/';
   }
 }
@@ -113,9 +209,9 @@ export default {
   }
   .card{
     padding: 0px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     border-radius: 0px;
-    min-height: 380px;
+    min-height: 300px;
     border: none;
     cursor: pointer;
   }
@@ -125,18 +221,18 @@ export default {
     -moz-filter: brightness(40%);
   }*/
 
-  .card:hover + .btn-view,
+  /*.card:hover + .btn-view,
   .btn-view:hover{
     visibility: visible;
     background-color: #13ce66;
     border: 1px solid #13ce66;
-  }
+  }*/
 
   .card img{
     width: 100%;
     object-fit: cover;
-    height: 380px;
-    min-height: 380px;
+    height: 300px;
+    min-height: 300px;
   }
   .dialog-container{
     background-color: #000000;
@@ -144,26 +240,26 @@ export default {
 
   .card-info-container{
     position: relative;
-    margin-top: -143px;
-    margin-bottom: 20px;
-    padding: 12px 5px;
-    background: rgb(0, 0, 0); /* Fall-back for browsers that don't support rgba */
-    background: rgba(0, 0, 0, .4);
+    margin-top: 5px;
+    margin-bottom: 30px;
+    padding: 0;
+    /* background: rgb(0, 0, 0); */ /* Fall-back for browsers that don't support rgba */
+    /* background: rgba(0, 0, 0, .4); */
   }
 
-  .btn-view{
+  /*.btn-view{
     visibility: hidden;
     position: relative;
     margin-top: -480px;
     left: 0%;
     top:0%;
-    transform: translateY(0%); /* This would be overwritten */
-    transform: translateX(0%); /* By this.. */
+    transform: translateY(0%); // This would be overwritten
+    transform: translateX(0%); // By this..
     border-radius: 0px;
     font-size: 14px;
     padding: 8px 30px 6px 30px;
     cursor: pointer;
-  }
+  }*/
 
   .view-property-link{
     margin-top:10px;
@@ -174,28 +270,31 @@ export default {
   .card-price,
   .card-title,
   .card-location,
-  .card-other{
+  .card-other,
+  .card-offer-type{
     position: relative;
-    color: #ffffff;
+    color: #000000;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
     margin-bottom: 0px;
   }
-
-  .card-price{
-    font-size: 18px;
+  .card-offer-type{
+    color: #0275d8;
   }
-  .card-title{
+  .card-price{
     font-size: 14px;
   }
-
+  .card-title{
+    font-size: 16px;
+    font-weight: bold;
+  }
   .card-other{
     font-size: 12px;
   }
   .card-location{
-    font-size: 10px;
+    font-size: 11px;
   }
   .carousel-container{
     padding: 50px 0px 20px 0px;

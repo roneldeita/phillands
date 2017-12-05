@@ -39,7 +39,7 @@
             </div>
             <div v-if="this.$route.name === 'wishlist'">
               <el-button type="success" class="btn-pl-green" @click="previewProperty">Preview</el-button>
-              <el-button :plain="true" type="danger" @click="handleRemoveWishList">Remove</el-button>
+              <el-button :plain="true" type="danger" @click="handleRemoveWishList(info.wishlist_id)">Remove</el-button>
             </div>
           </div>
 
@@ -105,18 +105,8 @@ export default {
     handleEditProperty: function(propertyNo){
       this.$router.push({name:'edit-property', params:{property_no:propertyNo}})
     },
-    handleRemoveWishList:function(){
-      axios.defaults.headers.common['token'] = getIdToken();
-      return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.info.wishlist_id}).
-      then(response =>{
-        this.$message({
-          message: 'This property was removed from your wish list',
-          type: 'success'
-        });
-        setTimeout(() =>{
-          this.$router.go({name:'wishlist'});
-        },800);
-      });
+    handleRemoveWishList:function(wishlistId){
+      this.$emit('remove', wishlistId)
     },
     handleCommand:function(command){
       if(command === 'preview'){

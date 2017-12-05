@@ -29,7 +29,7 @@
           <property-box v-for="n in 0" :key="n" :info="archives"></property-box>
         </div>
         <div v-if="activeMenu === 'wishlist'">
-          <property-box v-if="wishlist" v-for="item in wishlist" :key="item.id" :info="item"></property-box>
+          <property-box v-if="wishlist" @remove="removeWishListWasClicked" v-for="item in wishlist" :key="item.id" :info="item"></property-box>
           <div class="jumbotron" v-if="wishlist.length === 0">
             <h4>Your wishlist is currently empty</h4>
             <h5><a href="javascript:void(0)" @click="goToSearchProperty"> <span class="fa fa-search"></span> Search property</a></h5>
@@ -115,6 +115,17 @@ export default {
         }
         this.wishlist = arr.reverse();
         this.wishlistCount = arr.length;
+      });
+    },
+    removeWishListWasClicked(wishlistId){
+      axios.defaults.headers.common['token'] = getIdToken();
+      axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : wishlistId}).
+      then(response =>{
+        this.$message({
+          message: 'The property was removed from your wish list',
+          type: 'success'
+        });
+        this.getWishList();
       });
     }
   },

@@ -20,6 +20,7 @@
                 @select="handleSearch"
                 :fetch-suggestions="querySearch"
                 @focus="querySearch"
+                @keyup.enter.native="handleSearch"
                 class="inline-input">
                   <el-select slot="prepend" v-model="propertyType" placeholder="Select" @change="handleSearch">
                     <!-- <el-option label="All" value=""></el-option> -->

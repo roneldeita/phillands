@@ -40,9 +40,11 @@
           placeholder="Type the location? e.g Quezon City"
           size="large"
           icon="search"
+          @select="handleIconClick"
           :on-icon-click="handleIconClick"
           :fetch-suggestions="querySearch"
           @focus="querySearch"
+          @keyup.enter.native="handleIconClick"
           class="inline-input">
             <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
               <el-option label="Condominium" value="1"></el-option>
