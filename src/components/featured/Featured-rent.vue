@@ -1,12 +1,13 @@
 <template lang="html">
   <div>
     <el-row>
-      <el-col :span="24" class="text-right view-all">
-        <el-button type="text" @click="ViewAll">View All <span class="fa fa-chevron-right"></span></el-button>
+      <el-col :span="24" class="view-all" >
+        <span class="sub-title pull-left">Featured Properties</span>
+        <el-button class="pull-right" style="padding-top:15px;" type="text text-muted" @click="ViewAll">View All <span class="fa fa-chevron-right "></span></el-button>
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :xs="24" :sm="12" :md="12" :lg="8" class=" property-block" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+      <el-col :span="6" class=" property-block" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
         <property-card
           :property="property">
         </property-card>
@@ -66,5 +67,11 @@ export default {
   }
   .fa-chevron-right{
     font-size: 12px;
+  }
+  .sub-title{
+    font-size: 26px;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
 </style>

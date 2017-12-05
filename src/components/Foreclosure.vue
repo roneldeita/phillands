@@ -1,12 +1,12 @@
 <template>
   <div style="width:100%">
     <el-row :gutter="20" style="margin:-15px 5px 10px 5px">
-      <el-col :xs="24" :sm="18" :md="18">
+      <el-col :span="24">
         <h6 class="text-left">{{ total_properties }} properties found</h6>
       </el-col>
-      <el-col :xs="24" :sm="18" :md="18" v-loading="propertyLoading" element-loading-text="Loading Properties">
+      <el-col :span="20" v-loading="propertyLoading" element-loading-text="Loading Properties">
         <el-row :gutter="20">
-          <el-col :sm="12" :md="12" :lg="8" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+          <el-col :span="4" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
             <property-card :property="property"></property-card>
           </el-col>
         </el-row>
@@ -34,7 +34,7 @@
           <br>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="6" :md="6">
+      <el-col :span="4">
         <el-row>
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
             <a :href="add.link" target="_blank"><advertisement :img="add.img"></advertisement></a>
@@ -63,7 +63,7 @@ export default {
       properties:[],
       total_properties:0,
       page_count:0,
-      item_per_page: 6,
+      item_per_page: 20,
       adds:[
         { id:1, img:'/static/adds/Ads1.jpg', link:'https://iremitglobal.com/' },
         { id:2, img:'/static/adds/Ads2.jpg', link:'https://www.upsexpress.com.ph/' },

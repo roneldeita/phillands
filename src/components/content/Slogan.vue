@@ -32,8 +32,9 @@ export default {
 
 <style lang="css">
   .slogan{
-    font-size: 46px;
+    font-size: 40px;
     line-height: 52px;
-    color: #636363;
+    color: #484848;
+    font-weight: 500;
   }
 </style>

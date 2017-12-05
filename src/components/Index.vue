@@ -27,13 +27,13 @@
     </ul>
     <br><br><br>
     <el-row type="flex" class="row-bg text-left" justify="center">
-      <el-col :xs="22" :sm="20" :md="20">
+      <el-col :span="16">
         <a href="/"><img class="logo " src="../assets/PL_Logo_500px.png" alt=""></a>
         <slogan></slogan>
       </el-col>
     </el-row>
-    <el-row type="flex" class="row-bg" justify="center">
-      <el-col :xs="22" :sm="20" :md="20">
+    <el-row type="flex" class="row-bg" justify="center" style="margin-top:35px;">
+      <el-col :span="16">
         <el-autocomplete
           style="width:100%"
           v-model="inputSearch"
@@ -45,7 +45,7 @@
           :fetch-suggestions="querySearch"
           @focus="querySearch"
           @keyup.enter.native="handleIconClick"
-          class="inline-input">
+          class="inline-input home-search">
             <el-select slot="prepend" v-model="selectSearch" placeholder="Select">
               <el-option label="Condominium" value="1"></el-option>
               <el-option label="House and Lot" value="2"></el-option>
@@ -58,9 +58,8 @@
     </el-row>
     <br>
     <el-row type="flex" class="row-bg" justify="center">
-      <el-col :xs="22" :sm="20" :md="20">
+      <el-col :span="16">
         <el-tabs v-model="activeNav" @tab-click="handleClick">
-          <p class="sub-title">Featured <span class="txt-pl-green">Properties</span></p>
           <el-tab-pane label="For Sale" name="sale"></el-tab-pane>
           <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
           <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
@@ -68,14 +67,15 @@
         </el-tabs>
       </el-col>
     </el-row>
-    <el-row type="flex" class="row-bg" justify="left">
-      <el-col :xs="24" :offset="2" :sm="14" :md="14" class="property-container">
+    <br><br>
+    <el-row type="flex" class="row-bg" justify="center">
+      <el-col :span="12" class="property-container">
         <featured-sale v-show="activeNav ==='sale'"></featured-sale>
         <featured-rent v-show="activeNav ==='rent'"></featured-rent>
         <featured-preselling v-show="activeNav ==='pre-selling'"></featured-preselling>
         <featured-foreclosure v-show="activeNav ==='foreclosure'"></featured-foreclosure>
       </el-col>
-      <el-col :xs="0" :sm="6" :md="6" class="ads-container">
+      <el-col :span="4" class="ads-container">
         <el-row :gutter="20">
           <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
             <a :href="add.link" target="_blank"><advertisement :img="add.img" style="padding:0px 0 20px 20px"></advertisement></a>
@@ -181,10 +181,25 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style media="screen">
+.home-search .el-input-group .el-input__inner{
+  height: 60px;
+  font-size: 16px !important;
+}
+.home-search .el-input-group__prepend .el-select .el-input__inner{
+  margin-left: 10px
+}
+.home-search .el-input__icon{
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+</style>
 <style scoped>
   #home{
     margin-top: -150px
   }
+
   .nav-link{
     margin: 13px 8px 0 0;
     outline: none;
@@ -196,15 +211,10 @@ export default {
   }
   .img-circle{
     border-radius: 50%;
-  }
-  .sub-title{
-    font-size: 28px;
-    margin: 15px 0 25px 0;
-    color: #636363;
-
+    object-fit: cover;
   }
   .el-select{
-    min-width: 200px;
+    min-width: 210px;
   }
   .el-dropdown-menu{
     margin-top: 10px;
@@ -212,7 +222,7 @@ export default {
     width: 180px;
   }
   .ads-container{
-    margin-top: 15px;
+    margin-top: 29px;
   }
   @media (max-width : 769px){
     .property-container{

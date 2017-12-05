@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
 @import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
 @import url('../node_modules/pe7-icon/dist/dist/pe-icon-7-stroke.min.css');
 @import url('../node_modules/font-awesome/css/font-awesome.min.css');
@@ -75,11 +75,11 @@ body{
 
 
 #app{
-  font-family: 'Didact Gothic', sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #636363 !important;
+  color: #333333 !important;
   padding-top: 150px;
   min-height:400px;
 }

@@ -211,7 +211,7 @@ export default {
     padding: 0px;
     margin-bottom: 0px;
     border-radius: 0px;
-    min-height: 300px;
+    height: 200px;
     border: none;
     cursor: pointer;
   }
@@ -231,8 +231,8 @@ export default {
   .card img{
     width: 100%;
     object-fit: cover;
-    height: 300px;
-    min-height: 300px;
+    height: 200px;
+    min-height: 200px;
   }
   .dialog-container{
     background-color: #000000;
@@ -273,7 +273,6 @@ export default {
   .card-other,
   .card-offer-type{
     position: relative;
-    color: #000000;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -282,19 +281,20 @@ export default {
   }
   .card-offer-type{
     color: #0275d8;
+    font-size: 12px;
   }
   .card-price{
     font-size: 14px;
   }
   .card-title{
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
   }
   .card-other{
     font-size: 12px;
   }
   .card-location{
-    font-size: 11px;
+    font-size: 12px;
   }
   .carousel-container{
     padding: 50px 0px 20px 0px;
