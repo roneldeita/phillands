@@ -1,7 +1,7 @@
 <template>
   <div style="width:100%">
     <el-row :gutter="20" style="margin:-15px 5px 10px 5px">
-      <el-col :span="24">
+      <el-col :span="24" style="margin-bottom:15px">
         <h6 class="text-left">{{ total_properties }} properties found</h6>
       </el-col>
       <el-col :span="20" v-loading="propertyLoading" element-loading-text="Loading Properties">
