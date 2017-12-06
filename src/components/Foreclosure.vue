@@ -1,12 +1,12 @@
 <template>
   <div style="width:100%">
-    <el-row :gutter="20" style="margin:-15px 5px 10px 5px">
-      <el-col :span="24" style="margin-bottom:15px">
-        <h6 class="text-left">{{ total_properties }} properties found</h6>
+    <el-row :gutter="15" style="margin:-15px 5px 10px 5px">
+      <el-col :span="24">
+        <h6 class="text-left" style="margin-bottom:15px">{{ total_properties }} properties found</h6>
       </el-col>
-      <el-col :span="20" v-loading="propertyLoading" element-loading-text="Loading Properties">
-        <el-row :gutter="20">
-          <el-col :span="4" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+      <el-col :xs="24" :md="20" v-loading="propertyLoading" element-loading-text="Loading Properties">
+        <el-row :gutter="15">
+          <el-col :xs="24" :sm="8" :md="6" :lg="6" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
             <property-card :property="property"></property-card>
           </el-col>
         </el-row>
@@ -34,9 +34,9 @@
           <br>
         </div>
       </el-col>
-      <el-col :span="4">
-        <el-row>
-          <el-col :span="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
+      <el-col :sm="24" :md="4" :lg="4">
+        <el-row :gutter="15">
+          <el-col :sm="8" :md="24" class="property-block" v-for="add in adds" v-bind:data="add" v-bind:key="add.id">
             <a :href="add.link" target="_blank"><advertisement :img="add.img"></advertisement></a>
           </el-col>
         </el-row>

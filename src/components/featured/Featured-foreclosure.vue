@@ -7,7 +7,7 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :lg="6" class=" property-block" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
+      <el-col :sm="12" :md="8" class=" property-block" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
         <property-card
           :property="property">
         </property-card>

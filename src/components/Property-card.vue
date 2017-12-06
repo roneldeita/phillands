@@ -211,7 +211,8 @@ export default {
     padding: 0px;
     margin-bottom: 0px;
     border-radius: 0px;
-    height: 200px;
+    height: 220px;
+    min-width: 200px;
     border: none;
     cursor: pointer;
   }
@@ -231,8 +232,8 @@ export default {
   .card img{
     width: 100%;
     object-fit: cover;
-    height: 200px;
-    min-height: 200px;
+    height: 220px;
+    min-height: 220px;
   }
   .dialog-container{
     background-color: #000000;
@@ -287,7 +288,7 @@ export default {
     font-size: 14px;
   }
   .card-title{
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
   }
   .card-other{
@@ -325,7 +326,7 @@ export default {
   .info-container .title{
     position: relative;
     color: #737373;
-    line-height: 28px;
+    line-height: 32px;
     font-size: 28px;
 
   }

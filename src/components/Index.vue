@@ -68,8 +68,8 @@
       </el-col>
     </el-row>
     <br><br>
-    <el-row type="flex" class="row-bg" justify="center">
-      <el-col :span="12" class="property-container">
+    <el-row :gutter="0" type="flex" class="row-bg" justify="center">
+      <el-col :sm="16" :md="16" :lg="12" class="property-container">
         <featured-sale v-show="activeNav ==='sale'"></featured-sale>
         <featured-rent v-show="activeNav ==='rent'"></featured-rent>
         <featured-preselling v-show="activeNav ==='pre-selling'"></featured-preselling>

@@ -48,7 +48,7 @@
                     <p>{{ profile.first_name }}</p>
                     <p class="label">Last Name</p>
                     <p>{{ profile.last_name }}</p>
-                    <p class="label">Mobile Name</p>
+                    <p class="label">Mobile Number</p>
                     <p>N/A</p>
                     <p class="label">Email Address</p>
                     <p>
