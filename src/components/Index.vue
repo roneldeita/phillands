@@ -83,6 +83,12 @@
         </el-row>
       </el-col>
     </el-row>
+    <el-row type="flex" justify="center" class="developers-container">
+      <el-col :xs="24" :sm="20" :md="20" :lg="16">
+        <p class="sub-title">Featured Developers</p>
+        <developers></developers>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -96,6 +102,7 @@ import FeaturedRent from './featured/Featured-rent.vue'
 import FeaturedPreselling from './featured/Featured-preselling.vue'
 import FeaturedForeclosure from './featured/Featured-foreclosure.vue'
 import Advertisement from './Advertisement.vue'
+import Developers from './Developers.vue'
 
 export default {
   name: 'index',
@@ -170,7 +177,7 @@ export default {
     //  console.log(tab.name)
     }
   },
-  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedPreselling, FeaturedForeclosure,  Advertisement },
+  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedPreselling, FeaturedForeclosure,  Advertisement, Developers },
   mounted(){
     this.loadLocality();
     if(this.isLoggedIn()){
@@ -224,8 +231,15 @@ export default {
   .ads-container{
     margin-top: 29px;
   }
+  .sub-title{
+    font-size: 26px;
+    text-align: left;
+    font-weight: bold;
+    margin: 20px 0;
+  }
   @media (max-width : 769px){
-    .property-container{
+    .property-container,
+    .developers-container{
       margin: 0;
       padding: 0 15px 15px 15px;
     }

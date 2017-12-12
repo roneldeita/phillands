@@ -14,12 +14,14 @@ import VueAuthenticate from 'vue-authenticate'
 import VueAxios from 'vue-axios'
 import axios from 'axios';
 import VueMoment from 'vue-moment-jalaali'// datetime library
+import VueCarousel from 'vue-carousel';
 
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueLazyload)
 Vue.use(VueMoment)
 Vue.use(VueAxios, axios)
+Vue.use(VueCarousel)
 Vue.use(VueGoogleMaps, {
    load: {
      key: 'AIzaSyATSZ8ZMz0L0e3dNxz3hzNJw7FHyFcZFcs',
