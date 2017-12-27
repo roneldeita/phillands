@@ -13,19 +13,20 @@
         <p>Email Address: marketing@phillands.com</p> -->
         <p>Contact Numbers: 0936 457 7814 / 0923 535 7157 / 426-3051</p>
         <p>Email Address: joann.sequitin@phillands.com</p>
-        <br>
-        <p>Unit 218 pacific Century Tower, 1472-146 Quezon Ave. Brgy. South Triangle Quezon City</p><br>
+        <!-- <br> -->
+        <p>Unit 218 pacific Century Tower, 1472-146 Quezon Ave. Brgy. South Triangle Quezon City</p>
+        <!-- <br> -->
         <p>Office Hours: Monday - Friday 8:30am - 6:30pm</p>
         <br><br>
         <h4>FEEDBACK & SUPPORT</h4>
-        <p style="margin-bottom:20px">Help us in making Phillands Realty better by sending us suggestion and feedbacks.</p>
+        <p>Help us in making Phillands Realty better by sending us suggestion and feedbacks.</p>
         <el-button class="btn-email-us btn-pl-green" @click="FeedbackWasClicked()">Email Us</el-button>
       </el-col>
       <el-col :md="9" class="text-left">
         <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
         <br>
         <p>Stay up to date about Real Estate in the Philippines. Unsubscribe anytime.</p>
-        <el-input class="subscribe-btn" placeholder="Enter your email address" style="margin-top:10px">
+        <el-input class="subscribe-btn" placeholder="Enter your email address">
           <el-button type="success" class="btn-pl-green" slot="append">SUBSCRIBE</el-button>
         </el-input>
         <br><br>
@@ -78,13 +79,13 @@ export default {
     padding:10px 0 5px 0;
     background-color: #ffffff;
   }
-  .upper-footer p{
+  /* .upper-footer p{
     height: 6px;
-  }
+  } */
   @media (max-width : 991px){
-    .upper-footer p{
+    /* .upper-footer p{
       height: 24px;
-    }
+    } */
     .upper-footer > .el-col{
       margin: 0;
       padding: 0 15px 25px 15px;

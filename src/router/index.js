@@ -6,6 +6,7 @@ import Index from '@/components/Index'
 import NotFound from '@/components/Not-found'
 import Rent from '@/components/Rent'
 import Sale from '@/components/Sale'
+import Privacy from '@/components/Policy'
 import PreSelling from '@/components/Pre-selling'
 import Foreclosure from '@/components/Foreclosure'
 import viewProperty from '@/components/View-property'
@@ -35,6 +36,7 @@ export default new Router({
   routes: [
         { path: '*', component: NotFound },
         { path: '/', name: 'index', component: Index },
+        { path: '/privacy', name: 'privacy', component: Privacy},
         { path: '/rent', name: 'rent', component: Rent, props: true },
         { path: '/sale', name: 'sale', component: Sale, props: true },
         { path: '/pre-selling', name: 'pre-selling', component: PreSelling, props: true },
