@@ -5,14 +5,14 @@
         <h4>CONTACT US</h4>
         <br>
         <p><b>Queries</b></p>
-        <p>Contact Numbers: 0936 457 7814 / 0923 535 7157 / 426-3051</p>
-        <p>Email Address: joann.sequitin@phillands.com</p>
+        <p>Contact Numbers: 0906 474 2471 / 0918 401 1082 / 426-3051</p>
+        <p>Email Address: info@phillands.com</p>
         <br>
         <p><b>Advertise with Us:</b></p>
         <!-- <p>Contact Numbers: 0939 113 9867 / 0905 284 6076 / 0933 669 4007 / 984-9864</p>
         <p>Email Address: marketing@phillands.com</p> -->
-        <p>Contact Numbers: 0936 457 7814 / 0923 535 7157 / 426-3051</p>
-        <p>Email Address: joann.sequitin@phillands.com</p>
+        <p>Contact Numbers: 0906 474 2471 / 0918 401 1082 / 426-3051</p>
+        <p>Email Address: info@phillands.com</p>
         <!-- <br> -->
         <p>Unit 218 pacific Century Tower, 1472-146 Quezon Ave. Brgy. South Triangle Quezon City</p>
         <!-- <br> -->
