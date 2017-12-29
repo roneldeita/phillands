@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import VueResource from 'vue-resource'
 import Paginate from 'vuejs-paginate'
 import ElementUI from 'element-ui'// ElementUi
@@ -15,7 +16,6 @@ import VueAxios from 'vue-axios'
 import axios from 'axios';
 import VueMoment from 'vue-moment-jalaali'// datetime library
 import VueCarousel from 'vue-carousel';
-
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueLazyload)
@@ -54,6 +54,7 @@ Vue.config.productionTip = true
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App },
 })

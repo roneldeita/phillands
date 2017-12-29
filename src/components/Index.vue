@@ -2,10 +2,10 @@
   <div id="home" class="">
     <ul class="nav justify-content-end" style="margin-top:14px">
       <li v-show="!isLoggedIn()" class="nav-item">
-        <el-button type="success" class="btn-pl-green" @click="LoginWasClickedThenPublish()">Publish Property</el-button>
+        <el-button type="success" class="btn-pl-green" @click="LoginWasClickedThenPublish();">Publish Property</el-button>
       </li>
       <li v-show="!isLoggedIn()" class="nav-item">
-        <a class="nav-link" href="javascript:void(0)" @click="LoginWasClicked()" style="margin-top:0px">Login/Register</a>
+        <a class="nav-link" href="javascript:void(0)" @click="toggleLoginModal()" style="margin-top:0px">Login/Register</a>
       </li>
       <li class="nav-item" v-show="isLoggedIn()">
         <el-button type="success" class="btn-pl-green" v-show="$route.name != 'publish-property'" @click="goToPath('publish-property')">Publish Property</el-button>
@@ -124,12 +124,11 @@ export default {
     handleUserAccess(){
       getAccess().then( response => this.userAccess = response );
     },
-    LoginWasClicked:function(){
-      this.$emit('login');
+    toggleLoginModal () {
+      this.$store.dispatch('toggleLoginModal')
     },
     LoginWasClickedThenPublish(){
-      this.$emit('login');
-    //  this.$router.push({redirect:{name:'publish-property'}});
+      this.$store.dispatch('toggleLoginModal')
       this.$router.replace({name:'publish-property'});
     },
     handleLogout() {

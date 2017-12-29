@@ -44,10 +44,10 @@
             <el-button type="success" class="btn-pl-green" v-show="$route.name === 'view-property'" @click="handleBack">Back</el-button>
           </li>
           <li v-show="!isLoggedIn()" class="nav-item">
-            <el-button type="success" class="btn-pl-green" v-show="$route.name != 'view-property'" @click="LoginWasClicked()">Publish Property</el-button>
+            <el-button type="success" class="btn-pl-green" v-show="$route.name != 'view-property'" @click="toggleLoginModal()">Publish Property</el-button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="LoginWasClicked()">Login/Register</a>
+            <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="toggleLoginModal()">Login/Register</a>
           </li>
           <li class="nav-item" id="dropdown-lg" v-if="isLoggedIn()">
             <el-dropdown trigger="click" style="padding:0px 25px" @command="handleNavCommand">
@@ -185,8 +185,8 @@ export default {
       handleUserAccess(){
         getAccess().then(response => this.userAccess = response );
       },
-      LoginWasClicked:function(){
-        this.$emit('login');
+      toggleLoginModal () {
+        this.$store.dispatch('toggleLoginModal')
       },
       handleLogout() {
         logout();

@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-      <navigation v-if="$route.name != 'index'" @login="LoginWasClicked" @search="searchWasClicked"></navigation>
+      <navigation v-if="$route.name != 'index'" @search="searchWasClicked"></navigation>
 
-      <router-view class="router-view" @login="LoginWasClicked" :search="search"></router-view>
+      <router-view class="router-view" :search="search"></router-view>
       <bottom-navigation @feedback="feedbackWasClicked"></bottom-navigation>
-      <!-- <bottom-navigation class="footer"></bottom-navigation> -->
       <!-- <users></users> -->
-      <login-modal :loginmodal="loginVisible" @loginmodalclose="closeLoginDialog"> </login-modal>
+      <login-modal :loginmodal="loginVisible"></login-modal>
       <feedback-modal :feedbackmodal="feedbackVisible" @feedbackmodalclose="closeFeedbackDialog"></feedback-modal>
   </div>
 </template>
@@ -24,25 +23,23 @@ import User from './components/User.vue';
 
 export default {
   name: 'app',
+  computed: {
+    loginVisible: function () {
+      return this.$store.getters.loginVisible
+    }
+  },
   data(){
     return{
-      loginVisible: false,
       feedbackVisible:false,
       search:''
     }
   },
   methods:{
-    closeLoginDialog:function(){
-      this.loginVisible = false
-    },
     closeFeedbackDialog:function(){
       this.feedbackVisible = false
     },
     closeResetPasswordDialog:function(){
       this.resetPasswordVisible = false
-    },
-    LoginWasClicked:function(){
-      this.loginVisible = true;
     },
     feedbackWasClicked:function(){
       this.feedbackVisible = true;

@@ -4,7 +4,7 @@
       title=""
       :visible.sync="dialogVisible"
       size="tiny"
-      @close="dialogClose"
+      @close="toggleLoginModal"
       class="login-modal"
       >
       <el-row>
@@ -154,6 +154,9 @@ export default {
     }
   },
   methods:{
+    toggleLoginModal () {
+      this.$store.dispatch('toggleLoginModal')
+    },
     dialogClose:function(){
       this.$emit('loginmodalclose', this.dialogVisible);
       //this.$router.replace({name:'index'});
