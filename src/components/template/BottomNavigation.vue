@@ -20,7 +20,7 @@
         <br><br>
         <h4>FEEDBACK & SUPPORT</h4>
         <p>Help us in making Phillands Realty better by sending us suggestion and feedbacks.</p>
-        <el-button class="btn-email-us btn-pl-green" @click="FeedbackWasClicked()">Email Us</el-button>
+        <el-button class="btn-email-us btn-pl-green" @click="toggleFeedbackModal()">Email Us</el-button>
       </el-col>
       <el-col :md="9" class="text-left">
         <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
@@ -49,9 +49,8 @@
 export default {
   name:'bottom-navigation',
   methods: {
-    FeedbackWasClicked:function(){
-      //console.log('test');
-      this.$emit('feedback');
+    toggleFeedbackModal () {
+      this.$store.dispatch('toggleFeedbackModal')
     },
   }
 }

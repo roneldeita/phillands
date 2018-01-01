@@ -98,8 +98,8 @@
 
 <script>
 import axios from 'axios';
-import { baseUrl, getWishList } from '../assets/utils/properties-api.js';
-import { getIdToken, isLoggedIn } from '../assets/utils/auth.js'
+import { getWishList } from '../../assets/utils/properties-api.js';
+import { getIdToken, isLoggedIn } from '../../assets/utils/auth.js'
 export default {
   name:"property-card",
   props:['property'],
@@ -133,7 +133,7 @@ export default {
     },
     handleAddWishList:function(){
       axios.defaults.headers.common['token'] = getIdToken();
-      axios.post(baseUrl()+'/client/wishlist/add', { property_id : this.property.id}).
+      axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
       then( response => {
         this.$message({
           message: 'This property was added to your wish list',
@@ -142,18 +142,14 @@ export default {
         this.getWishlist();
       })
       .catch( error => {
-        // //console.log('test')
-        // this.$emit('login');
-        this.$message({
-          message: 'You need to sign in',
-          type: 'info'
-        });
+        this.$store.dispatch('toggleLoginModal')
+        this.$router.replace({name:'view-property', params:{ property_no:this.property.property_no}});
       });
     },
     handleRemoveWishList:function(){
       const self = this;
       axios.defaults.headers.common['token'] = getIdToken();
-      return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
+      return axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
       then(function(response){
         self.$message({
           message: 'This property was removed from your wish list',
@@ -193,14 +189,14 @@ export default {
     if(isLoggedIn()){
       this.getWishlist();
     }
-    this.imgUrl = baseUrl() + '/images/';
+    this.imgUrl = process.env.API_URL + '/images/';
   }
 }
 </script>
 
 <style scoped>
   img[lazy=loading] {
-    background-image: url('../../static/cube.gif');
+    background-image: url('../../../static/cube.gif');
     background-repeat: no-repeat;
     background-position: center;
   }

@@ -1,14 +1,11 @@
 import axios from 'axios';
 import Router from 'vue-router';
-const BASE_URL = 'http://103.16.170.117:8090';
 const ACCESS_TOKEN_KEY = 'access_token';
 const USER = 'user';
-var user_access = {};
 
 var router = new Router({
    mode: "history",
 });
-
 
 export function requireAuth(to, from, next) {
   if (!isLoggedIn()) {
@@ -57,7 +54,7 @@ export function getProfile(){
 
 export function getAccess(){
   axios.defaults.headers.common['token'] = getIdToken();
-  return axios.post(BASE_URL+'/auth/check').then( response => response.data );
+  return axios.post(process.env.API_URL+'/auth/check').then( response => response.data );
 }
 
 /* logout */

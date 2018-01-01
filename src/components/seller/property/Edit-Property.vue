@@ -39,7 +39,7 @@
 <script>
 import axios from 'axios';
 //api
-import { baseUrl, getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../assets/utils/properties-api.js'
 import { getIdToken } from '../../../assets/utils/auth.js'
 
 //child components
@@ -79,7 +79,7 @@ export default {
   components:{ EditBasic, EditKeyinfo, EditContact, EditUnitdetail, EditAmenities, EditLocation, EditMedia },
   mounted(){
     document.documentElement.scrollTop = 0;//scroll top
-    this.imgUrl = baseUrl() + '/images/';
+    this.imgUrl = process.env.API_URL + '/images/';
     this.getProperty(this.$route.params.property_no);
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <carousel :autoplay="true" :perPageCustom="[[320, 1], [480, 2], [768, 3], [991, 5] ]">
+  <carousel :perPageCustom="[[320, 1], [480, 2], [768, 3], [991, 5] ]">
     <slide v-for="developer in developers" :key="developer.id">
       <img :src="developer.img" alt="developer.name">
     </slide>

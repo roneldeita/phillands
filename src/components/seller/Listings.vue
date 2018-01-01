@@ -42,12 +42,16 @@
 
 <script>
 import axios from 'axios'
-import { baseUrl, getWishList } from '../../assets/utils/properties-api.js'
-import { getIdToken } from '../../assets/utils/auth.js'
+import { getWishList } from '../../assets/utils/properties-api.js'
 import PropertyBox from './Property-box.vue'
 
 export default {
   name:'listings',
+  computed: {
+    token : function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       userAccess:{},
@@ -84,8 +88,8 @@ export default {
       this.$router.push({name:'publish-property'});
     },
     getPublished:function(){
-      axios.defaults.headers.common['token'] = getIdToken();
-      axios.get(baseUrl()+'/property',{ params:{ status: 1}})
+      axios.defaults.headers.common['token'] = this.token;
+      axios.get(process.env.API_URL+'/property',{ params:{ status: 1}})
       .then(response =>{
         this.published = response.data.properties.reverse();
         this.publishCount = response.data.properties.length;
@@ -95,8 +99,8 @@ export default {
       });
     },
     getApproval:function(){
-      axios.defaults.headers.common['token'] = getIdToken();
-      axios.get(baseUrl()+'/property',{ params:{status: 0}})
+      axios.defaults.headers.common['token'] = this.token;
+      axios.get(process.env.API_URL+'/property',{ params:{status: 0}})
       .then(response => {
         this.forApproval = response.data.properties.reverse();
         this.forApprovalCount = response.data.properties.length;
@@ -118,8 +122,8 @@ export default {
       });
     },
     removeWishListWasClicked(wishlistId){
-      axios.defaults.headers.common['token'] = getIdToken();
-      axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : wishlistId}).
+      axios.defaults.headers.common['token'] = this.token;
+      axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : wishlistId}).
       then(response =>{
         this.$message({
           message: 'The property was removed from your wish list',

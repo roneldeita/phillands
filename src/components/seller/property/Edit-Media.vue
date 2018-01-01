@@ -38,7 +38,7 @@
 //dependency
 import axios from 'axios';
 //api
-import { baseUrl,getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../assets/utils/properties-api.js'
 import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
@@ -93,7 +93,7 @@ export default {
         formData.append('property_id', this.propertyId);
         formData.append('image', file.raw);
 
-        axios.post(baseUrl()+'/broker/property/media/updatePrimary', formData)
+        axios.post(process.env.API_URL+'/broker/property/media/updatePrimary', formData)
         .then(function(response){
           self.getProperty(self.$route.params.property_no);
           //console.log(response);
@@ -133,7 +133,7 @@ export default {
         formData.append('images', file.raw);
         formData.append('property_id', this.propertyId);
 
-        axios.post(baseUrl()+'/broker/property/media/add', formData)
+        axios.post(process.env.API_URL+'/broker/property/media/add', formData)
         .then(function(response){
           if(response.data.message === "Success"){
             self.imgLoading = false;
@@ -189,7 +189,7 @@ export default {
         property_id:this.propertyId
       }
       axios.defaults.headers.common['token'] = getIdToken();
-      axios.post(baseUrl()+'/broker/property/media/remove', mediaToRemove)
+      axios.post(process.env.API_URL+'/broker/property/media/remove', mediaToRemove)
       .then(function(response){
         if(response.data.message === 'Success'){
           self.imgLoading = false;
@@ -220,7 +220,7 @@ export default {
   },
   mounted(){
     this.getProperty(this.$route.params.property_no);
-    this.imgUrl = baseUrl() +'/images/';
+    this.imgUrl = process.env.API_URL +'/images/';
   }
 }
 </script>

@@ -47,14 +47,14 @@
 <script>
 //components
 import PropertyCard from './Property-card.vue'
-import Advertisement from './Advertisement.vue'
+import Advertisement from './../Advertisement.vue'
 //json
 //import Properties from '../../static/json/properties.json'
 //api
-import { getProperties } from '../assets/utils/properties-api.js'
+import { getProperties } from '../../assets/utils/properties-api.js'
 
 export default {
-  name: "sale",
+  name: "pre-selling",
   props:['search'],
   data:function(){
     return{
@@ -82,7 +82,6 @@ export default {
       var items = arr.slice(start, end);
       this.properties = items;
       this.propertyLoading = false
-       //console.log(this.properties);
     },
     switchToPage(page){
       var end = this.item_per_page * page;
@@ -91,7 +90,7 @@ export default {
       document.documentElement.scrollTop = 0;
     },
     getSales(property_type, location) {
-      getProperties(1, Number(property_type), location).then((property) => {
+      getProperties(3, Number(property_type), location).then((property) => {
         this.property_source = property.properties;
         this.loadProperties(0, this.item_per_page);//load the properties
         this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties

@@ -6,7 +6,6 @@
 
 <script>
 import axios from 'axios'
-import { baseUrl } from '../../assets/utils/properties-api.js'
 export default {
   name:'slogan',
   data(){
@@ -16,7 +15,7 @@ export default {
   },
   methods:{
     loadContent:function(){
-      axios.get(baseUrl()+'/content/content/index_slogan')
+      axios.get(process.env.API_URL+'/content/content/index_slogan')
       .then(response => {
         this.slogan = response.data[0].content;
       }).catch(error => {

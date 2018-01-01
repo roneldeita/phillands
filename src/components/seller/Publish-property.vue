@@ -98,7 +98,6 @@
 
 <script>
 import { getIdToken, getProfile } from '../../assets/utils/auth.js';
-import { baseUrl } from '../../assets/utils/properties-api.js';
 
 import axios from 'axios'
 
@@ -295,7 +294,7 @@ export default {
 
       this.finishButton = true;
 
-      axios.post(baseUrl()+'/broker/property/create', formData)
+      axios.post(process.env.API_URL+'/broker/property/create', formData)
       .then(response => {
 
         if(response.data.message === "success"){
@@ -327,7 +326,7 @@ export default {
               done();
             }else if(action === 'confirm'){
               axios.defaults.headers.common['token'] = getIdToken();
-              axios.get(baseUrl()+'/client/verification/send').then(response =>{
+              axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
                 if(response.data.message === "success"){
                   this.$message({
                     showClose: true,

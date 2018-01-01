@@ -47,11 +47,11 @@
 <script>
 //components
 import PropertyCard from './Property-card.vue'
-import Advertisement from './Advertisement.vue'
+import Advertisement from './../Advertisement.vue'
 //json
 //import Properties from '../../static/json/properties.json'
 //api
-import { getProperties } from '../assets/utils/properties-api.js'
+import { getProperties } from '../../assets/utils/properties-api.js'
 
 export default {
   name: "sale",

@@ -65,7 +65,7 @@
 //dependency
 import axios from 'axios';
 //api
-import { baseUrl,getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../assets/utils/properties-api.js'
 import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
@@ -125,7 +125,7 @@ export default {
           postal_code:this.locationForm.postal_code
         }
         axios.defaults.headers.common['token'] = getIdToken();
-        return axios.post(baseUrl()+'/broker/property/update', location)
+        return axios.post(process.env.API_URL+'/broker/property/update', location)
         .then(function(response){
           if(response.data.message === "Success"){
             self.locationEdit = false;
@@ -208,7 +208,7 @@ export default {
   },
   mounted(){
     this.getProperty(this.$route.params.property_no);
-    this.imgUrl = baseUrl() + '/images/';
+    this.imgUrl = process.env.API_URL + '/images/';
   }
 }
 </script>

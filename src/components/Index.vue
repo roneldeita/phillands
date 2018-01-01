@@ -83,6 +83,7 @@
         </el-row>
       </el-col>
     </el-row>
+    <br><br>
     <el-row type="flex" justify="center" class="developers-container">
       <el-col :xs="24" :sm="20" :md="20" :lg="16">
         <p class="sub-title">Featured Developers</p>
@@ -95,24 +96,28 @@
 <script>
 import Slogan from './content/Slogan.vue'
 import { getLocality } from '../assets/utils/properties-api.js'
-import { isLoggedIn, login, logout, getProfile, getAccess } from '../assets/utils/auth.js';
+import { isLoggedIn, login, logout, getAccess } from '../assets/utils/auth.js';
 
 import FeaturedSale from './featured/Featured-sale.vue'
 import FeaturedRent from './featured/Featured-rent.vue'
 import FeaturedPreselling from './featured/Featured-preselling.vue'
 import FeaturedForeclosure from './featured/Featured-foreclosure.vue'
 import Advertisement from './Advertisement.vue'
-import Developers from './Developers.vue'
+import Developers from './property/Developers.vue'
 
 export default {
   name: 'index',
+  computed: {
+    profile : function () {
+      return JSON.parse(this.$store.getters.phillandsProfile)
+    }
+  },
   data () {
     return {
       userAccess:{},
       inputSearch:'',
       selectSearch:'1',
       activeNav:'sale',
-      profile:JSON.parse(getProfile()),
       adds:[
         { id:1, img:'/static/adds/Ads1.jpg', link:'https://iremitglobal.com/' },
         { id:2, img:'/static/adds/Ads2.jpg', link:'https://www.upsexpress.com.ph/' },
@@ -135,6 +140,7 @@ export default {
       logout();
     },
     goToPath(path){
+      console.log(path)
       document.documentElement.scrollTop = 0;
       this.$router.push('/'+path);
     },

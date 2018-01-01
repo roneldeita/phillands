@@ -65,7 +65,7 @@
 //dependency
 import axios from 'axios';
 //api
-import { baseUrl,getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../assets/utils/properties-api.js'
 import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
@@ -124,7 +124,7 @@ export default {
         if(valid){
           console.log(contacts)
           axios.defaults.headers.common['token'] = getIdToken();
-          return axios.post(baseUrl()+'/broker/property/update', contacts)
+          return axios.post(process.env.API_URL+'/broker/property/update', contacts)
           .then(response => {
             if(response.data.message === "Success"){
               this.contactEdit = false;

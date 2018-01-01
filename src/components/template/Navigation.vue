@@ -44,7 +44,7 @@
             <el-button type="success" class="btn-pl-green" v-show="$route.name === 'view-property'" @click="handleBack">Back</el-button>
           </li>
           <li v-show="!isLoggedIn()" class="nav-item">
-            <el-button type="success" class="btn-pl-green" v-show="$route.name != 'view-property'" @click="toggleLoginModal()">Publish Property</el-button>
+            <el-button type="success" class="btn-pl-green" v-show="$route.name != 'view-property'" @click="LoginWasClickedThenPublish()">Publish Property</el-button>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" v-show="!isLoggedIn()" @click="toggleLoginModal()">Login/Register</a>
@@ -126,10 +126,15 @@
 
 <script>
 import { getLocality } from '../../assets/utils/properties-api.js'
-import { isLoggedIn, login, logout, getProfile, getAccess } from '../../assets/utils/auth.js';
+import { isLoggedIn, login, logout, getAccess } from '../../assets/utils/auth.js';
 
 export default {
     name: "navigation",
+    computed: {
+      profile : function () {
+        return JSON.parse(this.$store.getters.phillandsProfile)
+      }
+    },
     data(){
       return{
         userAccess:{},
@@ -177,8 +182,7 @@ export default {
           'admin-listings',
           'admin-ads',
           'admin-cms'
-        ],
-        profile: JSON.parse(getProfile())
+        ]
       }
     },
     methods:{
@@ -187,6 +191,10 @@ export default {
       },
       toggleLoginModal () {
         this.$store.dispatch('toggleLoginModal')
+      },
+      LoginWasClickedThenPublish(){
+        this.$store.dispatch('toggleLoginModal')
+        this.$router.replace({name:'publish-property'});
       },
       handleLogout() {
         logout();

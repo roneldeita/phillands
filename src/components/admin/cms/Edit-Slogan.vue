@@ -16,7 +16,6 @@
 <script>
 import axios from 'axios'
 import Slogan from '../../content/Slogan.vue'
-import { baseUrl } from '../../../assets/utils/properties-api.js'
 export default {
   name:'edit-slogan',
   data(){
@@ -34,7 +33,7 @@ export default {
       }
     },
     loadContent:function(){
-      axios.get(baseUrl()+'/content/content/index_slogan')
+      axios.get(process.env.API_URL+'/content/content/index_slogan')
       .then(response =>{
         this.slogan = response.data[0];
         this.sloganContent = response.data[0].content;
@@ -47,7 +46,7 @@ export default {
         content_id:this.slogan.id,
         content:this.sloganContent
       }
-      axios.post(baseUrl()+'/content/page/edit', content)
+      axios.post(process.env.API_URL+'/content/page/edit', content)
       .then(response =>{
         this.$notify({
           title: 'Success',

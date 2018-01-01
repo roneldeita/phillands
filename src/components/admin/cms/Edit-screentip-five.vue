@@ -23,7 +23,6 @@
 <script>
 import axios from 'axios'
 import ScreentipFive from '../../content/Screentip-five.vue'
-import { baseUrl } from '../../../assets/utils/properties-api.js'
 export default {
   name:'edit-screentip-five',
   data(){
@@ -40,7 +39,7 @@ export default {
       }
     },
     loadContent:function(){
-      axios.get(baseUrl()+'/content/content/publish_property_5')
+      axios.get(process.env.API_URL+'/content/content/publish_property_5')
       .then(response =>{
         this.tip = response.data[0];
         this.tipContent = response.data[0].content;
@@ -53,7 +52,7 @@ export default {
         content_id:this.tip.id,
         content:this.tipContent
       }
-      axios.post(baseUrl()+'/content/page/edit', content)
+      axios.post(process.env.API_URL+'/content/page/edit', content)
       .then(response =>{
         this.$notify({
           title: 'Success',

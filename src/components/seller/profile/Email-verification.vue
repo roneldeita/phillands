@@ -24,7 +24,6 @@
 
 <script>
 import axios from 'axios'
-import { baseUrl } from '../../../assets/utils/properties-api.js';
 export default {
   name:'email-verified',
   data(){
@@ -46,7 +45,7 @@ export default {
       }
       const self = this;
       setTimeout(function(){
-        axios.get(baseUrl()+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
+        axios.get(process.env.API_URL+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
           //set local storage
           const accountVerified = JSON.parse(localStorage.getItem('user'));
 

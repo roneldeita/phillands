@@ -9,7 +9,6 @@
 
 <script>
 import axios from 'axios'
-import { baseUrl } from '../../assets/utils/properties-api.js'
 export default {
   name:'screen-tip-three',
   data(){
@@ -19,7 +18,7 @@ export default {
   },
   methods:{
     loadContent:function(){
-      axios.get(baseUrl()+'/content/content/publish_property_3')
+      axios.get(process.env.API_URL+'/content/content/publish_property_3')
       .then(response => {
         this.tip = response.data[0].content;
       }).catch(error => {

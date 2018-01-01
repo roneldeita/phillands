@@ -3,21 +3,6 @@
     <el-row style="min-height:700px">
       <el-col :offset="2" :span="20">
         <el-row>
-          <el-col :xs="24" :sm="8" :md="5">
-            <!-- <div class="center">
-              <vue-core-image-upload
-                class="btn btn-primary"
-                crop-ratio="1:1"
-                :crop="true"
-                @imageuploaded="imageuploaded"
-                :data="data"
-                :max-file-size="5242880"
-                url="http://101.198.151.190/api/upload.php" >
-              </vue-core-image-upload>
-            </div> -->
-          </el-col>
-        </el-row>
-        <el-row>
           <el-col :xs="24" :sm="8" :md="6" class="avatar-container">
             <el-upload
               v-loading="loadingAvatar"
@@ -60,16 +45,6 @@
                   </el-col>
                 </el-row>
             </el-card>
-            <!-- <el-card class="box-card text-left">
-              <div slot="header">
-                <h5>Change Password</h5>
-              </div>
-                <el-row :gutter="10">
-                  <el-col :xs="24" :span="8">
-
-                  </el-col>
-                </el-row>
-            </el-card> -->
           </el-col>
         </el-row>
       </el-col>
@@ -81,16 +56,19 @@
 import axios from 'axios';
 import VueCoreImageUpload from 'vue-core-image-upload'
 
-import { getProfile, getIdToken } from '../../../assets/utils/auth.js';
-import { baseUrl } from '../../../assets/utils/properties-api.js';
-
 export default {
   name:'profile',
+  computed: {
+    profile : function () {
+      return JSON.parse(this.$store.getters.phillandsProfile)
+    },
+    token : function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       loadingAvatar:false,
-      profile: JSON.parse(getProfile()),
-      tokenAccess: getIdToken(),
       img:'',
       data:{},
       src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
@@ -102,8 +80,8 @@ export default {
 
     },
     handleVerification(){
-      axios.defaults.headers.common['token'] = getIdToken();
-      axios.get(baseUrl()+'/client/verification/send').then(response =>{
+      axios.defaults.headers.common['token'] = this.token;
+      axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
         if(response.data.message === "success"){
           this.$message({
             showClose: true,
@@ -124,10 +102,10 @@ export default {
       }else{
         this.loadingAvatar = true;
         const formData = new FormData();
-        axios.defaults.headers.common['token'] = getIdToken();
+        axios.defaults.headers.common['token'] = this.token;
         formData.append('image', file.raw);
 
-        axios.post(baseUrl()+'/client/profile/update/avatar', formData)
+        axios.post(process.env.API_URL+'/client/profile/update/avatar', formData)
         .then( response => {
           var userInfo = JSON.stringify(response.data.user);
           localStorage.setItem('user', userInfo);
@@ -137,7 +115,7 @@ export default {
             message: 'Your avatar was successfully updated',
             type: 'success'
           });
-          this.profile = JSON.parse(getProfile());
+          this.$store.dispatch('updatePhillandsProfile')
           this.loadingAvatar = false;
         })
         .catch( error =>{

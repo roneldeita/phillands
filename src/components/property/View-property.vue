@@ -148,10 +148,10 @@
 <script>
 import axios from 'axios';
 //json
-import MapStyle from '../../static/json/map-detailed.json'
+import MapStyle from '../../../static/json/map-detailed.json'
 //api
-import { baseUrl, getProperty, addtoWishlist, getWishList } from '../assets/utils/properties-api.js'
-import { getIdToken, isLoggedIn } from '../assets/utils/auth.js'
+import { getProperty, addtoWishlist, getWishList } from '../../assets/utils/properties-api.js'
+import { getIdToken, isLoggedIn } from '../../assets/utils/auth.js'
 
 export default {
   name:'view-property',
@@ -213,7 +213,7 @@ export default {
           inquireData['property_id'] = self.property.id;
           inquireData['to_user_id'] = self.property.owner_id;
 
-          axios.post(baseUrl()+'/inquiry/send', inquireData)
+          axios.post(process.env.API_URL+'/inquiry/send', inquireData)
           .then(function(response){
             if(response.data.message === 'Success'){
               self.$alert('Your inquiry has been successfully sent to the property owner.', 'Inquiry Sent', {
@@ -261,7 +261,7 @@ export default {
     },
     handleAddWishList:function(){
       axios.defaults.headers.common['token'] = getIdToken();
-      return axios.post(baseUrl()+'/client/wishlist/add', { property_id : this.property.id}).
+      return axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
       then( response => {
         this.$message({
           message: 'This property was added to your wish list',
@@ -279,7 +279,7 @@ export default {
     },
     handleRemoveWishList:function(){
       axios.defaults.headers.common['token'] = getIdToken();
-      return axios.post(baseUrl()+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
+      return axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
       then(response => {
         this.$message({
           message: 'This property was removed from your wish list',
@@ -346,7 +346,7 @@ export default {
   },
   mounted(){
     this.getProperty(this.$route.params.property_no);
-    this.imgUrl = baseUrl() + '/images/';
+    this.imgUrl = process.env.API_URL + '/images/';
     if(isLoggedIn()){
       this.getWishlist();
     }
@@ -364,7 +364,7 @@ export default {
 
 <style scoped>
   img[lazy=loading] {
-    background-image: url('../../static/cube.gif');
+    background-image: url('../../../static/cube.gif');
     background-repeat: no-repeat;
     background-position: center;
   }

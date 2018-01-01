@@ -83,7 +83,6 @@
 <script>
 import axios from 'axios';
 import { getIdToken } from '../../assets/utils/auth.js'
-import { baseUrl } from '../../assets/utils/properties-api.js'
 export default {
   name:'property-card',
   props:['name', 'info'],
@@ -127,7 +126,7 @@ export default {
     },
     getInquiries:function(){
       axios.defaults.headers.common['token'] = getIdToken();
-      axios.get(baseUrl()+'/broker/inquiry/property/'+this.info.id)
+      axios.get(process.env.API_URL+'/broker/inquiry/property/'+this.info.id)
       .then(response =>{
         this.inquirySource = response.data.reverse();
         this.loadInquiries(0, this.inquiry_limit);
@@ -137,7 +136,6 @@ export default {
       });
     },
     handleInquiryDialog:function(inquiry){
-      console.log(inquiry);
       this.inquiry = inquiry;
       this.dialogInquiryVisible = true;
     },

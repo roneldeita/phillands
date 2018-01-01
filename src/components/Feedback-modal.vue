@@ -4,7 +4,7 @@
       title="Suggestions and Feedbacks"
       :visible.sync="feedbackVisible"
       size="tiny"
-      @close="dialogClose"
+      @close="toggleFeedbackModal"
       class="feedback-container"
       >
       <div class="feedback-form-container">
@@ -21,9 +21,9 @@
           <el-form-item style="margin-bottom:5px">
             <el-button type="success" class="btn-pl-green" @click="handleFeedback('feedbackForm')">Submit</el-button>
           </el-form-item style="margin-bottom:5px">
-          <el-form-item>
+          <!-- <el-form-item>
             <el-button @click="dialogClose">Cancel</el-button>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </div>
     </el-dialog>
@@ -31,7 +31,6 @@
 </template>
 <script>
 import axios from 'axios';
-import { baseUrl } from '../assets/utils/properties-api.js';
 export default {
   name: 'feedback-modal',
   props: ['feedbackmodal'],
@@ -62,7 +61,7 @@ export default {
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-          axios.post(baseUrl()+'/feedback', this.feedbackForm)
+          axios.post(process.env.API_URL+'/feedback', this.feedbackForm)
           .then( response => {
             if(response.data.message === 'Success'){
               this.$alert('Your comment has been successfully submitted', 'Feedback Sent', {
@@ -81,9 +80,8 @@ export default {
         }
       });
     },
-    dialogClose(){
-      this.$emit('feedbackmodalclose', this.feedbackVisible);
-      this.clearInputs();
+    toggleFeedbackModal () {
+      this.$store.dispatch('toggleFeedbackModal')
     },
     clearInputs(){
       this.feedbackForm.full_name ='';

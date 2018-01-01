@@ -47,11 +47,11 @@
 <script>
 //components
 import PropertyCard from './Property-card.vue'
-import Advertisement from './Advertisement.vue'
+import Advertisement from './../Advertisement.vue'
 //json
 //import Properties from '../../static/json/properties.json'
 //api
-import { getProperties } from '../assets/utils/properties-api.js'
+import { getProperties } from '../../assets/utils/properties-api.js'
 
 export default {
   name: "sale",
@@ -59,7 +59,7 @@ export default {
   data:function(){
     return{
       propertyLoading:true,
-      property_source:'',
+      property_source:{},
       properties:[],
       total_properties:0,
       page_count:0,
@@ -82,8 +82,7 @@ export default {
       var items = arr.slice(start, end);
       this.properties = items;
       this.propertyLoading = false
-      //this.properties = JSON.parse(JSON.stringify(items));
-      // console.log(this.properties);
+       //console.log(this.properties);
     },
     switchToPage(page){
       var end = this.item_per_page * page;
@@ -91,8 +90,8 @@ export default {
       this.loadProperties(start, end);
       document.documentElement.scrollTop = 0;
     },
-    getRents(property_type, location) {
-      getProperties(2,  Number(property_type), location).then((property) => {
+    getSales(property_type, location) {
+      getProperties(1, Number(property_type), location).then((property) => {
         this.property_source = property.properties;
         this.loadProperties(0, this.item_per_page);//load the properties
         this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
@@ -102,12 +101,12 @@ export default {
   },
   mounted(){
     document.documentElement.scrollTop = 0;
-    this.getRents(this.$route.params.property_type, this.$route.params.location);
+    this.getSales(this.$route.params.property_type, this.$route.params.location);
   },
   components:{ PropertyCard, Advertisement },
   watch:{
     'search':function(value){
-      this.getRents(value.property_type, value.location)
+      this.getSales(value.property_type, value.location)
     }
   }
 }

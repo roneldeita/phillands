@@ -68,7 +68,7 @@
 
 <script>
 import axios from 'axios';
-import { baseUrl, getProperties } from '../../../assets/utils/properties-api.js';
+import {getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
   name:'seller',
@@ -104,7 +104,7 @@ export default {
     },
     getPublished:function(){
       axios.defaults.headers.common['token'] = null;
-      axios.get(baseUrl()+'/property',{ params:{ status: 1}})
+      axios.get(process.env.API_URL+'/property',{ params:{ status: 1}})
       .then(response =>{
         // this.property_source = response.data.properties
         // if(this.property_source.length > 0){
@@ -121,7 +121,7 @@ export default {
   },
   mounted(){
     this.getPublished();
-    this.imgUrl = baseUrl() + '/images/';
+    this.imgUrl = process.env.API_URL + '/images/';
   }
 }
 </script>

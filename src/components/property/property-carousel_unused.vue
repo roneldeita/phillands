@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { baseUrl } from '../assets/utils/properties-api.js';
+import { baseUrl } from '../../assets/utils/properties-api.js';
 
 export default {
   name: "property-carousel",
@@ -30,7 +30,7 @@ export default {
 </script>
 <style scoped>
   img[lazy=loading] {
-    background-image: url('../../static/cube.gif');
+    background-image: url('../../../static/cube.gif');
     background-repeat: no-repeat;
     background-position: center;
   }

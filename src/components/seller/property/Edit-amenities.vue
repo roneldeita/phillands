@@ -41,7 +41,7 @@
 //dependency
 import axios from 'axios';
 //api
-import { baseUrl,getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../assets/utils/properties-api.js'
 import { getIdToken } from '../../../assets/utils/auth.js'
 //json
 import amenitiesOpts from '../../../../static/json/amenities.json'
@@ -79,7 +79,7 @@ export default {
       this.$refs.basicForm.validate((valid) => {
         if(valid){
           axios.defaults.headers.common['token'] = getIdToken();
-          return axios.post(baseUrl()+'/broker/property/update', basic)
+          return axios.post(process.env.API_URL+'/broker/property/update', basic)
           .then(response => {
             if(response.data.message === "Success"){
               this.basicEdit = false;
@@ -109,7 +109,7 @@ export default {
       }
 
       axios.defaults.headers.common['token'] = getIdToken();
-      return axios.post(baseUrl()+'/broker/property/update', amenities)
+      return axios.post(process.env.API_URL+'/broker/property/update', amenities)
       .then( response => {
         if(response.data.message === "Success"){
           this.amenitiesEdit = false;

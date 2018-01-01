@@ -18,7 +18,7 @@
 
 <script>
 //component
-import PropertyCard from '.././Property-card.vue'
+import PropertyCard from './../property/Property-card.vue'
 //json
 //import Properties from '../../../static/json/properties.json'
 //api
@@ -38,7 +38,7 @@ export default {
       for (var elem in this.property_source) {
          arr.push(this.property_source[elem]);
       }
-      var items = arr.slice(0, 8);
+      var items = arr.slice(0, 9);
       this.properties = JSON.parse(JSON.stringify(items));
     },
     ViewAll(){
