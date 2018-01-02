@@ -30,7 +30,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
 export default {
   name: 'feedback-modal',
   props: ['feedbackmodal'],
@@ -61,7 +60,7 @@ export default {
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-          axios.post(process.env.API_URL+'/feedback', this.feedbackForm)
+          this.axios.post(process.env.API_URL+'/feedback', this.feedbackForm)
           .then( response => {
             if(response.data.message === 'Success'){
               this.$alert('Your comment has been successfully submitted', 'Feedback Sent', {

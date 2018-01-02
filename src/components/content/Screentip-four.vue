@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name:'screen-tip-four',
   data(){
@@ -18,7 +17,7 @@ export default {
   },
   methods:{
     loadContent:function(){
-      axios.get(process.env.API_URL+'/content/content/publish_property_4')
+      this.axios.get(process.env.API_URL+'/content/content/publish_property_4')
       .then(response =>{
         this.tip = response.data[0].content;
       }).catch(error =>{

@@ -85,6 +85,7 @@
               @homeprovider="changeHomeProvider"
               @home="changeHome"
               @finish="handlePublish"
+              :uploadprogress="uploadProgress"
               @back="previousStep"></step-six>
           </el-col>
           <el-col :xs="24" :offset="1" :span="8" class="tooltip-container">
@@ -97,8 +98,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 import stepOne from './Step-one.vue'
 import stepTwo from './Step-two.vue'
 import stepThree from './Step-three.vue'
@@ -128,6 +127,7 @@ export default {
       RequiredVerification: false,
       activeStep:0,
       finishButton:false,
+      uploadProgress:0,
       //progressStep:0,
       property: {
         offer_type:1,//int
@@ -295,11 +295,20 @@ export default {
         }
       });
 
-      axios.defaults.headers.common['token'] = this.token;
+      this.axios.defaults.headers.common['token'] = this.token;
 
       this.finishButton = true;
 
-      axios.post(process.env.API_URL+'/broker/property/create', formData)
+      let config = {
+        onUploadProgress: progressEvent => {
+          let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
+          // do whatever you like with the percentage complete
+          this.uploadProgress = percentCompleted
+          // maybe dispatch an action that will update a progress bar or something
+        }
+      }
+
+      this.axios.post(process.env.API_URL+'/broker/property/create', formData, config)
       .then(response => {
 
         if(response.data.message === "success"){
@@ -330,8 +339,8 @@ export default {
               this.$router.push({name:'index'});
               done();
             }else if(action === 'confirm'){
-              axios.defaults.headers.common['token'] = this.token;
-              axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
+              this.axios.defaults.headers.common['token'] = this.token;
+              this.axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
                 if(response.data.message === "success"){
                   this.$message({
                     showClose: true,

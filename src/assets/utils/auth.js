@@ -74,5 +74,4 @@ function clearProfile() {
   localStorage.removeItem(USER);
 }
 
-
 /* end of logout */

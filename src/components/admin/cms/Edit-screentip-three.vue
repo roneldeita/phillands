@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import ScreentipThree from '../../content/Screentip-three.vue'
 export default {
   name:'edit-screentip-three',
@@ -39,7 +38,7 @@ export default {
       }
     },
     loadContent:function(){
-      axios.get(process.env.API_URL+'/content/content/publish_property_3')
+      this.axios.get(process.env.API_URL+'/content/content/publish_property_3')
       .then(response =>{
         this.tip = response.data[0];
         this.tipContent = response.data[0].content;
@@ -52,7 +51,7 @@ export default {
         content_id:this.tip.id,
         content:this.tipContent
       }
-      axios.post(process.env.API_URL+'/content/page/edit', content)
+      this.axios.post(process.env.API_URL+'/content/page/edit', content)
       .then(response => {
         this.$notify({
           title: 'Success',

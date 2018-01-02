@@ -97,7 +97,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { getWishList } from '../../assets/utils/properties-api.js';
 import { isLoggedIn } from '../../assets/utils/auth.js'
 export default {
@@ -137,8 +136,8 @@ export default {
       });
     },
     handleAddWishList:function(){
-      axios.defaults.headers.common['token'] = this.token;
-      axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
       then( response => {
         this.$message({
           message: 'This property was added to your wish list',
@@ -153,8 +152,8 @@ export default {
     },
     handleRemoveWishList:function(){
       const self = this;
-      axios.defaults.headers.common['token'] = this.token;
-      return axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
+      this.axios.defaults.headers.common['token'] = this.token;
+      return this.axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
       then(function(response){
         self.$message({
           message: 'This property was removed from your wish list',

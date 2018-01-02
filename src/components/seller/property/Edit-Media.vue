@@ -35,8 +35,6 @@
 </template>
 
 <script>
-//dependency
-import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
 
@@ -92,11 +90,11 @@ export default {
         this.loadingPrimary = true;
         const self = this;
         const formData = new FormData();
-        axios.defaults.headers.common['token'] = this.token;
+        this.axios.defaults.headers.common['token'] = this.token;
         formData.append('property_id', this.propertyId);
         formData.append('image', file.raw);
 
-        axios.post(process.env.API_URL+'/broker/property/media/updatePrimary', formData)
+        this.axios.post(process.env.API_URL+'/broker/property/media/updatePrimary', formData)
         .then(function(response){
           self.getProperty(self.$route.params.property_no);
           //console.log(response);
@@ -132,11 +130,11 @@ export default {
       }else{
 
         const formData = new FormData();
-        axios.defaults.headers.common['token'] = this.token;
+        this.axios.defaults.headers.common['token'] = this.token;
         formData.append('images', file.raw);
         formData.append('property_id', this.propertyId);
 
-        axios.post(process.env.API_URL+'/broker/property/media/add', formData)
+        this.axios.post(process.env.API_URL+'/broker/property/media/add', formData)
         .then(function(response){
           if(response.data.message === "Success"){
             self.imgLoading = false;
@@ -191,8 +189,8 @@ export default {
         media_id:file.media_id,
         property_id:this.propertyId
       }
-      axios.defaults.headers.common['token'] = this.token;
-      axios.post(process.env.API_URL+'/broker/property/media/remove', mediaToRemove)
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.post(process.env.API_URL+'/broker/property/media/remove', mediaToRemove)
       .then(function(response){
         if(response.data.message === 'Success'){
           self.imgLoading = false;

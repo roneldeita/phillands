@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import ScreentipTwo from '../../content/Screentip-two.vue'
 export default {
   name:'edit-screentip-two',
@@ -41,7 +40,7 @@ export default {
   },
   methods:{
     loadContent:function(){
-      axios.get(process.env.API_URL+'/content/content/publish_property_2')
+      this.axios.get(process.env.API_URL+'/content/content/publish_property_2')
       .then(response =>{
         this.tip = response.data[0];
         this.tipContent = response.data[0].content;
@@ -54,7 +53,7 @@ export default {
         content_id:this.tip.id,
         content:this.tipContent
       }
-      axios.post(process.env.API_URL+'/content/page/edit', content)
+      this.axios.post(process.env.API_URL+'/content/page/edit', content)
       .then(response =>{
         this.$notify({
           title: 'Success',

@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Slogan from '../../content/Slogan.vue'
 export default {
   name:'edit-slogan',
@@ -33,7 +32,7 @@ export default {
       }
     },
     loadContent:function(){
-      axios.get(process.env.API_URL+'/content/content/index_slogan')
+      this.axios.get(process.env.API_URL+'/content/content/index_slogan')
       .then(response =>{
         this.slogan = response.data[0];
         this.sloganContent = response.data[0].content;
@@ -46,7 +45,7 @@ export default {
         content_id:this.slogan.id,
         content:this.sloganContent
       }
-      axios.post(process.env.API_URL+'/content/page/edit', content)
+      this.axios.post(process.env.API_URL+'/content/page/edit', content)
       .then(response =>{
         this.$notify({
           title: 'Success',

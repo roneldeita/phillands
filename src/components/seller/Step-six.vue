@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen="fullScreenLoading" element-loading-text="Uploading your files, Please wait...">
+  <div v-loading.fullscreen="fullScreenLoading" :element-loading-text="'Uploading your files, Please wait...' + uploadprogress +'%'">
     <el-form :model="contact" :rules="contactRules" ref="contact">
       <el-row class="text-left">
         <h2>Contacts</h2><br>
@@ -63,6 +63,7 @@
 <script>
 export default {
   name:'step-six',
+  props:['uploadprogress'],
   data(){
     return{
       fullScreenLoading:false,

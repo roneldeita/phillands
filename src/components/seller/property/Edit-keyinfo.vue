@@ -65,8 +65,6 @@
 </template>
 
 <script>
-//dependency
-import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
 
@@ -155,8 +153,8 @@ export default {
       }
       this.$refs.keyInfoForm.validate((valid) => {
         if(valid){
-          axios.defaults.headers.common['token'] = this.token;
-          return axios.post(process.env.API_URL+'/broker/property/update', keyInfo)
+          this.axios.defaults.headers.common['token'] = this.token;
+          return this.axios.post(process.env.API_URL+'/broker/property/update', keyInfo)
           .then(function(response){
             console.log(response)
             if(response.data.message === "Success"){

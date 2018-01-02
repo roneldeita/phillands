@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name:'email-verified',
   data(){
@@ -45,7 +44,7 @@ export default {
       }
       const self = this;
       setTimeout(function(){
-        axios.get(process.env.API_URL+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
+        this.axios.get(process.env.API_URL+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
           //set local storage
           const accountVerified = JSON.parse(localStorage.getItem('user'));
 

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name:'slogan',
   data(){
@@ -15,7 +14,7 @@ export default {
   },
   methods:{
     loadContent:function(){
-      axios.get(process.env.API_URL+'/content/content/index_slogan')
+      this.axios.get(process.env.API_URL+'/content/content/index_slogan')
       .then(response => {
         this.slogan = response.data[0].content;
       }).catch(error => {

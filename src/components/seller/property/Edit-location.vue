@@ -62,8 +62,6 @@
 </template>
 
 <script>
-//dependency
-import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
 
@@ -128,8 +126,8 @@ export default {
           country:this.locationForm.country,
           postal_code:this.locationForm.postal_code
         }
-        axios.defaults.headers.common['token'] = this.token;
-        return axios.post(process.env.API_URL+'/broker/property/update', location)
+        this.axios.defaults.headers.common['token'] = this.token;
+        return this.axios.post(process.env.API_URL+'/broker/property/update', location)
         .then(function(response){
           if(response.data.message === "Success"){
             self.locationEdit = false;

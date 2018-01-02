@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
   name:'property-card',
   props:['name', 'info'],
@@ -129,8 +128,8 @@ export default {
 
     },
     getInquiries:function(){
-      axios.defaults.headers.common['token'] = this.token;
-      axios.get(process.env.API_URL+'/broker/inquiry/property/'+this.info.id)
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.get(process.env.API_URL+'/broker/inquiry/property/'+this.info.id)
       .then(response =>{
         this.inquirySource = response.data.reverse();
         this.loadInquiries(0, this.inquiry_limit);

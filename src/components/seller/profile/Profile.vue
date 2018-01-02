@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import VueCoreImageUpload from 'vue-core-image-upload'
 
 export default {
@@ -80,8 +79,8 @@ export default {
 
     },
     handleVerification(){
-      axios.defaults.headers.common['token'] = this.token;
-      axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
         if(response.data.message === "success"){
           this.$message({
             showClose: true,
@@ -102,10 +101,10 @@ export default {
       }else{
         this.loadingAvatar = true;
         const formData = new FormData();
-        axios.defaults.headers.common['token'] = this.token;
+        this.axios.defaults.headers.common['token'] = this.token;
         formData.append('image', file.raw);
 
-        axios.post(process.env.API_URL+'/client/profile/update/avatar', formData)
+        this.axios.post(process.env.API_URL+'/client/profile/update/avatar', formData)
         .then( response => {
           var userInfo = JSON.stringify(response.data.user);
           localStorage.setItem('user', userInfo);

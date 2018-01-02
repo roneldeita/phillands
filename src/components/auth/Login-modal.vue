@@ -86,7 +86,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { isLoggedIn, getAccess } from '../../assets/utils/auth.js';
 
 export default {
@@ -183,7 +182,7 @@ export default {
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-          axios.post(process.env.API_URL+'/register', this.registerForm)
+          this.axios.post(process.env.API_URL+'/register', this.registerForm)
           .then(response => {
             this.doLogin({email:this.registerForm.email, password:this.registerForm.password});
           })
@@ -199,7 +198,7 @@ export default {
 
     },
     doLogin:function(formData){
-      axios.post(process.env.API_URL+'/login',formData)
+      this.axios.post(process.env.API_URL+'/login',formData)
       .then(response => {
         localStorage.setItem('access_token', response.data.token);
         var userInfo = JSON.stringify(response.data.user);
@@ -229,7 +228,7 @@ export default {
       this.$refs[formName].validate((valid) => {
 
         if(valid){
-          axios.post(process.env.API_URL+'/forgot_password/request_key', this.resetPasswordForm)
+          this.axios.post(process.env.API_URL+'/forgot_password/request_key', this.resetPasswordForm)
           .then(response => {
             this.$message.success('We have sent you an email with reset instruction.');
             this.resetPasswordForm.email = '';

@@ -86,7 +86,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
@@ -115,8 +114,8 @@ export default {
         property_id:propertyId,
          status:1
       }
-      axios.defaults.headers.common['token'] = this.token;
-      axios.post(process.env.API_URL+'/admin/property/update', property)
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.post(process.env.API_URL+'/admin/property/update', property)
       .then(response =>{
         this.$notify({
           title: 'Success',
@@ -167,8 +166,8 @@ export default {
       return offer_type;
     },
     getPublished:function(){
-      axios.defaults.headers.common['token'] = null;
-      axios.get(process.env.API_URL+'/property',{ params:{ status: 0}})
+      this.axios.defaults.headers.common['token'] = null;
+      this.axios.get(process.env.API_URL+'/property',{ params:{ status: 0}})
       .then(response => {
         this.property_source = response.data.properties.reverse()
         if(this.property_source.length > 0){

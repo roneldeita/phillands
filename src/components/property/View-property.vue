@@ -146,7 +146,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 //json
 import MapStyle from '../../../static/json/map-detailed.json'
 //api
@@ -218,7 +217,7 @@ export default {
           inquireData['property_id'] = self.property.id;
           inquireData['to_user_id'] = self.property.owner_id;
 
-          axios.post(process.env.API_URL+'/inquiry/send', inquireData)
+          this.axios.post(process.env.API_URL+'/inquiry/send', inquireData)
           .then(function(response){
             if(response.data.message === 'Success'){
               self.$alert('Your inquiry has been successfully sent to the property owner.', 'Inquiry Sent', {
@@ -265,8 +264,8 @@ export default {
       }
     },
     handleAddWishList:function(){
-      axios.defaults.headers.common['token'] = this.token;
-      return axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
+      this.axios.defaults.headers.common['token'] = this.token;
+      return this.axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
       then( response => {
         this.$message({
           message: 'This property was added to your wish list',
@@ -283,8 +282,8 @@ export default {
       });
     },
     handleRemoveWishList:function(){
-      axios.defaults.headers.common['token'] = this.token;
-      return axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
+      this.axios.defaults.headers.common['token'] = this.token;
+      return this.axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
       then(response => {
         this.$message({
           message: 'This property was removed from your wish list',

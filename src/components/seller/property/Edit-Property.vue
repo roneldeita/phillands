@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
 //child components
