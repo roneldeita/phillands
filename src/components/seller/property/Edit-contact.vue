@@ -66,10 +66,14 @@
 import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
   name:'edit-contact',
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       contactEdit:false,
@@ -123,7 +127,7 @@ export default {
       this.$refs.contactForm.validate((valid) => {
         if(valid){
           console.log(contacts)
-          axios.defaults.headers.common['token'] = getIdToken();
+          axios.defaults.headers.common['token'] = this.token;
           return axios.post(process.env.API_URL+'/broker/property/update', contacts)
           .then(response => {
             if(response.data.message === "Success"){

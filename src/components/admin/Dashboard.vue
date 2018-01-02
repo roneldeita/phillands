@@ -6,19 +6,15 @@
 </template>
 
 <script>
-import { getProfile } from '../../assets/utils/auth.js';
 //components
 import navigation from '../template/Navigation.vue'
 
 export default {
   name:'admin-dashboard',
   data(){
-    return{
-      profile:''
+    return {
+      
     }
-  },
-  mounted(){
-    this.profile = JSON.parse(getProfile());
   },
   components:{  navigation  }
 

@@ -99,10 +99,15 @@
 <script>
 import axios from 'axios';
 import { getWishList } from '../../assets/utils/properties-api.js';
-import { getIdToken, isLoggedIn } from '../../assets/utils/auth.js'
+import { isLoggedIn } from '../../assets/utils/auth.js'
 export default {
   name:"property-card",
   props:['property'],
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       imgUrl:'',
@@ -132,7 +137,7 @@ export default {
       });
     },
     handleAddWishList:function(){
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
       axios.post(process.env.API_URL+'/client/wishlist/add', { property_id : this.property.id}).
       then( response => {
         this.$message({
@@ -148,7 +153,7 @@ export default {
     },
     handleRemoveWishList:function(){
       const self = this;
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
       return axios.post(process.env.API_URL+'/client/wishlist/remove', { wishlist_id : this.wishlistId}).
       then(function(response){
         self.$message({

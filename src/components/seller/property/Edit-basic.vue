@@ -27,10 +27,14 @@
 import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
   name:'edit-basic',
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       basicEdit:false,
@@ -68,7 +72,7 @@ export default {
       }
       this.$refs.basicForm.validate((valid) => {
         if(valid){
-          axios.defaults.headers.common['token'] = getIdToken();
+          axios.defaults.headers.common['token'] = this.token;
           return axios.post(process.env.API_URL+'/broker/property/update', basic)
           .then(response => {
             if(response.data.message === "Success"){

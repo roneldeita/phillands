@@ -40,8 +40,6 @@
 import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
-
 //child components
 import EditBasic from './Edit-basic.vue'
 import EditKeyinfo from './Edit-keyinfo'

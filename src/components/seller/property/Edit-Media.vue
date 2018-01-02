@@ -39,15 +39,18 @@
 import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
   name:'edit-media',
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       loadingPrimary:false,
       imgLoading:false,
-      token_access:getIdToken(),
       propertyId:'',
       fileList: [],
       primartyImg:'',
@@ -89,7 +92,7 @@ export default {
         this.loadingPrimary = true;
         const self = this;
         const formData = new FormData();
-        axios.defaults.headers.common['token'] = getIdToken();
+        axios.defaults.headers.common['token'] = this.token;
         formData.append('property_id', this.propertyId);
         formData.append('image', file.raw);
 
@@ -129,7 +132,7 @@ export default {
       }else{
 
         const formData = new FormData();
-        axios.defaults.headers.common['token'] = getIdToken();
+        axios.defaults.headers.common['token'] = this.token;
         formData.append('images', file.raw);
         formData.append('property_id', this.propertyId);
 
@@ -188,7 +191,7 @@ export default {
         media_id:file.media_id,
         property_id:this.propertyId
       }
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
       axios.post(process.env.API_URL+'/broker/property/media/remove', mediaToRemove)
       .then(function(response){
         if(response.data.message === 'Success'){

@@ -78,6 +78,11 @@ import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
   name:'edit-unitdetails',
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       unitDetailEdit:false,
@@ -127,7 +132,7 @@ export default {
       }
       this.$refs.unitDetailForm.validate((valid) => {
         if(valid){
-          axios.defaults.headers.common['token'] = getIdToken();
+          axios.defaults.headers.common['token'] = this.token;
           return axios.post(process.env.API_URL+'/broker/property/update', unitDetail)
           .then(function(response){
             if(response.data.message === "Success"){

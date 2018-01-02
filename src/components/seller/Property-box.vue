@@ -82,10 +82,14 @@
 
 <script>
 import axios from 'axios';
-import { getIdToken } from '../../assets/utils/auth.js'
 export default {
   name:'property-card',
   props:['name', 'info'],
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       activePropertyNav:'details',
@@ -125,7 +129,7 @@ export default {
 
     },
     getInquiries:function(){
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
       axios.get(process.env.API_URL+'/broker/inquiry/property/'+this.info.id)
       .then(response =>{
         this.inquirySource = response.data.reverse();

@@ -87,7 +87,7 @@
 
 <script>
 import axios from 'axios';
-import { isLoggedIn, login, register, getAccess } from '../../assets/utils/auth.js';
+import { isLoggedIn, getAccess } from '../../assets/utils/auth.js';
 
 export default {
   name:'login-modal',
@@ -158,7 +158,6 @@ export default {
     },
     dialogClose:function(){
       this.$emit('loginmodalclose', this.dialogVisible);
-      //this.$router.replace({name:'index'});
     },
     authenticate: function (provider) {
       this.$auth.authenticate(provider).then(function (authResponse) {

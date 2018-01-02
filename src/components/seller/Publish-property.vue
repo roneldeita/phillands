@@ -97,8 +97,6 @@
 </template>
 
 <script>
-import { getIdToken, getProfile } from '../../assets/utils/auth.js';
-
 import axios from 'axios'
 
 import stepOne from './Step-one.vue'
@@ -117,9 +115,16 @@ import ScreenTipSix from '../content/Screentip-six.vue'
 
 export default {
   name:'publish-property',
+  computed: {
+    token: function () {
+      return this.$store.getters.phillandsIdToken
+    },
+    profile: function () {
+      return JSON.parse(this.$store.getters.phillandsProfile)
+    }
+  },
   data(){
     return{
-      profile: JSON.parse(getProfile()),
       RequiredVerification: false,
       activeStep:0,
       finishButton:false,
@@ -290,7 +295,7 @@ export default {
         }
       });
 
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
 
       this.finishButton = true;
 
@@ -325,7 +330,7 @@ export default {
               this.$router.push({name:'index'});
               done();
             }else if(action === 'confirm'){
-              axios.defaults.headers.common['token'] = getIdToken();
+              axios.defaults.headers.common['token'] = this.token;
               axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
                 if(response.data.message === "success"){
                   this.$message({

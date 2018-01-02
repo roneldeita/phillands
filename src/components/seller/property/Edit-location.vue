@@ -66,10 +66,14 @@
 import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
 
 export default {
   name:'edit-location',
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       offer_type:'',
@@ -124,7 +128,7 @@ export default {
           country:this.locationForm.country,
           postal_code:this.locationForm.postal_code
         }
-        axios.defaults.headers.common['token'] = getIdToken();
+        axios.defaults.headers.common['token'] = this.token;
         return axios.post(process.env.API_URL+'/broker/property/update', location)
         .then(function(response){
           if(response.data.message === "Success"){

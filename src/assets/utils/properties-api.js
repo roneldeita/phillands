@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getIdToken } from './auth.js';
 
-export {baseUrl, getProperties, getProperty, getLocality, updateProperty, getWishList};
+export { getProperties, getProperty, getLocality, updateProperty, getWishList};
 
 function getProperties(offerType, propertyType, location){
 

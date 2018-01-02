@@ -42,12 +42,16 @@
 import axios from 'axios';
 //api
 import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
 //json
 import amenitiesOpts from '../../../../static/json/amenities.json'
 
 export default {
   name:'edit-amenities',
+  computed: {
+    token:  function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       amenitiesEdit:false,
@@ -78,7 +82,7 @@ export default {
       }
       this.$refs.basicForm.validate((valid) => {
         if(valid){
-          axios.defaults.headers.common['token'] = getIdToken();
+          axios.defaults.headers.common['token'] = this.token;
           return axios.post(process.env.API_URL+'/broker/property/update', basic)
           .then(response => {
             if(response.data.message === "Success"){
@@ -108,7 +112,7 @@ export default {
         amenities: this.amenitiesForm.amenities.toString()
       }
 
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
       return axios.post(process.env.API_URL+'/broker/property/update', amenities)
       .then( response => {
         if(response.data.message === "Success"){

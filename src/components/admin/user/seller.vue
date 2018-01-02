@@ -68,7 +68,7 @@
 
 <script>
 import axios from 'axios';
-import {getProperties } from '../../../assets/utils/properties-api.js';
+import { getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
   name:'seller',

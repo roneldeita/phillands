@@ -87,11 +87,15 @@
 
 <script>
 import axios from 'axios';
-import { getIdToken } from '../../../assets/utils/auth.js';
 import { getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
   name:'published',
+  computed: {
+    token : function () {
+      return this.$store.getters.phillandsIdToken
+    }
+  },
   data(){
     return{
       loading: true,
@@ -111,7 +115,7 @@ export default {
         property_id:propertyId,
          status:1
       }
-      axios.defaults.headers.common['token'] = getIdToken();
+      axios.defaults.headers.common['token'] = this.token;
       axios.post(process.env.API_URL+'/admin/property/update', property)
       .then(response =>{
         this.$notify({
