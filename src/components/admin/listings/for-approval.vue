@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div style="margin-bottom: 10px">
+    <!-- <div style="margin-bottom: 10px">
       <el-input placeholder="Please input" v-model="search" style="width:100%">
         <el-select v-model="searchType" slot="prepend" placeholder="Select" style="width:120px">
           <el-option label="Property ID" value="property_no"></el-option>
         </el-select>
         <el-button slot="append" icon="search"></el-button>
       </el-input>
-    </div>
+    </div> -->
     <el-table
       v-loading.body="loading"
       :data="properties"
@@ -135,8 +135,6 @@ export default {
       }
       var items = arr.slice(start, end);
       this.properties = items;
-
-
       // console.log(this.published);
     },
     switchToPage(page){

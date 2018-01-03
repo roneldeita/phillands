@@ -18,10 +18,11 @@ import PublishCompleted from '@/components/seller/Publish-completed'
 import EditProperty from '@/components/seller/property/Edit-property'
 
 import Admin from '@/components/admin/Dashboard'
-import AdminUsers from '@/components/admin/user/Users.vue'
-import AdminListings from '@/components/admin/listings/Listings.vue'
-import AdminAds from '@/components/admin/ads/Ads.vue'
-import AdminCMS from '@/components/admin/cms/Cms.vue'
+import AdminUsers from '@/components/admin/user/Users'
+import AdminListings from '@/components/admin/listings/Listings'
+import AdminAds from '@/components/admin/ads/Ads'
+import AdminCMS from '@/components/admin/cms/Cms'
+import AdminForclosures from '@/components/admin/foreclosures/Foreclosure'
 
 //middlewares
 import { requireAuth, isAdmin } from '../assets/utils/auth';
@@ -55,6 +56,7 @@ export default new Router({
     { path: '/admin/listings', name: 'admin-listings', beforeEnter:isAdmin, component:AdminListings },
     { path: '/admin/ads', name: 'admin-ads', beforeEnter:isAdmin, component:AdminAds },
     { path: '/admin/cms', name: 'admin-cms', beforeEnter:isAdmin, component:AdminCMS },
+    { path: '/admin/foreclosures', name: 'admin-foreclosures', beforeEnter:isAdmin, component:AdminForclosures }
   ],
   mode: 'history'//to remove the # in the url
 })

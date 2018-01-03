@@ -27,13 +27,13 @@
     </ul>
     <br><br><br>
     <el-row type="flex" class="row-bg text-left" justify="center">
-      <el-col :span="16">
+      <el-col :xs="22" :sm="20" :lg="16">
         <a href="/"><img class="logo " src="../assets/PL_Logo_500px.png" alt=""></a>
         <slogan></slogan>
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg" justify="center" style="margin-top:35px;">
-      <el-col :span="16">
+      <el-col :xs="22" :sm="20" :lg="16">
         <el-autocomplete
           style="width:100%"
           v-model="inputSearch"
@@ -58,7 +58,7 @@
     </el-row>
     <br>
     <el-row type="flex" class="row-bg" justify="center">
-      <el-col :span="16">
+      <el-col :xs="22" :sm="20" :lg="16">
         <el-tabs v-model="activeNav" @tab-click="handleClick">
           <el-tab-pane label="For Sale" name="sale"></el-tab-pane>
           <el-tab-pane label="For Rent" name="rent"></el-tab-pane>

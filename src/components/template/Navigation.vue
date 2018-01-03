@@ -117,6 +117,7 @@
     <el-tabs v-model="activeNav" v-if="allowedAdminRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="Dashboard" name="admin-dashboard"></el-tab-pane>
       <el-tab-pane label="Listings" name="admin-listings"></el-tab-pane>
+      <el-tab-pane label="Foreclosures" name="admin-foreclosures"></el-tab-pane>
       <el-tab-pane label="Contents" name="admin-cms"></el-tab-pane>
       <el-tab-pane label="Users" name="admin-users"></el-tab-pane>
       <el-tab-pane label="Advertisements" name="admin-ads"></el-tab-pane>
@@ -150,6 +151,8 @@ export default {
           'admin-dashboard',
           'admin-users',
           'admin-listings',
+          'admin-cms',
+          'admin-foreclosures',
           'admin-ads'
         ],
         allowedSearchRoutes:[
@@ -180,6 +183,7 @@ export default {
           'admin-dashboard',
           'admin-users',
           'admin-listings',
+          'admin-foreclosures',
           'admin-ads',
           'admin-cms'
         ]
