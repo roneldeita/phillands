@@ -9,9 +9,9 @@
       </el-input>
     </div> -->
     <el-table
-      v-loading.body="loading"
+      v-loading="loading"
       :data="properties"
-      style="">
+      style="width: 100%">
       <el-table-column type="expand">
         <template scope="props">
           <el-row :gutter="20">

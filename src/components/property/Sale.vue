@@ -59,7 +59,7 @@ export default {
   data:function(){
     return{
       propertyLoading:true,
-      property_source:{},
+      property_source:[],
       properties:[],
       total_properties:0,
       page_count:0,
@@ -93,6 +93,7 @@ export default {
     getSales(property_type, location) {
       getProperties(1, Number(property_type), location).then((property) => {
         this.property_source = property.properties;
+        console.log(this.property_source)
         this.loadProperties(0, this.item_per_page);//load the properties
         this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
         this.page_count = Object.keys(this.property_source).length / this.item_per_page;//identify how many page

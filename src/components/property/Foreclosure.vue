@@ -59,7 +59,7 @@ export default {
   data:function(){
     return{
       propertyLoading:true,
-      property_source:{},
+      property_source:[],
       properties:[],
       total_properties:0,
       page_count:0,
