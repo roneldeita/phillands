@@ -19,6 +19,7 @@
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.4",
     "papaparse": "^4.3.6",
     "vue": "^2.3.3",
     "vue-authenticate": "^1.3.1",
