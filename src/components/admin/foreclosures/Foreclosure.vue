@@ -1,8 +1,12 @@
 <template>
   <div>
     <el-row  type="flex" justify="center">
-      <el-col :span="22">
+      <el-col :span="5">
+        asdsd
+      </el-col>
+      <el-col :span="19">
         <!-- <input type="text" v-model="search_text"/> -->
+        <!-- <input type="text" v-model="search_text" @keyup="searchProperty"/> -->
         <el-table
         v-loading="loading"
         :data="properties"
@@ -84,6 +88,10 @@ export default {
     }
   },
   methods: {
+    searchProperty(){
+      var filtered = this.properties.filter((item)=>item['bank'] === this.search_text)
+      console.log(filtered)
+    },
     formatter(row, column) {
       return row.address;
     },
@@ -97,6 +105,7 @@ export default {
       }
       var items = arr.slice(start, end);
       this.properties = items;
+      console.log(this.properties)
       this.loading = false
       // console.log(items);
     },
@@ -111,6 +120,7 @@ export default {
         header: true,
         download: true,
         complete: (results, file) => {
+          console.log(results.data)
           var data = results.data.slice(0, -1)
           this.property_source = JSON.parse(JSON.stringify(data))
           this.total_properties = Object.keys(this.property_source).length
