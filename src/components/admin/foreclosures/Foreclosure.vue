@@ -2,7 +2,18 @@
   <div>
     <el-row  type="flex" justify="center">
       <el-col :span="5">
-        asdsd
+        <el-card class="box-card" style="margin:0 10px">
+          <el-upload
+            :multiple="false"
+            class="upload-demo"
+            ref="upload"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="true"
+            :auto-upload="true">
+            <el-button slot="trigger" type="primary" icon="plus">Upload New Foreclosures</el-button>
+            <div class="el-upload__tip" slot="tip">accepts only .csv file</div>
+          </el-upload>
+        </el-card>
       </el-col>
       <el-col :span="19">
         <!-- <input type="text" v-model="search_text"/> -->
@@ -136,4 +147,9 @@ export default {
 }
 </script>
 <style scoped>
+  .el-card{
+    box-shadow: 0px 0px 0px 0px !important;
+    border-radius: 2px !important;
+    margin-bottom: 20px;
+  }
 </style>
