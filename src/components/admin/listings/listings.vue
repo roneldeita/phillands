@@ -4,7 +4,7 @@
       <el-menu :default-active="activeMenu" class="el-menu-vertical-demo" @select="handleMenu">
         <el-menu-item index="for-approval">For Approval</el-menu-item>
         <el-menu-item index="published">Published</el-menu-item>
-        <el-menu-item index="deleted">Deleted</el-menu-item>
+        <el-menu-item index="trashed">Trashed</el-menu-item>
         <el-menu-item index="wishlist">Reported</el-menu-item>
       </el-menu>
     </el-col>
@@ -14,8 +14,8 @@
     <el-col :span="19" class="data-container" v-if="activeMenu === 'published'">
       <published></published>
     </el-col>
-    <el-col :span="19" class="data-container" v-if="activeMenu === 'deleted'">
-      <deleted></deleted>
+    <el-col :span="19" class="data-container" v-if="activeMenu === 'trashed'">
+      <trashed></trashed>
     </el-col>
     <el-col :span="19" class="data-container" v-if="activeMenu === 'forclosures'">
       <fore-closures></fore-closures>
@@ -26,7 +26,7 @@
 <script>
 import published from './Published.vue';
 import forApproval from './For-approval.vue';
-import Deleted from './Deleted.vue';
+import Trashed from './Trashed.vue';
 
 export default {
   name:'admin-listings',
@@ -42,7 +42,7 @@ export default {
   },
   mounted(){
   },
-  components:{ published, forApproval, Deleted }
+  components:{ published, forApproval, Trashed }
 }
 </script>
 

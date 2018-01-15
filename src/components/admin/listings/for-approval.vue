@@ -30,6 +30,7 @@
         label="Date Created"
         prop="createdAt"
         align="left"
+        width="180"
         sortable>
         <template scope="scope">
           <el-icon name="time"></el-icon>
@@ -40,6 +41,7 @@
         label="Offer Type"
         prop="offer_type"
         align="left"
+        width="150"
         sortable>
         <template scope="scope">
           <span style="margin-left: 10px">{{ offerType(scope.row.offer_type) }}</span>
@@ -59,12 +61,14 @@
         label="Title"
         prop="property_detail.title"
         align="left"
+        width="250"
         sortable>
       </el-table-column>
       <el-table-column
         label="Property ID"
         prop="property_no"
         align="left"
+        width="150"
         sortable>
       </el-table-column>
       <el-table-column
@@ -72,6 +76,7 @@
         label="Operations">
         <template scope="scope">
           <el-button type="success" size="small" @click="handleApprove(scope.row.id)" icon="circle-check">Approve</el-button>
+          <el-button :plain="true" type="warning" size="small" @click="handleTrash(scope.row.id)" icon="delete"></el-button>
           <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">Preview</el-button>
         </template>
       </el-table-column>
@@ -109,6 +114,22 @@ export default {
     }
   },
   methods:{
+    handleTrash:function(propertyId){
+      var property ={
+        property_id:propertyId,
+         status:3
+      }
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.post(process.env.API_URL+'/admin/property/update', property)
+      .then(response =>{
+        this.$notify({
+          title: 'Success',
+          message: 'The property has been removed',
+          type: 'success'
+        }),
+        this.getPublished();
+      });
+    },
     handleApprove:function(propertyId){
       var property ={
         property_id:propertyId,

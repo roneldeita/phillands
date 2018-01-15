@@ -9,9 +9,9 @@
       </el-input>
     </div> -->
     <el-table
-      v-loading.body="loading"
+      v-loading="loading"
       :data="properties"
-      style="">
+      style="width: 100%">
       <el-table-column type="expand">
         <template scope="props">
           <el-row :gutter="20">
@@ -66,18 +66,19 @@
       </el-table-column>
       <el-table-column
         label="Property ID"
-        prop="property_no"
         align="left"
         width="150"
         sortable>
+        <template scope="scope">
+          <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">{{scope.row.property_no}}</el-button>
+        </template>
       </el-table-column>
       <el-table-column
         align="left"
-        label="Operations">
+        label="Move to">
         <template scope="scope">
-          <el-button type="warning" size="small" @click="handleUnpublish(scope.row.id)" icon="circle-cross">Unpublish</el-button>
-          <el-button :plain="true" type="warning" size="small" @click="handleTrash(scope.row.id)" icon="delete"></el-button>
-          <el-button type="text" size="small" @click="handlePreview(scope.row.property_no)">Preview</el-button>
+          <el-button :plain="true" type="success" size="small" @click="handleUnpublish(scope.row.id)" icon="circle-check">For Approval</el-button>
+          <el-button :plain="true" type="success" size="small" @click="handleApprove(scope.row.id)" icon="circle-check">Published</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -94,7 +95,7 @@
 import { getProperties } from '../../../assets/utils/properties-api.js';
 
 export default {
-  name:'published',
+  name:'trashed',
   computed: {
     token : function () {
       return this.$store.getters.phillandsIdToken
@@ -107,29 +108,13 @@ export default {
       item_per_page: 10,
       total_properties:0,
       property_source:'',
-      properties:[],
+      properties:[{}],
       searchType:'property_no',
       search:'',
-      current_page:0
+      current_page:1
     }
   },
   methods:{
-    handleTrash:function(propertyId){
-      var property ={
-        property_id:propertyId,
-         status:3
-      }
-      this.axios.defaults.headers.common['token'] = this.token;
-      this.axios.post(process.env.API_URL+'/admin/property/update', property)
-      .then(response =>{
-        this.$notify({
-          title: 'Success',
-          message: 'The property has been removed',
-          type: 'success'
-        }),
-        this.getPublished();
-      });
-    },
     handleUnpublish:function(propertyId){
       var property ={
         property_id:propertyId,
@@ -146,6 +131,22 @@ export default {
         });
       });
     },
+    handleApprove:function(propertyId){
+      var property ={
+        property_id:propertyId,
+         status:1
+      }
+      this.axios.defaults.headers.common['token'] = this.token;
+      this.axios.post(process.env.API_URL+'/admin/property/update', property)
+      .then(response =>{
+        this.$notify({
+          title: 'Success',
+          message: 'You have approved the property',
+          type: 'success'
+        }),
+        this.getPublished();
+      });
+    },
     handlePreview: function(propertyNo){
       this.$router.push({name:'view-property', params:{property_no:propertyNo}})
     },
@@ -156,11 +157,12 @@ export default {
       }
       var items = arr.slice(start, end);
       this.properties = items;
+      // console.log(this.published);
     },
     switchToPage(page){
       var end = this.item_per_page * page;
       var start = end - this.item_per_page;
-      this.loadPublished(start, end);
+      this.loadPublished(start, end, false);
       this.current_page = page;
     },
     offerType:function(type){
@@ -185,11 +187,11 @@ export default {
     },
     getPublished:function(){
       this.axios.defaults.headers.common['token'] = null;
-      this.axios.get(process.env.API_URL+'/property',{ params:{ status: 1}})
+      this.axios.get(process.env.API_URL+'/property',{ params:{ status: 3}})
       .then(response => {
-        this.property_source = response.data.properties.reverse();
+        this.property_source = response.data.properties.reverse()
         if(this.property_source.length > 0){
-          this.loadPublished(0, this.item_per_page);//load the properties
+          this.loadPublished(0, this.item_per_page,);//load the properties
           this.total_properties = Object.keys(this.property_source).length ;//get the total numbers of properties
           this.loading = false;
         }
