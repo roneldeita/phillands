@@ -12,6 +12,7 @@ import Foreclosure from '@/components/property/Foreclosure'
 import viewProperty from '@/components/property/View-property'
 import Profile from '@/components/seller/profile/Profile'
 import EmailVerification from '@/components/seller/profile/Email-verification'
+import ResetPassword from '@/components/auth/Reset-Password'
 import Listings from '@/components/seller/Listings'
 import PublishProperty from '@/components/seller/Publish-property'
 import PublishCompleted from '@/components/seller/Publish-completed'
@@ -42,6 +43,7 @@ export default new Router({
     { path: '/property/:property_no', name: 'view-property', component: viewProperty},
     { path: '/profile', name:'profile', beforeEnter:requireAuth, component: Profile },
     { path: '/email/verification', name:'email-verification', component:EmailVerification, props: true},
+    { path: '/forgot_password/', name:'reset-password', component: ResetPassword},
     { path: '/listings', name:'listings', beforeEnter:requireAuth, component: Listings },
     { path: '/listings/for-approval', name:'for-approval', beforeEnter:requireAuth, component: Listings },
     { path: '/listings/archives', name:'archives', beforeEnter:requireAuth, component: Listings },

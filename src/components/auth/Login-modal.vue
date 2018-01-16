@@ -15,13 +15,13 @@
 
           <el-tabs v-show="!forgetPassword" v-model="activeAuthTab">
             <el-tab-pane label="Login" name="login">
-              <div class="" style="padding:5px 0 10px 0">
+              <!-- <div class="" style="padding:5px 0 10px 0">
                 <el-button type="default" @click="authenticate('google')" style="width:100%" disabled><span class="fa fa-google"></span> Login with google</el-button>
               </div>
               <div class="" style="padding:5px 0 10px 0">
                 <el-button type="info" @click="authenticate('facebook')" style="width:100%" disabled><span class="fa fa-facebook-official"></span> Login with facebook</el-button>
               </div>
-              <p>or</p>
+              <p>or</p> -->
               <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0">
                 <el-form-item label="" prop="email">
                   <el-input v-model="loginForm.email" placeholder="Email" @keyup.enter.native="handleLogin('loginForm')"></el-input>
@@ -178,9 +178,7 @@ export default {
       });
     },
     handleRegistration:function(formName){
-
       this.$refs[formName].validate((valid) => {
-
         if(valid){
           this.axios.post(process.env.API_URL+'/register', this.registerForm)
           .then(response => {
