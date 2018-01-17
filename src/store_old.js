@@ -12,38 +12,38 @@ export default new Vuex.Store({
     feedbackVisible: false
   },
   getters: {
-    phillandsProfile: function (state) {
+    phillandsProfile: (state) => {
       return state.phillandsProfile
     },
-    phillandsIdToken: function (state) {
+    phillandsIdToken: (state) => {
       return state.phillandsIdToken
     },
-    loginVisible: function (state) {
+    loginVisible:  (state) => {
       return state.loginVisible
     },
-    feedbackVisible: function (state) {
+    feedbackVisible: (state) => {
       return state.feedbackVisible
     }
   },
   mutations: {
-    updatePhillandsProfile: function (state) {
+    updatePhillandsProfile: (state) => {
       state.phillandsProfile = getProfile()
     },
-    toggleLoginModal: function (state) {
+    toggleLoginModal: (state) => {
       state.loginVisible = !state.loginVisible
     },
-    toggleFeedbackModal: function (state) {
+    toggleFeedbackModal: (state) => {
       state.feedbackVisible = !state.feedbackVisible
     }
   },
   actions: {
-    updatePhillandsProfile: function (context) {
+    updatePhillandsProfile: (context) => {
       context.commit('updatePhillandsProfile')
     },
-    toggleLoginModal: function (context) {
+    toggleLoginModal: (context) => {
       context.commit('toggleLoginModal')
     },
-    toggleFeedbackModal: function (context) {
+    toggleFeedbackModal: (context) => {
       context.commit('toggleFeedbackModal')
     }
   }

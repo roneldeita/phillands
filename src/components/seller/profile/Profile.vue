@@ -74,10 +74,6 @@ export default {
     }
   },
   methods:{
-    imageuploaded(e){
-      console.log(e)
-
-    },
     handleVerification(){
       this.axios.defaults.headers.common['token'] = this.token;
       this.axios.get(process.env.API_URL+'/client/verification/send').then(response =>{
@@ -114,7 +110,7 @@ export default {
             message: 'Your avatar was successfully updated',
             type: 'success'
           });
-          this.$store.dispatch('updatePhillandsProfile')
+          this.$store.dispatch('updatePhillandsProfile', {test: 'Payload test'})
           this.loadingAvatar = false;
         })
         .catch( error =>{
@@ -130,7 +126,7 @@ export default {
       const validSize = file.raw.size / 1024 / 1024 < 2;
 
       if(validImage.includes(file.raw.type)){//valid type
-        console.log(file.raw.type);
+        // console.log(file.raw.type);
         if(!validSize){
           result =  { approve:false, msg:'Image size can not exceed 2MB'}
           fileList.splice(-1);
