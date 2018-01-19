@@ -85,9 +85,21 @@
                 <div class="pull-right">
                   <el-tooltip placement="top">
                     <div slot="content">Share this property<br/>on Facebook</div>
-                    <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none">
+                    <social-sharing :url="'https://phillands/property/'+property.property_no"
+                      :title="property.property_detail.title"
+                      :description="property.property_detail.description"
+                      :quote="property.property_detail.description"
+                      style="display:inline"
+                      inline-template>
+                      <div>
+                        <network network="facebook">
+                          <i class="fa fa-facebook"></i>
+                        </network>
+                      </div>
+                    </social-sharing>
+                    <!-- <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none">
                       <span class="fa fa-facebook"></span>
-                    </el-button>
+                    </el-button> -->
                   </el-tooltip>
                   <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
                     <div slot="content">Add this property<br/>to your Wish List</div>

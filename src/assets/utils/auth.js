@@ -2,6 +2,7 @@ import axios from 'axios';
 import Router from 'vue-router';
 const ACCESS_TOKEN_KEY = 'access_token';
 const USER = 'user';
+const SEARCH = 'search';
 
 var router = new Router({
    mode: "history",
@@ -57,6 +58,14 @@ export function getAccess(){
   return axios.post(process.env.API_URL+'/auth/check').then( response => response.data );
 }
 
+export function hasSearch(){
+  const search = getSearch();
+  return !!search;
+}
+
+export function getSearch() {
+  return localStorage.getItem(SEARCH);
+}
 /* logout */
 export function logout() {
   clearAccessToken();

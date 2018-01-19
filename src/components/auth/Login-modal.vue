@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { isLoggedIn, getAccess } from '../../assets/utils/auth.js';
+import { getAccess } from '../../assets/utils/auth.js';
 
 export default {
   name:'login-modal',

@@ -59,6 +59,16 @@
     <br>
     <el-row type="flex" class="row-bg" justify="center">
       <el-col :xs="22" :sm="20" :lg="16">
+        <p class="sub-title">Find home near you</p>
+        <el-row :gutter="20" style="margin-top:-15px">
+          <LocationCard v-for="location in locations" :search="{select_search:selectSearch, input_search:location.location.toLowerCase()}" :location="location" v-bind:key="locations.id" />
+        </el-row>
+      </el-col>
+    </el-row>
+    <br>
+    <br>
+    <el-row type="flex" class="row-bg" justify="center">
+      <el-col :xs="22" :sm="20" :lg="16">
         <el-tabs v-model="activeNav" @tab-click="handleClick">
           <el-tab-pane label="For Sale" name="sale"></el-tab-pane>
           <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
@@ -103,6 +113,7 @@ import FeaturedRent from './featured/Featured-rent.vue'
 import FeaturedPreselling from './featured/Featured-preselling.vue'
 import FeaturedForeclosure from './featured/Featured-foreclosure.vue'
 import Advertisement from './Advertisement.vue'
+import LocationCard from './property/Location-card.vue'
 import Developers from './property/Developers.vue'
 
 export default {
@@ -110,6 +121,9 @@ export default {
   computed: {
     profile : function () {
       return JSON.parse(this.$store.getters.phillandsProfile)
+    },
+    search : function () {
+      return this.$store.getters.phillandsSearch
     }
   },
   data () {
@@ -118,6 +132,23 @@ export default {
       inputSearch:'',
       selectSearch:'1',
       activeNav:'sale',
+      locations:[
+        { id:1, location: 'Quezon city', img:'/static/locations/Quezon_City.jpg', link:'https://iremitglobal.com/' },
+        { id:2, location: 'Makati', img:'/static/locations/Makati_Skyline.jpg', link:'https://iremitglobal.com/' },
+        { id:3, location: 'Pasig', img:'/static/locations/Pasig_City.jpg', link:'https://iremitglobal.com/' },
+        { id:4, location: 'Taguig', img:'/static/locations/Taguig_Skyline.png', link:'https://iremitglobal.com/' },
+        { id:5, location: 'Cavite', img:'/static/locations/Imus-Cavite.jpg', link:'https://iremitglobal.com/' },
+        { id:6, location: 'Las Piñas', img:'/static/locations/Las_Pinas.jpg', link:'https://iremitglobal.com/' },
+        { id:7, location: 'Pasay', img:'/static/locations/Pasay_City.jpg', link:'https://iremitglobal.com/' },
+        { id:8, location: 'Marikina', img:'/static/locations/Marikina.jpg', link:'https://iremitglobal.com/' },
+        { id:9, location: 'Mandaluyong', img:'/static/locations/Mandaluyong.png', link:'https://iremitglobal.com/' },
+        { id:10, location: 'San Juan', img:'/static/locations/San_Juan.jpg', link:'https://iremitglobal.com/' },
+        { id:11, location: 'Metro Manila', img:'/static/locations/Manila_Skyline.jpg', link:'https://iremitglobal.com/' },
+        { id:12, location: 'Alabang', img:'/static/locations/Alabang.jpg', link:'https://iremitglobal.com/' },
+        { id:13, location: 'Baguio', img:'/static/locations/Baguio.jpg', link:'https://iremitglobal.com/' },
+        { id:13, location: 'Cebu', img:'/static/locations/Cebu_City.jpg', link:'https://iremitglobal.com/' },
+        { id:13, location: 'Davao', img:'/static/locations/Davao_City.jpg', link:'https://iremitglobal.com/' },
+      ],
       adds:[
         { id:1, img:'/static/adds/Ads1.jpg', link:'https://iremitglobal.com/' },
         { id:2, img:'/static/adds/Ads2.jpg', link:'https://www.upsexpress.com.ph/' },
@@ -140,7 +171,6 @@ export default {
       logout();
     },
     goToPath(path){
-      console.log(path)
       document.documentElement.scrollTop = 0;
       this.$router.push('/'+path);
     },
@@ -176,14 +206,17 @@ export default {
       });
     },
     handleIconClick:function(){
+      this.$store.dispatch('updatePhillandsSearch', {property_type: this.selectSearch})
+      this.$store.dispatch('updatePhillandsSearch', {location: this.inputSearch})
       this.$router.push({name:this.activeNav, params:{property_type:this.selectSearch, location:this.inputSearch }})
     },
     handleClick:function(tab, event){
     //  console.log(tab.name)
     }
   },
-  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedPreselling, FeaturedForeclosure,  Advertisement, Developers },
+  components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedPreselling, FeaturedForeclosure,  Advertisement, Developers, LocationCard },
   mounted(){
+    console.log(this.search)
     this.loadLocality();
     if(this.isLoggedIn()){
       this.handleUserAccess();

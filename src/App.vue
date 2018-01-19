@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-      <navigation v-if="$route.name != 'index'" @search="searchWasClicked"></navigation>
-      <router-view class="router-view" :search="search"></router-view>
+      <navigation v-if="$route.name != 'index'"></navigation>
+      <router-view class="router-view"></router-view>
       <bottom-navigation></bottom-navigation>
       <!-- modals -->
       <login-modal :loginmodal="loginVisible"></login-modal>

@@ -134,6 +134,9 @@ export default {
     computed: {
       profile : function () {
         return JSON.parse(this.$store.getters.phillandsProfile)
+      },
+      search :function () {
+        return this.$store.getters.phillandsSearch
       }
     },
     data(){
@@ -265,16 +268,13 @@ export default {
       },
       handleSearch:function(){
         document.documentElement.scrollTop = 0;
-        //console.log(this.propertyType);
-        // console.log('offer_type: ' + this.activeNav);
-        // console.log('location: ' + this.searchLocation);
-        // console.log('property_type: ' + this.propertyType);
-        //this.changeTab(this.activeNav)
-        this.$emit('search', { offer_type: this.activeNav, property_type:this.propertyType, location:this.searchLocation});
+        this.$store.dispatch('updatePhillandsSearch', {property_type: this.propertyType})
+        this.$store.dispatch('updatePhillandsSearch', {location: this.searchLocation})
       },
       changeTab:function(tab, event){
         document.documentElement.scrollTop = 0;
-        this.$router.replace({ name: tab.name, params:{property_type:this.propertyType, location:this.searchLocation }});
+        this.$store.dispatch('updatePhillandsSearch', {offer_type: tab.name})
+        this.$router.replace({ name: tab.name });
       },
       handleBack:function(){
         this.$router.go(-1);
@@ -284,6 +284,7 @@ export default {
       }
     },
     mounted(){
+
       //set activeNav
       var listings = [
         'listings',
@@ -291,6 +292,7 @@ export default {
         'archives',
         'inactive'
       ];
+
       if(listings.includes(this.$route.name)){
         this.activeNav = 'listings';
       }else{
@@ -302,11 +304,10 @@ export default {
         this.activeNav = 'admin-dashboard';
       }
 
-      if(this.$route.params.property_type){
-        this.propertyType = this.$route.params.property_type;
+      if(this.search.property_type){
+        this.propertyType = this.search.property_type.toString();
       }
-      //console.log(this.$route.params.property_type);
-      this.searchLocation = this.$route.params.location;
+      this.searchLocation = this.search.location;
       this.loadLocality();
       this.handleSearch();
       if(this.isLoggedIn()){

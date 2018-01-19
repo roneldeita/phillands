@@ -11,19 +11,6 @@
           </el-col>
         </el-row>
         <div class="" style="width:100%">
-          <!-- <paginate
-            :page-count="page_count"
-            :click-handler="switchToPage"
-            :prev-text="'Prev'"
-            :next-text="'Next'"
-            :page-class="'page-item'"
-            :page-link-class="'page-link'"
-            :prev-class="'page-item'"
-            :prev-link-class="'page-link'"
-            :next-class="'page-item'"
-            :next-link-class="'page-link'"
-            :containerClass="'pagination justify-content-center'">
-          </paginate> -->
           <el-pagination v-if="!propertyLoading"
             layout="total, prev, pager, next"
             :page-size="item_per_page"
@@ -55,7 +42,11 @@ import { getProperties } from '../../assets/utils/properties-api.js'
 
 export default {
   name: "pre-selling",
-  props:['search'],
+  computed: {
+    search :function () {
+      return this.$store.getters.phillandsSearch
+    }
+  },
   data:function(){
     return{
       propertyLoading:true,
@@ -100,12 +91,15 @@ export default {
   },
   mounted(){
     document.documentElement.scrollTop = 0;
-    this.getSales(this.$route.params.property_type, this.$route.params.location);
+    this.getSales(this.search.property_type, this.search.location);
   },
   components:{ PropertyCard, Advertisement },
   watch:{
-    'search':function(value){
-      this.getSales(value.property_type, value.location)
+    'search.location' : function(){
+      this.getSales(this.search.property_type, this.search.location)
+    },
+    'search.property_type' : function(){
+      this.getSales(this.search.property_type, this.search.location)
     }
   }
 }

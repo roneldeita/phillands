@@ -10,13 +10,12 @@ const Profile  = {
   },
   mutations:{
     [types.UPDATE_PHILLANDS_PROFILE] (state, payload) {
-      console.log(payload)
-      state.phillandsProfile = getProfile()
+      state.phillandsProfile = payload
     }
   },
   actions:{
-    updatePhillandsProfile ({commit}, payload) {
-      commit(types.UPDATE_PHILLANDS_PROFILE, payload)
+    updatePhillandsProfile ({commit}) {
+      commit(types.UPDATE_PHILLANDS_PROFILE, getProfile())
     }
   }
 }
