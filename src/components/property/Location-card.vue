@@ -17,7 +17,9 @@ export default {
   },
   methods:{
     CardClick(){
-      this.$router.push({name:'sale', params:{property_type:this.search.select_search, location:this.search.input_search }})
+      this.$store.dispatch('updatePhillandsSearch', {property_type: this.search.select_search})
+      this.$store.dispatch('updatePhillandsSearch',{location:this.search.input_search})
+      this.$router.push({name:'sale'})
     }
   },
   mounted(){

@@ -4,7 +4,7 @@
       <el-col :span="24">
         <h6 class="text-left" style="margin-bottom:15px">{{ total_properties }} properties found</h6>
       </el-col>
-      <el-col :xs="24" :md="20" v-loading="propertyLoading" element-loading-text="Loading Properties">
+      <el-col :xs="24" :md="20" style="min-height:250px" v-loading="propertyLoading" element-loading-text="Loading Properties">
         <el-row :gutter="15">
           <el-col :xs="24" :sm="8" :md="6" :lg="6" v-for="property in properties" v-bind:data="property" v-bind:key="property.id">
             <property-card :property="property"></property-card>
