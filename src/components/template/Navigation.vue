@@ -127,7 +127,7 @@
 
 <script>
 import { getLocality } from '../../assets/utils/properties-api.js'
-import { isLoggedIn, login, logout, getAccess } from '../../assets/utils/auth.js';
+import { isLoggedIn, login, logout, getAccess, getSearch } from '../../assets/utils/auth.js';
 
 export default {
     name: "navigation",
@@ -273,7 +273,7 @@ export default {
       },
       changeTab:function(tab, event){
         document.documentElement.scrollTop = 0;
-        this.$store.dispatch('updatePhillandsSearch', {offer_type: tab.name})
+        // this.$store.dispatch('updatePhillandsSearch', {offer_type: tab.name})
         this.$router.replace({ name: tab.name });
       },
       handleBack:function(){

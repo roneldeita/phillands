@@ -216,6 +216,10 @@ export default {
   },
   components:{ Slogan, FeaturedSale, FeaturedRent, FeaturedPreselling, FeaturedForeclosure,  Advertisement, Developers, LocationCard },
   mounted(){
+    if(this.search.property_type){
+      this.selectSearch = this.search.property_type.toString();
+    }
+    this.inputSearch = this.search.location;
     console.log(this.search)
     this.loadLocality();
     if(this.isLoggedIn()){
