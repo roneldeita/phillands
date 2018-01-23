@@ -155,7 +155,7 @@ export default {
 </script>
 <style>
   img[lazy=loading] {
-    background-image: url('../../../static/cube.gif');
+    background-image: url('../../../../../static/cube.gif');
     background-repeat: no-repeat;
     background-position: center;
   }

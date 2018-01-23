@@ -28,7 +28,7 @@
 </template>
 <script>
 //json
-import amenitiesOpts from '../../../static/json/amenities.json'
+import amenitiesOpts from '../../../../../static/json/amenities.json'
 
 export default {
   name:'step-one',

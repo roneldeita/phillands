@@ -71,8 +71,8 @@
 
 <script>
 //api
-import { getProperty } from '../../../assets/utils/properties-api.js'
-import { getIdToken } from '../../../assets/utils/auth.js'
+import { getProperty } from '../../../../assets/utils/properties-api.js'
+import { getIdToken } from '../../../../assets/utils/auth.js'
 
 export default {
   name:'edit-unitdetails',

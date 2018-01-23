@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import MapStyle from '../../../static/json/map-detailed.json'
+import MapStyle from '../../../../../static/json/map-detailed.json'
 
 export default {
   name:'step-four',

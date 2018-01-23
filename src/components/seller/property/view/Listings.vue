@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getWishList } from '../../assets/utils/properties-api.js'
+import { getWishList } from '../../../../assets/utils/properties-api.js'
 import PropertyBox from './Property-box.vue'
 
 export default {

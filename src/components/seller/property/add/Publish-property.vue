@@ -105,12 +105,12 @@ import stepFour from './Step-four.vue'
 import stepFive from './Step-five.vue'
 import stepSix from './Step-six.vue'
 
-import ScreenTipOne from '../content/Screentip-one.vue'
-import ScreenTipTwo from '../content/Screentip-two.vue'
-import ScreenTipThree from '../content/Screentip-three.vue'
-import ScreenTipFour from '../content/Screentip-four.vue'
-import ScreenTipFive from '../content/Screentip-five.vue'
-import ScreenTipSix from '../content/Screentip-six.vue'
+import ScreenTipOne from '../../../content/Screentip-one.vue'
+import ScreenTipTwo from '../../../content/Screentip-two.vue'
+import ScreenTipThree from '../../../content/Screentip-three.vue'
+import ScreenTipFour from '../../../content/Screentip-four.vue'
+import ScreenTipFive from '../../../content/Screentip-five.vue'
+import ScreenTipSix from '../../../content/Screentip-six.vue'
 
 export default {
   name:'publish-property',

@@ -38,7 +38,7 @@
 
 <script>
 //api
-import { getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../../assets/utils/properties-api.js'
 //child components
 import EditBasic from './Edit-basic.vue'
 import EditKeyinfo from './Edit-keyinfo'
@@ -90,7 +90,7 @@ export default {
 
 <style scoped>
   img[lazy=loading] {
-    background-image: url('../../../../static/cube.gif');
+    background-image: url('../../../../../static/cube.gif');
     background-repeat: no-repeat;
     background-position: center;
   }

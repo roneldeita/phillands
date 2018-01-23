@@ -63,7 +63,7 @@
 
 <script>
 //api
-import { getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../../assets/utils/properties-api.js'
 
 export default {
   name:'edit-location',

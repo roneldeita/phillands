@@ -39,9 +39,9 @@
 
 <script>
 //api
-import { getProperty } from '../../../assets/utils/properties-api.js'
+import { getProperty } from '../../../../assets/utils/properties-api.js'
 //json
-import amenitiesOpts from '../../../../static/json/amenities.json'
+import amenitiesOpts from '../../../../../static/json/amenities.json'
 
 export default {
   name:'edit-amenities',
