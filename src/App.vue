@@ -59,7 +59,6 @@ body{
   min-height: 100%
 }
 
-
 #app{
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;

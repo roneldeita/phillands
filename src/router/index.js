@@ -4,6 +4,7 @@ import Router from 'vue-router'
 //components
 import Index from '@/components/Index'
 import NotFound from '@/components/Not-found'
+import AuthGoogle from '@/components/Auth-google'
 import Privacy from '@/components/Policy'
 import Rent from '@/components/property/Rent'
 import Sale from '@/components/property/Sale'

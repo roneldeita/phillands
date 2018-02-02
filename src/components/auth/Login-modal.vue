@@ -15,13 +15,21 @@
 
           <el-tabs v-show="!forgetPassword" v-model="activeAuthTab">
             <el-tab-pane label="Login" name="login">
-              <!-- <div class="" style="padding:5px 0 10px 0">
-                <el-button type="default" @click="authenticate('google')" style="width:100%" disabled><span class="fa fa-google"></span> Login with google</el-button>
+              <div class="" style="padding:5px 0 10px 0">
+                <el-button class="btn-google">
+                  <g-signin-button
+                    :params="googleSignInParams"
+                    @success="onSignInSuccess"
+                    @error="onSignInError">
+                    <img src="../../assets/social/google-1015752_960_720.png" style="width:15px; margin-bottom:1px"> Sign in with Google
+                  </g-signin-button>
+                </el-button>
+                <!-- <el-button type="default" @click="authenticate('google')" style="width:100%" disabled><span class="fa fa-google"></span> Login with google</el-button> -->
               </div>
               <div class="" style="padding:5px 0 10px 0">
                 <el-button type="info" @click="authenticate('facebook')" style="width:100%" disabled><span class="fa fa-facebook-official"></span> Login with facebook</el-button>
               </div>
-              <p>or</p> -->
+              <p>or</p>
               <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0">
                 <el-form-item label="" prop="email">
                   <el-input v-model="loginForm.email" placeholder="Email" @keyup.enter.native="handleLogin('loginForm')"></el-input>
@@ -32,7 +40,7 @@
                   <span :class="password.class" id="show-password" @click="handleViewPassword"></span>
                 </el-form-item>
                 <el-form-item class="text-left" style="margin-top:25px">
-                  <el-button type="success" class="btn-pl-green" @click="handleLogin('loginForm')">Login</el-button>
+                  <el-button type="success" class="btn-pl-green" @click="handleLogin('loginForm')" :loading="LoginButtonLoading">Login</el-button>
                 </el-form-item>
                 <el-button type="text" @click="forgetPassword = true"> Forgot your password?</el-button>
               </el-form>
@@ -56,7 +64,7 @@
                   <el-input type="password" v-model="registerForm.password" placeholder="Password"></el-input>
                 </el-form-item>
                 <el-form-item class="text-left">
-                  <el-button type="success" class="btn-pl-green" @click="handleRegistration('registerForm')">Register</el-button>
+                  <el-button type="success" class="btn-pl-green" @click="handleRegistration('registerForm')" :loading="RegisterButtonLoading">Register</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
@@ -72,12 +80,11 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button class="pull-left" type="text" @click="forgetPassword = false"><span class="el-icon-arrow-left"></span> Back to Login</el-button>
-                  <el-button type="success" class="btn-pl-green pull-right" @click="handleResendPassword('resetPasswordForm')">Send Reset Link</el-button>
+                  <el-button type="success" class="btn-pl-green pull-right" @click="handleResendPassword('resetPasswordForm')" :loading="ResetPassButtonLoading">Send Reset Link</el-button>
                 </el-form-item>
               </el-form>
             </el-tab-pane>
           </el-tabs>
-
         </el-col>
       </el-row>
       <br>
@@ -93,9 +100,15 @@ export default {
   props:['loginmodal'],
   data(){
     return{
+      googleSignInParams: {
+        client_id: '683005103605-tjutvaruhetc4mplnttpkh4qk23rtq1u.apps.googleusercontent.com'
+      },
       dialogVisible: this.loginmodal,
-      activeAuthTab:'login',
-      forgetPassword:false,
+      activeAuthTab: 'login',
+      forgetPassword: false,
+      LoginButtonLoading: false,
+      RegisterButtonLoading: false,
+      ResetPassButtonLoading: false,
       password:{
         type:'password',
         class:'fa fa-eye'
@@ -152,32 +165,47 @@ export default {
     }
   },
   methods:{
+    onSignInSuccess(googleUser){
+      console.log(googleUser)
+      // `googleUser` is the GoogleUser object that represents the just-signed-in user.
+      // See https://developers.google.com/identity/sign-in/web/reference#users
+      const profile = googleUser.getBasicProfile() // etc etc
+      profile['type'] = 'google';
+      console.log(profile)
+      this.axios.post(process.env.API_URL+'/loginSocial', profile).then( res =>{
+        console.log(res)
+      }).catch( error => {
+        throw(error)
+      })
+    },
+    onSignInError (error) {
+      // `error` contains any error occurred.
+      console.log('OH NOES', error)
+    },
     toggleLoginModal () {
       this.$store.dispatch('toggleLoginModal')
     },
     dialogClose:function(){
       this.$emit('loginmodalclose', this.dialogVisible);
     },
-    authenticate: function (provider) {
-      this.$auth.authenticate(provider).then(function (authResponse) {
-        console.log(authResponse);
-        // Execute application logic after successful social authentication
-      })
-    },
     handleLogin:function(formName){
+      this.LoginButtonLoading = true;
       this.$refs[formName].validate((valid) => {
-
         if(valid){
 
           this.doLogin(this.loginForm);
 
         }else{
+          setTimeout(()=>{
+            this.LoginButtonLoading = false;
+          }, 500)
           //console.log(valid)
         }
 
       });
     },
     handleRegistration:function(formName){
+      this.RegisterButtonLoading = true;
       this.$refs[formName].validate((valid) => {
         if(valid){
           this.axios.post(process.env.API_URL+'/register', this.registerForm)
@@ -186,10 +214,15 @@ export default {
           })
           .catch(error => {
             this.$message.error(error.response.data.message)
+            setTimeout(()=>{
+              this.RegisterButtonLoading = false;
+            }, 500)
           });
 
         }else{
-          //
+          setTimeout(()=>{
+            this.RegisterButtonLoading = false;
+          }, 500)
         }
 
       });
@@ -217,12 +250,16 @@ export default {
       })
       .catch(error => {
         this.$message.error('Email or Password is incorrect')
+        setTimeout(()=>{
+          this.LoginButtonLoading = false;
+        }, 500)
       });
     },
     resetPasswordWasClick:function(){
       this.$emit('resetpassword');
     },
     handleResendPassword:function(formName){
+      this.ResetPassButtonLoading = true;
       this.$refs[formName].validate((valid) => {
 
         if(valid){
@@ -234,8 +271,11 @@ export default {
             this.$message.error(error.response.data.message)
           });
         }else{
-
+          //
         }
+        setTimeout(()=>{
+          this.ResetPassButtonLoading = false;
+        }, 500)
 
       });
     },
@@ -282,4 +322,17 @@ export default {
       width: 100% !important;
     }
   }
+</style>
+<style scoped>
+.btn-google{
+  width:100%;
+  padding:0px;
+}
+.g-signin-button {
+  display: inline-block;
+  width: 100%;
+  color: #757575;
+  line-height: 35px;
+  font-weight: 500;
+}
 </style>

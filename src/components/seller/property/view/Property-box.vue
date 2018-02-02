@@ -60,12 +60,12 @@
             </div>
             <el-dialog title="" :visible.sync="dialogInquiryVisible">
                 <div style="padding:35px 20px 20px 20px">
-                  <h5 class="txt-pl-green">{{ inquiry.first_name +' '+inquiry.last_name }}</h5>
-                  <h6>{{ inquiry.email }}</h6>
-                  <h6 class="pull-right" style="display:block; color:#a6a6a6">{{ inquiry.createdAt | moment("from") }}</h6>
-                  <h6>{{ inquiry.contact }}</h6>
+                  <h5 class="txt-pl-green"><small class="text-muted">From:</small> {{ inquiry.first_name +' '+inquiry.last_name }}</h5>
+                  <p class="text-muted" style="line-height:15px">{{ inquiry.email }}</p>
+                  <p class="pull-right" style="display:block; color:#cccccc">{{ inquiry.createdAt | moment("from") }}</p>
+                  <p class="text-muted" style="line-height:8px">{{ inquiry.contact }}</p>
                   <hr>
-                  <h4>{{inquiry.message}}</h4>
+                  <h6>{{inquiry.message}}</h6>
                   <hr>
                   <p class="text-center txt-pl-green">www.phillands.com</p>
                 </div>

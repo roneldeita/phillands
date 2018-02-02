@@ -17,6 +17,7 @@ import axios from 'axios'
 import VueMoment from 'vue-moment-jalaali'// datetime library
 import VueCarousel from 'vue-carousel'
 import SocialSharing from 'vue-social-sharing'
+import GSignInButton from 'vue-google-signin-button'
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueLazyload)
@@ -28,11 +29,12 @@ Vue.use(VueGoogleMaps, {
    load: {
      key: 'AIzaSyATSZ8ZMz0L0e3dNxz3hzNJw7FHyFcZFcs',
      v: '3.29',
-     libraries: 'places', //// If you need to use place input
+     libraries: 'places', // If you need to use place input
    }
  })
+Vue.use(GSignInButton)
 Vue.use(VueAuthenticate, {
-  baseUrl: 'http://103.16.170.117:8090', // Your API domain
+  baseUrl: process.env.API_URL, // Your API domain 'http://103.16.170.117:8090'
 
   providers: {
     facebook: {

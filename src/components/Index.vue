@@ -220,7 +220,6 @@ export default {
       this.selectSearch = this.search.property_type.toString();
     }
     this.inputSearch = this.search.location;
-    console.log(this.search)
     this.loadLocality();
     if(this.isLoggedIn()){
       this.handleUserAccess();
