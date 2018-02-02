@@ -42,9 +42,10 @@ export default {
         email:this.$route.query.email,
         key:this.$route.query.key
       }
+      console.log(verify)
       const self = this;
       setTimeout(function(){
-        this.axios.get(process.env.API_URL+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
+        self.axios.get(process.env.API_URL+'/verification?email='+verify.email+'&key='+verify.key).then(response => {
           //set local storage
           const accountVerified = JSON.parse(localStorage.getItem('user'));
 
@@ -53,11 +54,11 @@ export default {
             localStorage.setItem('user', JSON.stringify(accountVerified))
           }
           //show success
-          self.showSuccess =true;
+          self.showSuccess = true;
           self.verifyLoading = false;
         }).catch(error => {
 
-          self.showError =true;
+          self.showError = true;
           self.verifyLoading = false;
         });
       }, 3000)

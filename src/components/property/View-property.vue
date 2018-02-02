@@ -351,6 +351,12 @@ export default {
         case 5:
           property_type = 'Vacant Lot'
           break;
+        case 6:
+          property_type = 'Lot'
+          break;
+        case 7:
+          property_type = 'Building'
+          break;
         default:
           property_type = 'Property'
       }

@@ -15,7 +15,12 @@
         <el-form-item style="display:inline-block" prop="propertyType" class="">
           <h5>Property type</h5>
           <el-select v-model="keyInfo.propertyType" placeholder="Select" size="large" @change="changePropertyType">
-            <el-option v-if="keyInfo.offerType != '4'"
+            <el-option v-if="keyInfo.offerType === '1'"
+              v-for="type in keyInfo.ForSalePropertyTypes"
+              :key="type.id"
+              :label="type.label"
+              :value="type.value"></el-option>
+            <el-option v-if="keyInfo.offerType != '4' && keyInfo.offerType != '1'"
               v-for="type in keyInfo.propertyTypes"
               :key="type.id"
               :label="type.label"
@@ -53,6 +58,27 @@ export default {
         propertyType:'Condominium',
         sellingPrice:0,
         priceOption:'1',
+        ForSalePropertyTypes: [{
+            id:1,
+            value: 1,
+            label: 'Condominium'
+          },{
+            id:2,
+            value: 2,
+            label: 'House and Lot'
+          },{
+            id:3,
+            value: 3,
+            label: 'Townhouse'
+          },{
+            id:4,
+            value: 6,
+            label: 'Lot'
+          },{
+            id:5,
+            value: 7,
+            label: 'Building'
+          }],
         propertyTypes: [{
             id:1,
             value: 1,
@@ -97,6 +123,7 @@ export default {
   },
   methods:{
     changeOfferType:function(type){
+      this.keyInfo.propertyType = 'Condominium';
       this.$emit('offertype', type);
       //change the price option
       if(parseInt(type) === 2){

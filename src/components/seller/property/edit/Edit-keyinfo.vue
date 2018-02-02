@@ -43,6 +43,8 @@
             <el-option label="Townhouse" value="3"></el-option>
             <el-option label="Commercial Lot" value="4"></el-option>
             <el-option label="Vacant Lot" value="5"></el-option>
+            <el-option label="Lot" value="6"></el-option>
+            <el-option label="Building" value="7"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
