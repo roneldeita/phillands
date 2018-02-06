@@ -11,13 +11,13 @@ import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-default/index.css'// ElementUiTheme
 import * as VueGoogleMaps from 'vue2-google-maps'
 import VueLazyload from 'vue-lazyload'// for img
-import VueAuthenticate from 'vue-authenticate'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
 import VueMoment from 'vue-moment-jalaali'// datetime library
 import VueCarousel from 'vue-carousel'
 import SocialSharing from 'vue-social-sharing'
 import GSignInButton from 'vue-google-signin-button'
+import FBSignInButton from 'vue-facebook-signin-button'
 
 Vue.use(ElementUI, { locale })
 Vue.use(VueLazyload)
@@ -25,6 +25,8 @@ Vue.use(VueMoment)
 Vue.use(VueAxios, axios)
 Vue.use(VueCarousel)
 Vue.use(SocialSharing)
+Vue.use(GSignInButton)
+Vue.use(FBSignInButton)
 Vue.use(VueGoogleMaps, {
    load: {
      key: 'AIzaSyATSZ8ZMz0L0e3dNxz3hzNJw7FHyFcZFcs',
@@ -32,22 +34,6 @@ Vue.use(VueGoogleMaps, {
      libraries: 'places', // If you need to use place input
    }
  })
-Vue.use(GSignInButton)
-Vue.use(VueAuthenticate, {
-  baseUrl: process.env.API_URL, // Your API domain 'http://103.16.170.117:8090'
-
-  providers: {
-    facebook: {
-      clientId: '152018012048990',
-      redirectUri: window.location.origin+'/auth/callback' // Your client app URL
-    },
-    google: {
-      clientId: '683005103605-dqtsbo3ujkc2eftkpj8cnumvggsrrni3.apps.googleusercontent.com',
-      redirectUri: window.location.origin+'/auth/callback' // Your client app URL
-    }
-  }
-})
-
 Vue.component('paginate', Paginate)
 Vue.component('gmap-map', VueGoogleMaps.Map)
 Vue.component('gmap-marker', VueGoogleMaps.Marker)

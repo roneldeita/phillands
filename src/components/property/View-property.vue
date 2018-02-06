@@ -286,11 +286,7 @@ export default {
         this.getWishlist();
       })
       .catch( error => {
-        this.$emit('login');
-        // self.$message({
-        //   message: 'You need to sign in',
-        //   type: 'info'
-        // });
+        this.$store.dispatch('toggleLoginModal')
       });
     },
     handleRemoveWishList:function(){

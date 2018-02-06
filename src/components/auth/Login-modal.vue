@@ -19,15 +19,21 @@
                 <el-button class="btn-google">
                   <g-signin-button
                     :params="googleSignInParams"
-                    @success="onSignInSuccess"
+                    @success="onGoogleSignInSuccess"
                     @error="onSignInError">
                     <img src="../../assets/social/google-1015752_960_720.png" style="width:15px; margin-bottom:1px"> Sign in with Google
                   </g-signin-button>
                 </el-button>
-                <!-- <el-button type="default" @click="authenticate('google')" style="width:100%" disabled><span class="fa fa-google"></span> Login with google</el-button> -->
               </div>
               <div class="" style="padding:5px 0 10px 0">
-                <el-button type="info" @click="authenticate('facebook')" style="width:100%" disabled><span class="fa fa-facebook-official"></span> Login with facebook</el-button>
+                <el-button class="btn-facebook">
+                  <fb-signin-button
+                    :params="fbSignInParams"
+                    @success="onFaceBookSignInSuccess"
+                    @error="onSignInError">
+                    <span class="fa fa-facebook-square" style="font-size:15px"></span> Sign in with Facebook
+                  </fb-signin-button>
+                </el-button>
               </div>
               <p>or</p>
               <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0">
@@ -101,7 +107,11 @@ export default {
   data(){
     return{
       googleSignInParams: {
-        client_id: '683005103605-tjutvaruhetc4mplnttpkh4qk23rtq1u.apps.googleusercontent.com'
+        client_id: process.env.GOOGLE_CLIENT_ID
+      },
+      fbSignInParams: {
+        scope: 'public_profile',
+        return_scopes: true
       },
       dialogVisible: this.loginmodal,
       activeAuthTab: 'login',
@@ -165,18 +175,45 @@ export default {
     }
   },
   methods:{
-    onSignInSuccess(googleUser){
-      console.log(googleUser)
-      // `googleUser` is the GoogleUser object that represents the just-signed-in user.
-      // See https://developers.google.com/identity/sign-in/web/reference#users
-      const profile = googleUser.getBasicProfile() // etc etc
-      profile['type'] = 'google';
-      console.log(profile)
-      this.axios.post(process.env.API_URL+'/loginSocial', profile).then( res =>{
-        console.log(res)
+    handleSocialLogin(profile){
+      this.axios.post(process.env.API_URL+'/loginSocial', profile).then( response =>{
+        if(response.statusText === "OK" || response.statusText === "Created"){
+          localStorage.setItem('access_token', response.data.token);
+          var userInfo = JSON.stringify(response.data.user);
+          localStorage.setItem('user', userInfo);
+          getAccess()
+          .then(response =>{
+            if(response.role === 2){
+              window.location  = '/admin'
+            }else{
+              if(this.$route.query.redirect !=''){
+                this.$router.replace({path:this.$route.query.redirect});
+                location.reload();
+              }else{
+                location.reload();
+              }
+            }
+          });
+        }
       }).catch( error => {
         throw(error)
       })
+    },
+    onFaceBookSignInSuccess(facebook){
+      FB.api('/me',{fields:'id, first_name, last_name, picture, email' }, profile => {
+        console.log(profile)
+        profile['type'] = 'facebook';
+        //profile['social_id'] = profile.id;
+        //profile['avatar'] = profile.picture.data.url;
+        //this.handleSocialLogin(profile)
+      })
+    },
+    onGoogleSignInSuccess(googleUser){
+      // `googleUser` is the GoogleUser object that represents the just-signed-in user.
+      // See https://developers.google.com/identity/sign-in/web/reference#users
+      const profile = googleUser.getBasicProfile();
+      profile['type'] = 'google';
+      this.handleSocialLogin(profile)
     },
     onSignInError (error) {
       // `error` contains any error occurred.
@@ -289,16 +326,28 @@ export default {
       }
     }
   },
+  created() {
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : process.env.FACEBOOK_APP_ID,
+        cookie     : true,  // enable cookies to allow the server to access the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.8' // use graph api version 2.8
+      });
+    };
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  },
   watch:{
     loginmodal:function(e){
       this.dialogVisible = this.loginmodal
     }
-  },
-  mounted(){
-    //this.dialogVisible = this.modal
-  },
-  created() {
-  },
+  }
 }
 </script>
 
@@ -324,15 +373,30 @@ export default {
   }
 </style>
 <style scoped>
-.btn-google{
+.btn-google,
+.btn-facebook{
   width:100%;
   padding:0px;
+  margin:0px;
 }
-.g-signin-button {
+.btn-facebook{
+  border:0px;
+}
+.g-signin-button{
   display: inline-block;
   width: 100%;
   color: #757575;
   line-height: 35px;
   font-weight: 500;
+}
+
+.fb-signin-button{
+  display: inline-block;
+  width: 100%;
+  background-color: #3b5998;
+  color: #ffffff;
+  line-height: 35px;
+  font-weight: 500;
+  border-radius: 2px;
 }
 </style>
