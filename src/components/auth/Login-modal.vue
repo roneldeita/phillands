@@ -201,18 +201,27 @@ export default {
     },
     onFaceBookSignInSuccess(facebook){
       FB.api('/me',{fields:'id, first_name, last_name, picture, email' }, profile => {
-        console.log(profile)
         profile['type'] = 'facebook';
-        //profile['social_id'] = profile.id;
-        //profile['avatar'] = profile.picture.data.url;
-        //this.handleSocialLogin(profile)
+        profile['social_id'] = profile.id;
+        profile['avatar'] = profile.picture.data.url;
+        this.handleSocialLogin(profile)
       })
     },
     onGoogleSignInSuccess(googleUser){
       // `googleUser` is the GoogleUser object that represents the just-signed-in user.
       // See https://developers.google.com/identity/sign-in/web/reference#users
+      // const profile = googleUser.getBasicProfile();
+      // const profile = {
+      //   type : 'google',
+      //   avatar : google.Paa,
+      //   first_name : google.ofa,
+      //   last_name : google.wea,
+      //   social_id : google.Eea,
+      //   email : google.U3
+      // };
+      // console.log(profile)
       const profile = googleUser.getBasicProfile();
-      profile['type'] = 'google';
+      profile['type'] ='google'
       this.handleSocialLogin(profile)
     },
     onSignInError (error) {

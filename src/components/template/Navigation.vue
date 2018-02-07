@@ -8,6 +8,52 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <el-popover class="filters"
+          ref="popover"
+          placement="bottom"
+          width="500"
+          trigger="click">
+          <div v-loading="true" element-loading-text="This feature is coming soon...">
+            <el-card class="card" style="border-bottom: 1px solid #dddddd">
+              <h5 class="text-muted">Price</h5>
+              <h6 class="label">Price ₱{{priceRange[0]}} - ₱{{(priceRange[1] >= 5000000) ? '5000000+' : priceRange[1]}}</h6>
+              <el-slider
+                v-model="priceRange"
+                :step="1000"
+                range
+                show-stops
+                :show-tooltip="false"
+                :max="5000000">
+              </el-slider>
+            </el-card>
+            <el-card class="card" style="border-bottom: 1px solid #dddddd">
+              <h5 class="text-muted">Bedrooms & Bathrooms</h5>
+              <h6 class="label">Bedrooms</h6>
+              <el-input-number v-model="beds" :min="0" :max="10"></el-input-number>
+              <h6 class="label">Bathrooms</h6>
+              <el-input-number v-model="baths" :min="0" :max="10"></el-input-number>
+            </el-card>
+            <el-card class="card">
+              <h5 class="text-muted">Amenities</h5>
+              <h6 class="label">Choose the amenities from the options or manually type if not available.</h6>
+              <el-select
+                v-model="amenities"
+                size="large"
+                multiple
+                filterable
+                allow-create
+                placeholder=""
+                style="width:100%;">
+                <el-option
+                  v-for="amenity in amenitiesOptions"
+                  :key="0"
+                  :label="amenity.label"
+                  :value="amenity.value">
+                </el-option>
+              </el-select>
+            </el-card>
+          </div>
+        </el-popover>
         <form class="form-inline" v-if="allowedSearchRoutes.includes($route.name)">
           <el-row type="flex" class="row-bg search-continer" justify="start">
             <el-col :span="24">
@@ -22,6 +68,7 @@
                 @focus="querySearch"
                 @keyup.enter.native="handleSearch"
                 class="inline-input">
+                  <el-button slot="append" v-popover:popover><span class="fa fa-sliders"></span> More Filters</el-button>
                   <el-select slot="prepend" v-model="propertyType" placeholder="Select" @change="handleSearch">
                     <!-- <el-option label="All" value=""></el-option> -->
                     <el-option label="Condominium" value="1"></el-option>
@@ -82,33 +129,6 @@
       <el-tab-pane label="For Rent" name="rent"></el-tab-pane>
       <el-tab-pane label="Pre-Selling" name="pre-selling"></el-tab-pane>
       <el-tab-pane label="Foreclosure" name="foreclosure"></el-tab-pane>
-      <!-- <div>
-        <el-popover
-          ref="price"
-          placement="bottom"
-          width="300"
-          trigger="click">
-            <h6 class="text-muted">₱520 - ₱50000+</h6>
-            <el-slider
-              v-model="priceRange"
-              range
-              :step="100"
-              show-stops
-              :max="50000">
-            </el-slider>
-            <el-button type="success" class="pl-btn-green pull-left" size="mini">Apply</el-button>
-          </el-popover>
-          <el-popover
-            ref="bed"
-            placement="bottom"
-            width="300"
-            trigger="click">
-              <p>beedroom option</p>
-              <el-button type="success" class="pl-btn-green pull-left" size="mini">Apply</el-button>
-            </el-popover>
-        <el-button type="text" v-popover:price>Price</el-button>
-        <el-button type="text" v-popover:bed>Beedrooms</el-button>
-      </div> -->
     </el-tabs>
     <el-tabs v-model="activeNav" v-if="allowedSellertRoutes.includes($route.name)" class="main-nav fixed-top" @tab-click="changeTab">
       <el-tab-pane label="Profile" name="profile"></el-tab-pane>
@@ -126,6 +146,7 @@
 </template>
 
 <script>
+import amenitiesOpts from '../../../static/json/amenities.json'
 import { getLocality } from '../../assets/utils/properties-api.js'
 import { isLoggedIn, login, logout, getAccess, getSearch } from '../../assets/utils/auth.js';
 
@@ -144,7 +165,11 @@ export default {
         userAccess:{},
         activeNav:'',
         searchLocation:'',
-        priceRange: [520, 50000],
+        priceRange: [500, 1000000],
+        beds:0,
+        baths:0,
+        amenities:[],
+        amenitiesOptions: [],
         propertyType:'1',
         links:[],
         publishPropertyBtn:[
@@ -313,11 +338,27 @@ export default {
       if(this.isLoggedIn()){
         this.handleUserAccess();
       }
+
+      this.amenitiesOptions = amenitiesOpts;
     }
 }
 </script>
 
 <style scoped>
+  .card{
+    padding: 0px;
+    margin-bottom: 0px;
+    border-radius: 0px;
+    box-shadow:0 0;
+    border: none;
+    cursor: pointer;
+  }
+  .label{
+    color: #999999;
+    font-size: 14px;
+    padding-top: 0px;
+    margin-bottom: 5px;;
+  }
   .navbar{
     background-color: #ffffff;
   }
@@ -399,6 +440,9 @@ export default {
     .navbar-collapse .navbar-nav a.dropdown-toggle{
       padding-top: 0px !important;
       margin-top: -10px;
+    }
+    .filters .el-card__body{
+      width:100%
     }
   }
 </style>

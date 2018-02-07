@@ -1,12 +1,6 @@
 <template>
   <div class="">
     <el-card :body-style="{ padding: '0px' }" class="card">
-      <!-- <el-tooltip placement="top">
-        <div slot="content">Add this property<br/>to your Wish List</div>
-        <el-button type="text" style="position:absolute; right:12px; font-size:18px; color:#ffffff; outline-style:none">
-          <span class="fa fa-heart-o"></span>
-        </el-button>
-      </el-tooltip> -->
       <el-tooltip placement="top" v-if="!wishlist.includes(property.property_no)">
         <div slot="content">Add this property<br/>to your Wish List</div>
         <el-button type="text" style="position:absolute;right:12px;font-size:18px;color:#ffffff;outline-style:none" @click="handleAddWishList">

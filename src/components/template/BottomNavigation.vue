@@ -31,10 +31,34 @@
         </el-input>
         <br><br>
         <h4>CONNECT WITH PHILLANDS</h4>
-        <img src="../../assets/social/fb.png" class="social-icon" alt="">
+        <social-sharing url="www.phillands.com"
+          title="The best way to find home and settle your future"
+          description="Contact Numbers: 0906 474 2471 / 0918 401 1082 / 426-3051, Email Address: info@phillands.com"
+          quote="Contact Numbers: 0906 474 2471 / 0918 401 1082 / 426-3051, Email Address: info@phillands.com"
+          style="display:inline"
+          inline-template>
+          <div>
+            <network network="facebook">
+              <i class="fa fa-facebook-square social-icon" style="color:#3B5998"></i>
+            </network>
+            <network network="twitter">
+              <i class="fa fa-twitter social-icon" style="color:#1dcaff"></i>
+            </network>
+            <network network="linkedin">
+              <i class="fa fa-linkedin social-icon" style="color:#0077b5"></i>
+            </network>
+            <network network="googleplus">
+              <i class="fa fa-google-plus social-icon" style="color:#d34836"></i>
+            </network>
+          </div>
+          <!-- <el-button type="text" style="font-size:18px; color:#ffffff; outline-style:none">
+            <span class="fa fa-facebook"></span>
+          </el-button> -->
+        </social-sharing>
+        <!-- <img src="../../assets/social/fb.png" class="social-icon" alt="">
         <img src="../../assets/social/twitter.png" class="social-icon" alt="">
         <img src="../../assets/social/linkedin.png" class="social-icon" alt="">
-        <img src="../../assets/social/google_plus.png" class="social-icon" alt="">
+        <img src="../../assets/social/google_plus.png" class="social-icon" alt=""> -->
       </el-col>
     </el-row>
     <el-row class="lower-footer">
@@ -61,6 +85,10 @@ export default {
   outline: 0 !important;
   border-color:  #56BA50 !important;
   color: #ffffff !important
+}
+.social-icon{
+  font-size: 32px !important;
+  margin-right: 10px;
 }
 </style>
 
