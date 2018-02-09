@@ -20,21 +20,18 @@
         <br><br>
         <h4>FEEDBACK & SUPPORT</h4>
         <p>Help us in making Phillands Realty better by sending us suggestion and feedbacks.</p>
-        <el-button class="btn-email-us btn-pl-green" @click="toggleFeedbackModal()">Email Us</el-button>
+        <el-button class="btn-email-us btn-pl-green" @click="toggleFeedbackModal()"><span class="fa fa-paper-plane"></span> Email Us</el-button>
       </el-col>
       <el-col :md="9" class="text-left">
         <h4>SUBSCRIBE TO OUR NEWSLETTER</h4>
         <br>
         <p>Stay up to date about Real Estate in the Philippines. Unsubscribe anytime.</p>
         <el-input class="subscribe-btn" placeholder="Enter your email address">
-          <el-button type="success" class="btn-pl-green" slot="append">SUBSCRIBE</el-button>
+          <el-button type="default" class="btn-pl-green" slot="append" disabled>SUBSCRIBE</el-button>
         </el-input>
         <br><br>
         <h4>CONNECT WITH PHILLANDS</h4>
-        <social-sharing url="www.phillands.com"
-          title="The best way to find home and settle your future"
-          description="Contact Numbers: 0906 474 2471 / 0918 401 1082 / 426-3051, Email Address: info@phillands.com"
-          quote="Contact Numbers: 0906 474 2471 / 0918 401 1082 / 426-3051, Email Address: info@phillands.com"
+        <social-sharing url="http://www.phillands.com"
           style="display:inline"
           inline-template>
           <div>
@@ -63,7 +60,7 @@
     </el-row>
     <el-row class="lower-footer">
       <el-col :md="24">
-        <h6>© 2017 Phillands Real Estates. All rights reserved. Material may not be published or reproduced in any form without prior written permission. </h6>
+        <p>© 2017 Phillands Realty. All rights reserved. Material may not be published or reproduced in any form without prior written permission. </p>
       </el-col>
     </el-row>
   </div>

@@ -84,8 +84,6 @@
                 <span v-show="property.offer_type === 2 && property.price_option === 4 ">/day</span>
                 <div class="pull-right">
                   <social-sharing :url="'http://phillands.com/property/'+property.property_no"
-                    :title="property.property_detail.title"
-                    :description="property.property_detail.description"
                     :quote="property.property_detail.description"
                     style="display:inline"
                     inline-template>
