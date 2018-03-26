@@ -183,16 +183,16 @@ export default {
           localStorage.setItem('user', userInfo);
           getAccess()
           .then(response =>{
-            if(response.role === 2){
-              window.location  = '/admin'
-            }else{
+            // if(response.role === 2){
+            //   window.location  = '/admin'
+            // }else{
               if(this.$route.query.redirect !=''){
                 this.$router.replace({path:this.$route.query.redirect});
                 location.reload();
               }else{
                 location.reload();
               }
-            }
+            // }
           });
         }
       }).catch( error => {
@@ -282,16 +282,16 @@ export default {
         localStorage.setItem('user', userInfo);
         getAccess()
         .then(response =>{
-          if(response.role === 2){
-            window.location  = '/admin'
-          }else{
+          // if(response.role === 2){
+          //   window.location  = '/admin'
+          // }else{
             if(this.$route.query.redirect !=''){
               this.$router.replace({path:this.$route.query.redirect});
               location.reload();
             }else{
               location.reload();
             }
-          }
+          // }
         });
       })
       .catch(error => {

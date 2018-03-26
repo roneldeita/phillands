@@ -20,7 +20,7 @@ export default {
   name:'publish-completed',
   methods:{
     handleBtn:function(){
-      window.location.href = 'listings/for-approval';
+      this.$router.push({name:'listings'});
     }
   },
   mounted(){
