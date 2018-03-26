@@ -60,6 +60,6 @@ export default new Router({
     { path: '/admin/ads', name: 'admin-ads', beforeEnter:isAdmin, component:AdminAds },
     { path: '/admin/cms', name: 'admin-cms', beforeEnter:isAdmin, component:AdminCMS },
     { path: '/admin/foreclosures', name: 'admin-foreclosures', beforeEnter:isAdmin, component:AdminForclosures }
-  ],
-  mode: 'history'//to remove the # in the url
+  ]
+  //mode: 'history'//to remove the # in the url
 })
